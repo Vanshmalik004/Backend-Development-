@@ -1,0 +1,10 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:03.000
+Welcome to HTML5 Lab Experiment 1.
+
+00:00:03.500 --> 00:00:07.000
+HTML5 provides native hardware-accelerated video streaming without plugins.
+
+00:00:07.500 --> 00:00:11.500
+The track tag enables accessible closed captions and subtitles.

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <!-- Essential Character Encoding & Responsive Viewport -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- SEO & Social Graph Meta Tags (Objective 6) -->
+  <title>HTML5 Full Elements Showcase | Lab Experiment 1 (CO2)</title>
+  <meta name="description" content="A comprehensive, fully accessible, SEO-optimized showcase of all HTML5 semantic, form, multimedia, and structural elements for Lab Experiment 1 (CO2).">
+  <meta name="keywords" content="HTML5, Semantic Elements, Forms, Multimedia, DOM Structure, SEO, Accessibility, Web Development">
+  <meta name="author" content="Web Technologies Lab">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://example.com/html5-experiment-1">
+
+  <!-- Open Graph Meta Tags for Rich Social Sharing -->
+  <meta property="og:title" content="HTML5 Full Elements Showcase - Experiment 1">
+  <meta property="og:description" content="Explore every HTML5 element: semantic structure, form controls, media tags, interactive DOM tree, and accessibility standards.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card Data -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HTML5 Full Elements Showcase">
+  <meta name="twitter:description" content="Comprehensive reference & interactive laboratory for modern HTML5 elements.">
+
+  <!-- Structured Data / JSON-LD for Search Engines -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Web Technologies Lab Experiment 1",
+    "description": "Comprehensive implementation of all HTML5 structural, semantic, form, and multimedia elements.",
+    "educationalCredentialAwarded": "Course Outcome CO2",
+    "provider": {
+      "@type": "CollegeOrUniversity",
+      "name": "Department of Computer Science & Engineering"
+    }
+  }
+  </script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Favicon via inline SVG data URI -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+</head>
+<body>
+  <!-- Accessibility: Skip Link for Keyboard Users -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- SEMANTIC HEADER -->
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="brand">
+        <span class="badge">CO2 Mapped</span>
+        <h1>HTML5 Elements Laboratory</h1>
+      </div>
+      <p class="subtitle">Experiment 1: Comprehensive Implementation of Modern Web Standards</p>
+      
+      <!-- SEMANTIC NAVIGATION -->
+      <nav class="site-nav" role="navigation" aria-label="Main Experiment Navigation">
+        <ul class="nav-list">
+          <li><a href="#semantic-section" class="nav-link active">1. Semantics</a></li>
+          <li><a href="#html4-vs-html5" class="nav-link">2. HTML4 vs HTML5</a></li>
+          <li><a href="#forms-section" class="nav-link">3. Form Controls</a></li>
+          <li><a href="#multimedia-section" class="nav-link">4. Multimedia</a></li>
+          <li><a href="#dom-section" class="nav-link">5. DOM Tree</a></li>
+          <li><a href="#seo-a11y-section" class="nav-link">6. SEO & A11y</a></li>
+        </ul>
+        <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle dark/light mode">
+          <span class="theme-icon">🌓</span> <span class="theme-text">Theme</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT WRAPPER -->
+  <main id="main-content" class="main-layout" role="main">
+    
+    <!-- EXPERIMENT META / OBJECTIVE BANNER -->
+    <section class="banner-card" aria-labelledby="lab-meta-title">
+      <header class="banner-header">
+        <h2 id="lab-meta-title">Academic Experiment Overview</h2>
+        <span class="status-pill">Curriculum Aligned: CO2</span>
+      </header>
+      <div class="banner-grid">
+        <div class="banner-item">
+          <strong>Course Outcome:</strong> CO2 (Create and build web pages and applications)
+        </div>
+        <div class="banner-item">
+          <strong>Key Competencies:</strong> Semantic HTML, Modern Form Controls, Native Multimedia, DOM Visualization, Accessibility (ARIA), SEO
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION 1: SEMANTIC & TEXT LEVEL ELEMENTS (Objective 1)        -->
+    <!-- ============================================================= -->
+    <section id="semantic-section" class="lab-section" aria-labelledby="semantic-heading">
+      <header class="section-header">
+        <div class="section-number">01</div>
+        <div>
+          <h2 id="semantic-heading">Semantic Layout & Text-Level Elements</h2>
+          <p>Meaningful structural tags replacing ambiguous <code>&lt;div&gt;</code> wrappers.</p>
+        </div>
+      </header>
+
+      <div class="two-col-grid">
+        <!-- Article with Nested Sections & Header/Footer -->
+        <article class="card showcase-card" itemscope itemtype="https://schema.org/TechArticle">
+          <header class="card-header">
+            <span class="tag">&lt;article&gt;</span>
+            <h3 itemprop="headline">Semantic Publishing Component</h3>
+            <div class="meta-row">
+              <span>Published: <time datetime="2026-09-09T21:45:00" itemprop="datePublished">Sept 9, 2026</time></span>
+              <span class="separator">•</span>
+              <span>Category: <mark>Web Standards</mark></span>
+            </div>
+          </header>
+
+          <section class="card-body">
+            <h4>Nested <code>&lt;section&gt;</code>: Structural Integrity</h4>
+            <p>
+              HTML5 introduced tags that communicate purpose to screen readers and search spiders. Notice how inline text formatting functions:
+            </p>
+            <ul class="styled-list">
+              <li><strong>Strong emphasis:</strong> <strong>&lt;strong&gt; conveys importance</strong> vs <b>&lt;b&gt; for stylistic offset</b>.</li>
+              <li><em>Idiomatic stress:</em> <em>&lt;em&gt; signifies linguistic emphasis</em> vs <i>&lt;i&gt; for technical terms/thoughts</i>.</li>
+              <li><del>Del &amp; Ins:</del> Deprecated markup is <del>marked with &lt;del&gt;</del>, while newer syntax is <ins>&lt;ins&gt;inserted via ins&lt;/ins&gt;</ins>.</li>
+              <li>Mathematical &amp; Chemical: H<sub>2</sub>O with <code>&lt;sub&gt;</code> and E = mc<sup>2</sup> with <code>&lt;sup&gt;</code>.</li>
+              <li>Ruby Annotations: <ruby>漢<rt>kan</rt>字<rt>ji</rt></ruby> via <code>&lt;ruby&gt;</code> &amp; <code>&lt;rt&gt;</code>.</li>
+              <li>Bidirectional Isolation: <bdi>مرحبا</bdi> and <bdo dir="rtl">This text reads right-to-left.</bdo></li>
+              <li>Inline definitions: An <abbr title="HyperText Markup Language">&lt;abbr&gt; HTML</abbr> is a <dfn>markup standard</dfn>.</li>
+              <li>Word Break Opportunities: Super<wbr>cali<wbr>fragi<wbr>listic<wbr>expiali<wbr>docious with <code>&lt;wbr&gt;</code>.</li>
+            </ul>
+
+            <blockquote cite="https://w3.org" class="styled-quote">
+              <p>"Semantics is the cornerstone of the open web platform, enabling universal accessibility and device interoperability."</p>
+              <footer>— <cite>W3C Web Standards Guidelines</cite></footer>
+            </blockquote>
+
+            <!-- Code & Computer Output Elements -->
+            <div class="code-terminal">
+              <div class="terminal-bar">Terminal Output (<code>&lt;pre&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;samp&gt;</code>, <code>&lt;var&gt;</code>)</div>
+              <pre><code>Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to interrupt.
+Sample output: <samp>Server running on port <var>3000</var>...</samp></code></pre>
+            </div>
+          </section>
+
+          <!-- Interactive Details & Summary Accordion -->
+          <footer class="card-footer">
+            <details class="interactive-details" id="details-demo">
+              <summary><strong>Click to expand <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code></strong></summary>
+              <div class="details-content">
+                <p>Native HTML5 accordions require zero JavaScript! The browser toggles open/close state and fires a native <code>toggle</code> event automatically.</p>
+                <address>
+                  Contact: <a href="mailto:faculty@cse.edu">faculty@cse.edu</a> | Department of Web Engineering
+                </address>
+              </div>
+            </details>
+          </footer>
+        </article>
+
+        <!-- Sidebar / Complementary Aside -->
+        <aside class="card aside-card" role="complementary" aria-labelledby="aside-heading">
+          <div class="card-header">
+            <span class="tag">&lt;aside&gt;</span>
+            <h3 id="aside-heading">Complementary Aside &amp; Native Dialog</h3>
+          </div>
+          <div class="card-body">
+            <p>The <code>&lt;aside&gt;</code> element represents content tangentially related to the content around it.</p>
+            
+            <div class="interactive-box">
+              <h4>Native Modal via <code>&lt;dialog&gt;</code></h4>
+              <p>HTML5 provides a built-in top-layer dialog element with native keyboard trapping (Esc key) and backdrop blur styling.</p>
+              <button type="button" id="openDialogBtn" class="btn btn-primary">Open Native &lt;dialog&gt;</button>
+            </div>
+
+            <!-- Figure and Figcaption -->
+            <figure class="styled-figure">
+              <div class="svg-diagram-wrapper">
+                <svg width="100%" height="120" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Semantic Box Hierarchy Diagram">
+                  <rect x="10" y="10" width="280" height="100" rx="8" fill="var(--bg-card-subtle)" stroke="var(--primary)" stroke-width="2" />
+                  <text x="150" y="35" text-anchor="middle" fill="var(--primary)" font-weight="700" font-size="14">&lt;header&gt; / &lt;main&gt; / &lt;footer&gt;</text>
+                  <rect x="30" y="50" width="115" height="45" rx="4" fill="var(--primary-glow)" stroke="var(--primary)" stroke-width="1" />
+                  <text x="87" y="77" text-anchor="middle" fill="var(--text-main)" font-size="12">&lt;section&gt;</text>
+                  <rect x="155" y="50" width="115" height="45" rx="4" fill="var(--accent-glow)" stroke="var(--accent)" stroke-width="1" />
+                  <text x="212" y="77" text-anchor="middle" fill="var(--text-main)" font-size="12">&lt;aside&gt;</text>
+                </svg>
+              </div>
+              <figcaption>Figure 1.1: <code>&lt;figure&gt;</code> &amp; <code>&lt;figcaption&gt;</code> containing inline SVG markup.</figcaption>
+            </figure>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Native HTML5 Dialog Element (Objective 1) -->
+      <dialog id="html5Dialog" class="modern-dialog" aria-labelledby="dialog-title">
+        <form method="dialog" class="dialog-form">
+          <header class="dialog-header">
+            <h3 id="dialog-title">Native HTML5 <code>&lt;dialog&gt;</code> Modal</h3>
+            <button type="button" id="closeDialogCross" class="btn-icon" aria-label="Close modal">&times;</button>
+          </header>
+          <div class="dialog-body">
+            <p>This modal is rendered in the browser's native top layer using <code>dialog.showModal()</code>.</p>
+            <ul>
+              <li>Automatic focus management.</li>
+              <li>Pressing <kbd>Escape</kbd> automatically dismisses the dialog.</li>
+              <li>Styled using the native <code>::backdrop</code> pseudo-element.</li>
+            </ul>
+          </div>
+          <footer class="dialog-actions">
+            <button type="submit" value="cancel" class="btn btn-secondary">Cancel</button>
+            <button type="submit" value="confirm" class="btn btn-primary">Understood</button>
+          </footer>
+        </form>
+      </dialog>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION 2: HTML4 vs HTML5 STRUCTURAL ELEMENTS (Objective 2)   -->
+    <!-- ============================================================= -->
+    <section id="html4-vs-html5" class="lab-section" aria-labelledby="diff-heading">
+      <header class="section-header">
+        <div class="section-number">02</div>
+        <div>
+          <h2 id="diff-heading">HTML4 vs HTML5 Structural Evolution</h2>
+          <p>Analyzing structural deprecation, semantic clarity, and engine parsing differences.</p>
+        </div>
+      </header>
+
+      <div class="comparison-grid">
+        <!-- Legacy HTML4 Pattern -->
+        <div class="card legacy-card">
+          <div class="card-header">
+            <span class="tag tag-danger">HTML4 (Legacy Standard)</span>
+            <h3>"Div Soup" Architecture</h3>
+          </div>
+          <div class="card-body">
+            <p class="muted">Relied on generic containers styled via ID/Class attributes without inherent semantic meaning:</p>
+            <pre class="code-box"><code>&lt;div id="header"&gt;
+  &lt;div id="nav"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="main-content"&gt;
+  &lt;div class="article"&gt;
+    &lt;div class="post-title"&gt;...&lt;/div&gt;
+    &lt;div class="post-body"&gt;...&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div id="sidebar"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="footer"&gt;...&lt;/div&gt;</code></pre>
+            <ul class="badge-list danger-list">
+              <li>❌ Zero accessibility landmarks without explicit ARIA</li>
+              <li>❌ Poor SEO indexation; spiders must guess layout</li>
+              <li>❌ Deprecated tags: <code>&lt;font&gt;</code>, <code>&lt;center&gt;</code>, <code>&lt;marquee&gt;</code>, <code>&lt;big&gt;</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Modern HTML5 Pattern -->
+        <div class="card modern-card">
+          <div class="card-header">
+            <span class="tag tag-success">HTML5 (Modern Standard)</span>
+            <h3>Semantic Hierarchy</h3>
+          </div>
+          <div class="card-body">
+            <p class="muted">Replaces non-descriptive tags with standardized purpose-driven elements:</p>
+            <pre class="code-box"><code>&lt;header&gt;
+  &lt;nav&gt;...&lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;article&gt;
+    &lt;header&gt;&lt;h1&gt;...&lt;/h1&gt;&lt;/header&gt;
+    &lt;section&gt;...&lt;/section&gt;
+  &lt;/article&gt;
+  &lt;aside&gt;...&lt;/aside&gt;
+&lt;/main&gt;
+&lt;footer&gt;...&lt;/footer&gt;</code></pre>
+            <ul class="badge-list success-list">
+              <li>✅ Native landmark roles recognized by screen readers</li>
+              <li>✅ Search engines parse author, date, and core text seamlessly</li>
+              <li>✅ Native rich media (<code>&lt;video&gt;</code>, <code>&lt;audio&gt;</code>, <code>&lt;canvas&gt;</code>) eliminating flash</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="table-responsive">
+        <table class="styled-table" aria-label="HTML4 vs HTML5 Elements Comparison Table">
+          <caption class="table-caption">Table 2.1: Direct Comparison of Structural &amp; Functional Elements</caption>
+          <thead>
+            <tr>
+              <th scope="col">Feature / Area</th>
+              <th scope="col">HTML4 Approach</th>
+              <th scope="col">HTML5 Semantic Standard</th>
+              <th scope="col">Browser / User Benefit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Top Banner</th>
+              <td><code>&lt;div id="header"&gt;</code></td>
+              <td><code>&lt;header&gt;</code></td>
+              <td>Auto-mapped to landmark banner role</td>
+            </tr>
+            <tr>
+              <th scope="row">Navigation Bar</th>
+              <td><code>&lt;div id="nav"&gt; &lt;ul&gt;</code></td>
+              <td><code>&lt;nav&gt;</code></td>
+              <td>Keyboard screen readers can instantly jump to nav</td>
+            </tr>
+            <tr>
+              <th scope="row">Main Content Area</th>
+              <td><code>&lt;div id="content"&gt;</code></td>
+              <td><code>&lt;main&gt;</code></td>
+              <td>Unique per-page landmark; eliminates skip-link hacks</td>
+            </tr>
+            <tr>
+              <th scope="row">Sidebar / Extras</th>
+              <td><code>&lt;div id="sidebar"&gt;</code></td>
+              <td><code>&lt;aside&gt;</code></td>
+              <td>Indicates secondary or related external content</td>
+            </tr>
+            <tr>
+              <th scope="row">Bottom Information</th>
+              <td><code>&lt;div id="footer"&gt;</code></td>
+              <td><code>&lt;footer&gt;</code></td>
+              <td>Clearly scopes copyright, authorship, and disclosures</td>
+            </tr>
+            <tr>
+              <th scope="row">Multimedia Media</th>
+              <td><code>&lt;object&gt;</code> / Adobe Flash plugin</td>
+              <td><code>&lt;video&gt;</code> &amp; <code>&lt;audio&gt;</code></td>
+              <td>Zero external plugin; hardware accelerated &amp; mobile ready</td>
+            </tr>
+            <tr>
+              <th scope="row">Vector &amp; 2D Graphics</th>
+              <td>External applets or static images</td>
+              <td><code>&lt;svg&gt;</code> &amp; <code>&lt;canvas&gt;</code></td>
+              <td>Interactive, programmable, lightweight graphics in DOM</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION 3: HTML5 FORMS & INPUT CONTROLS (Objective 3)         -->
+    <!-- ============================================================= -->
+    <section id="forms-section" class="lab-section" aria-labelledby="form-heading">
+      <header class="section-header">
+        <div class="section-number">03</div>
+        <div>
+          <h2 id="form-heading">HTML5 Advanced Form Controls &amp; Validation</h2>
+          <p>Comprehensive exhibition of input types, client-side validation attributes, and reactive output.</p>
+        </div>
+      </header>
+
+      <form id="html5SuperForm" class="super-form" novalidate oninput="calculateOutput()">
+        <div class="form-grid">
+
+          <!-- FIELDSET 1: Personal & Communication Inputs -->
+          <fieldset class="form-fieldset">
+            <legend>1. Identification &amp; Contact Inputs</legend>
+            
+            <div class="form-group">
+              <label for="fullName">Full Name (<code>type="text"</code>, <code>required</code>, <code>autofocus</code>):</label>
+              <input type="text" id="fullName" name="fullName" placeholder="e.g. John Doe" required autofocus autocomplete="name">
+              <span class="hint">Must contain at least 2 characters</span>
+            </div>
+
+            <div class="form-group">
+              <label for="userEmail">Email Address (<code>type="email"</code>, <code>required</code>):</label>
+              <input type="email" id="userEmail" name="userEmail" placeholder="student@university.edu" required autocomplete="email">
+              <span class="hint">Browser validates RFC compliance natively</span>
+            </div>
+
+            <div class="form-group">
+              <label for="userTel">Telephone Number (<code>type="tel"</code>, <code>pattern</code>):</label>
+              <input type="tel" id="userTel" name="userTel" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" autocomplete="tel">
+              <span class="hint">Pattern formatted: 123-456-7890</span>
+            </div>
+
+            <div class="form-group">
+              <label for="userUrl">Portfolio / Website (<code>type="url"</code>):</label>
+              <input type="url" id="userUrl" name="userUrl" placeholder="https://myportfolio.dev">
+              <span class="hint">Requires valid protocol (http:// or https://)</span>
+            </div>
+
+            <div class="form-group">
+              <label for="searchQuery">Search Query (<code>type="search"</code>):</label>
+              <input type="search" id="searchQuery" name="searchQuery" placeholder="Search resources...">
+            </div>
+
+            <div class="form-group">
+              <label for="userPassword">Password (<code>type="password"</code>, <code>minlength="8"</code>):</label>
+              <input type="password" id="userPassword" name="userPassword" minlength="8" placeholder="Minimum 8 characters">
+            </div>
+          </fieldset>
+
+          <!-- FIELDSET 2: Numeric, Date, Time & Range Inputs -->
+          <fieldset class="form-fieldset">
+            <legend>2. Numeric, Chronological &amp; Visual Pickers</legend>
+
+            <div class="form-group">
+              <label for="ageInput">Age (<code>type="number"</code>, <code>min="16"</code>, <code>max="100"</code>, <code>step="1"</code>):</label>
+              <input type="number" id="ageInput" name="ageInput" min="16" max="100" step="1" value="20">
+            </div>
+
+            <!-- Dynamic Range with Output Element -->
+            <div class="form-group">
+              <label for="rangeScore">Skill Proficiency Level (<code>type="range"</code>):</label>
+              <div class="range-wrapper">
+                <input type="range" id="rangeScore" name="rangeScore" min="0" max="100" value="75" step="5">
+                <output for="rangeScore" id="rangeOutput" class="range-badge">75%</output>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="eventDate">Date Picker (<code>type="date"</code>):</label>
+              <input type="date" id="eventDate" name="eventDate" value="2026-09-09">
+            </div>
+
+            <div class="form-group">
+              <label for="eventTime">Time Picker (<code>type="time"</code>):</label>
+              <input type="time" id="eventTime" name="eventTime" value="10:30">
+            </div>
+
+            <div class="form-group">
+              <label for="eventDateTime">Date &amp; Time Local (<code>type="datetime-local"</code>):</label>
+              <input type="datetime-local" id="eventDateTime" name="eventDateTime" value="2026-09-09T10:30">
+            </div>
+
+            <div class="form-group">
+              <label for="eventMonth">Month Picker (<code>type="month"</code>):</label>
+              <input type="month" id="eventMonth" name="eventMonth" value="2026-09">
+            </div>
+
+            <div class="form-group">
+              <label for="eventWeek">Week Picker (<code>type="week"</code>):</label>
+              <input type="week" id="eventWeek" name="eventWeek" value="2026-W37">
+            </div>
+
+            <div class="form-group">
+              <label for="themeColor">Color Picker (<code>type="color"</code>):</label>
+              <div class="color-picker-row">
+                <input type="color" id="themeColor" name="themeColor" value="#3b82f6">
+                <span id="colorHexDisplay">#3b82f6</span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- FIELDSET 3: Options, Datalist, File & Reactive Feedback -->
+          <fieldset class="form-fieldset">
+            <legend>3. Selection, Datalist, Files &amp; Feedback</legend>
+
+            <!-- HTML5 Datalist for Autocomplete Suggestions -->
+            <div class="form-group">
+              <label for="courseChoice">Specialization (<code>&lt;datalist&gt;</code> autocomplete):</label>
+              <input list="courseList" id="courseChoice" name="courseChoice" placeholder="Type or select a track...">
+              <datalist id="courseList">
+                <option value="Artificial Intelligence & Machine Learning">
+                <option value="Full Stack Cloud Computing">
+                <option value="Cyber Security & Forensics">
+                <option value="Data Science & Big Data">
+                <option value="Internet of Things & Embedded Systems">
+              </datalist>
+            </div>
+
+            <!-- Select with Option Groups -->
+            <div class="form-group">
+              <label for="frameworkSelect">Framework Preference (<code>&lt;optgroup&gt;</code> &amp; <code>&lt;select&gt;</code>):</label>
+              <select id="frameworkSelect" name="frameworkSelect">
+                <optgroup label="Frontend Frameworks">
+                  <option value="react">React / Next.js</option>
+                  <option value="vue">Vue.js / Nuxt</option>
+                  <option value="svelte">Svelte / SvelteKit</option>
+                </optgroup>
+                <optgroup label="Backend Engines">
+                  <option value="node">Node.js / Express</option>
+                  <option value="python">Python / FastAPI</option>
+                  <option value="go">Golang / Gin</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- File Upload -->
+            <div class="form-group">
+              <label for="docUpload">Assignment Upload (<code>type="file"</code>, <code>accept=".pdf,.png"</code>):</label>
+              <input type="file" id="docUpload" name="docUpload" accept=".pdf,.png,.jpg">
+            </div>
+
+            <!-- Checkbox & Radio Buttons -->
+            <div class="form-group">
+              <span class="label-text">Study Mode (<code>type="radio"</code>):</span>
+              <div class="radio-row">
+                <label class="radio-label">
+                  <input type="radio" name="studyMode" value="regular" checked> Regular Classroom
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="studyMode" value="hybrid"> Hybrid / Online
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <span class="label-text">Agreements (<code>type="checkbox"</code>):</span>
+              <div class="checkbox-row">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="termsCheck" name="termsCheck" required>
+                  I certify this submission adheres to academic honesty standards.
+                </label>
+              </div>
+            </div>
+
+            <!-- HTML5 Progress & Meter Elements -->
+            <div class="form-group">
+              <label for="formProgress">Native Progress Indicator (<code>&lt;progress&gt;</code>):</label>
+              <progress id="formProgress" value="65" max="100">65%</progress>
+            </div>
+
+            <div class="form-group">
+              <label for="gaugeMeter">Disk / Resource Quota (<code>&lt;meter&gt;</code>):</label>
+              <meter id="gaugeMeter" min="0" max="100" low="30" high="80" optimum="50" value="72">72/100</meter>
+              <span class="hint">Optimal zone: 30-80</span>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+              <label for="remarks">Student Remarks (<code>&lt;textarea&gt;</code>, <code>maxlength="200"</code>):</label>
+              <textarea id="remarks" name="remarks" rows="3" maxlength="200" placeholder="Optional notes regarding the experiment..."></textarea>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Form Submission & Status Feedback -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="validateSubmitBtn">Validate &amp; Submit Form</button>
+          <button type="reset" class="btn btn-secondary">Reset All Fields</button>
+          <div id="formValidationStatus" class="form-status" role="alert" aria-live="polite"></div>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION 4: MULTIMEDIA & GRAPHICS ELEMENTS (Objective 4)       -->
+    <!-- ============================================================= -->
+    <section id="multimedia-section" class="lab-section" aria-labelledby="media-heading">
+      <header class="section-header">
+        <div class="section-number">04</div>
+        <div>
+          <h2 id="media-heading">Multimedia &amp; Dynamic Graphics</h2>
+          <p>Native hardware-accelerated video, audio, responsive picture, interactive canvas, and SVG vector graphics.</p>
+        </div>
+      </header>
+
+      <div class="multimedia-grid">
+        <!-- HTML5 Video with Custom Controls & Captions Track -->
+        <div class="card media-card">
+          <div class="card-header">
+            <span class="tag">&lt;video&gt;</span>
+            <h3>Native HTML5 Video Player</h3>
+          </div>
+          <div class="card-body">
+            <div class="video-container">
+              <video id="labVideo" controls preload="metadata" poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='640' height='360' viewBox='0 0 640 360'><rect width='640' height='360' fill='%231e293b'/><circle cx='320' cy='180' r='45' fill='%233b82f6'/><polygon points='310,160 340,180 310,200' fill='white'/><text x='320' y='250' font-family='sans-serif' font-size='16' fill='%2394a3b8' text-anchor='middle'>HTML5 Video Stream Demo</text></svg>">
+                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.webm" type="video/webm">
+                <track kind="captions" src="captions-en.vtt" srclang="en" label="English" default>
+                Your browser does not support the native <code>&lt;video&gt;</code> element.
+              </video>
+            </div>
+            <p class="media-caption">Includes <code>&lt;source&gt;</code> fallback tags and <code>&lt;track&gt;</code> for accessible VTT closed captions.</p>
+          </div>
+        </div>
+
+        <!-- HTML5 Audio Element -->
+        <div class="card media-card">
+          <div class="card-header">
+            <span class="tag">&lt;audio&gt;</span>
+            <h3>Native HTML5 Audio Stream</h3>
+          </div>
+          <div class="card-body">
+            <div class="audio-box">
+              <div class="audio-art">🎵</div>
+              <div class="audio-controls-wrap">
+                <h4>Synthesized Sound &amp; Podcast Player</h4>
+                <audio id="labAudio" controls preload="none">
+                  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.ogg" type="audio/ogg">
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+            <p class="media-caption">Supports <code>controls</code>, <code>autoplay</code>, <code>loop</code>, and <code>preload</code> attributes.</p>
+          </div>
+        </div>
+
+        <!-- Interactive HTML5 Canvas (Programmable 2D Graphics) -->
+        <div class="card media-card">
+          <div class="card-header">
+            <span class="tag">&lt;canvas&gt;</span>
+            <h3>Programmable 2D Dynamic Canvas</h3>
+          </div>
+          <div class="card-body">
+            <canvas id="interactiveCanvas" width="400" height="200" aria-label="Interactive particle animation canvas"></canvas>
+            <div class="canvas-controls">
+              <button type="button" id="canvasColorBtn" class="btn btn-small">Change Palette</button>
+              <button type="button" id="canvasSpeedBtn" class="btn btn-small">Toggle Speed</button>
+              <span id="canvasStats">Particles: 35</span>
+            </div>
+            <p class="media-caption">Live script-driven 60 FPS animation rendered via <code>canvas.getContext('2d')</code>.</p>
+          </div>
+        </div>
+
+        <!-- Responsive <picture> Element -->
+        <div class="card media-card">
+          <div class="card-header">
+            <span class="tag">&lt;picture&gt; &amp; &lt;source&gt;</span>
+            <h3>Art Direction via <code>&lt;picture&gt;</code></h3>
+          </div>
+          <div class="card-body">
+            <picture class="responsive-picture">
+              <!-- Wide Screens -->
+              <source media="(min-width: 800px)" srcset="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='220' viewBox='0 0 800 220'><rect width='800' height='220' fill='%230f172a'/><text x='400' y='115' font-family='sans-serif' font-size='22' font-weight='bold' fill='%2338bdf8' text-anchor='middle'>Desktop Viewport (&gt;800px) — Crisp High-Res Asset</text></svg>">
+              <!-- Mobile Screens Fallback -->
+              <source media="(max-width: 799px)" srcset="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='220' viewBox='0 0 400 220'><rect width='400' height='220' fill='%231e1b4b'/><text x='200' y='115' font-family='sans-serif' font-size='16' font-weight='bold' fill='%23a78bfa' text-anchor='middle'>Mobile Viewport (&lt;800px) — Compact Asset</text></svg>">
+              <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='220' viewBox='0 0 400 220'><rect width='400' height='220' fill='%23334155'/><text x='200' y='115' font-family='sans-serif' font-size='16' fill='white' text-anchor='middle'>Standard Fallback Image</text></svg>" alt="Responsive Picture Element Demonstration" loading="lazy" width="100%" height="auto">
+            </picture>
+            <p class="media-caption">Browser selects optimal image source based on viewport breakpoint without layout shift.</p>
+          </div>
+        </div>
+
+        <!-- Embedded Content (iframe, embed, object) -->
+        <div class="card media-card full-span-card">
+          <div class="card-header">
+            <span class="tag">&lt;iframe&gt;, &lt;embed&gt;, &lt;object&gt;</span>
+            <h3>Embedded Content Ecosystem</h3>
+          </div>
+          <div class="card-body embed-demo-grid">
+            <div class="embed-box">
+              <h4>Sandboxed <code>&lt;iframe&gt;</code></h4>
+              <iframe title="Inline Sandboxed Frame Demo" sandbox="allow-scripts" srcdoc="<html style='font-family:sans-serif;background:%230b132b;color:%2348cae4;padding:20px;text-align:center;'><body><h3>Isolated Execution Context</h3><p>Protected by sandbox attributes</p></body></html>"></iframe>
+            </div>
+            <div class="embed-box">
+              <h4>Inline Vector <code>&lt;svg&gt;</code> Graphic</h4>
+              <svg viewBox="0 0 200 100" class="showcase-vector" role="img" aria-label="Animated SVG Gradient Graphic">
+                <defs>
+                  <linearGradient id="svgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="50%" stop-color="#8b5cf6" />
+                    <stop offset="100%" stop-color="#ec4899" />
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="35" fill="url(#svgGrad)" />
+                <polygon points="120,20 180,50 120,80" fill="url(#svgGrad)" opacity="0.8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION 5: DOM STRUCTURE & TREE VISUALIZATION (Objective 5)   -->
+    <!-- ============================================================= -->
+    <section id="dom-section" class="lab-section" aria-labelledby="dom-heading">
+      <header class="section-header">
+        <div class="section-number">05</div>
+        <div>
+          <h2 id="dom-heading">Document Object Model (DOM) Architecture</h2>
+          <p>Interactive tree representation of HTML5 document hierarchy and node relationships.</p>
+        </div>
+      </header>
+
+      <div class="dom-showcase-container card">
+        <div class="dom-tree-column">
+          <h3>Interactive Document Hierarchy</h3>
+          <p class="muted">Click any node in the DOM tree below to inspect its live attributes and DOM properties:</p>
+
+          <div class="tree-view" role="tree" aria-label="DOM Node Hierarchy">
+            <div class="tree-node branch" data-tag="html" role="treeitem" tabindex="0">
+              <span class="node-badge">&lt;html&gt;</span> (Document Root)
+              <div class="children-group">
+                <div class="tree-node branch" data-tag="head" role="treeitem" tabindex="0">
+                  <span class="node-badge">&lt;head&gt;</span>
+                  <div class="children-group">
+                    <div class="tree-node leaf" data-tag="meta" role="treeitem"><span class="node-badge">&lt;meta&gt;</span> (Charset, Viewport, SEO)</div>
+                    <div class="tree-node leaf" data-tag="title" role="treeitem"><span class="node-badge">&lt;title&gt;</span> (Tab Heading)</div>
+                    <div class="tree-node leaf" data-tag="link" role="treeitem"><span class="node-badge">&lt;link&gt;</span> (CSS &amp; Favicon)</div>
+                  </div>
+                </div>
+                <div class="tree-node branch" data-tag="body" role="treeitem" tabindex="0">
+                  <span class="node-badge">&lt;body&gt;</span>
+                  <div class="children-group">
+                    <div class="tree-node leaf" data-tag="header" role="treeitem"><span class="node-badge">&lt;header&gt;</span> (Banner &amp; &lt;nav&gt;)</div>
+                    <div class="tree-node branch" data-tag="main" role="treeitem" tabindex="0">
+                      <span class="node-badge">&lt;main&gt;</span> (Core App Content)
+                      <div class="children-group">
+                        <div class="tree-node leaf" data-tag="section" role="treeitem"><span class="node-badge">&lt;section&gt;</span> (Topical Grouping)</div>
+                        <div class="tree-node leaf" data-tag="article" role="treeitem"><span class="node-badge">&lt;article&gt;</span> (Independent Unit)</div>
+                        <div class="tree-node leaf" data-tag="aside" role="treeitem"><span class="node-badge">&lt;aside&gt;</span> (Sidebar)</div>
+                      </div>
+                    </div>
+                    <div class="tree-node leaf" data-tag="footer" role="treeitem"><span class="node-badge">&lt;footer&gt;</span> (Colophon &amp; Legal)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Node Inspector -->
+        <div class="dom-inspector-column">
+          <div class="inspector-card">
+            <h4>Active Node Inspector</h4>
+            <div id="inspectorDetails" class="inspector-content">
+              <p><strong>Selected Tag:</strong> <code id="inspectTagName">&lt;html&gt;</code></p>
+              <p><strong>Node Type:</strong> <span id="inspectNodeType">1 (ELEMENT_NODE)</span></p>
+              <p><strong>Child Elements Count:</strong> <span id="inspectChildCount">2 (&lt;head&gt;, &lt;body&gt;)</span></p>
+              <p><strong>Semantic Role:</strong> <span id="inspectRole">Document Root</span></p>
+              <p><strong>HTML5 Specification Description:</strong></p>
+              <blockquote id="inspectDesc" class="inspect-desc">
+                Represents the root of an HTML document. All other elements are descendants of this element.
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION 6: ACCESSIBILITY & SEO BEST PRACTICES (Objective 6)   -->
+    <!-- ============================================================= -->
+    <section id="seo-a11y-section" class="lab-section" aria-labelledby="a11y-heading">
+      <header class="section-header">
+        <div class="section-number">06</div>
+        <div>
+          <h2 id="a11y-heading">Accessibility (WCAG) &amp; Search Engine Optimization (SEO)</h2>
+          <p>Auditing the critical standards required for production-grade, accessible web engineering.</p>
+        </div>
+      </header>
+
+      <div class="three-col-grid">
+        <!-- Accessibility Pillar -->
+        <div class="card pillar-card">
+          <div class="pillar-icon">♿</div>
+          <h3>1. Semantic Accessibility</h3>
+          <ul class="styled-list">
+            <li><strong>Landmarks:</strong> Built-in <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, and <code>&lt;footer&gt;</code> eliminate ambiguous tab indexing.</li>
+            <li><strong>ARIA Attributes:</strong> <code>aria-label</code>, <code>aria-live="polite"</code> for dynamic validation messages, and <code>aria-expanded</code>.</li>
+            <li><strong>Keyboard Focus:</strong> Visible focus rings and logical tab order for assistive switch controls.</li>
+          </ul>
+        </div>
+
+        <!-- SEO Architecture Pillar -->
+        <div class="card pillar-card">
+          <div class="pillar-icon">🔍</div>
+          <h3>2. Search Visibility (SEO)</h3>
+          <ul class="styled-list">
+            <li><strong>Unique Title &amp; Description:</strong> Meta tags optimized for search engine SERP snippets.</li>
+            <li><strong>Canonical Tag:</strong> Prevents duplicate content penalties across domain variants.</li>
+            <li><strong>JSON-LD Schema:</strong> Structured data in <code>&lt;script type="application/ld+json"&gt;</code> for rich Google snippets.</li>
+          </ul>
+        </div>
+
+        <!-- Quality & Performance Pillar -->
+        <div class="card pillar-card">
+          <div class="pillar-icon">⚡</div>
+          <h3>3. Core Web Vitals</h3>
+          <ul class="styled-list">
+            <li><strong>Native Lazy Loading:</strong> <code>loading="lazy"</code> on non-critical images to minimize LCP.</li>
+            <li><strong>Responsive Pictures:</strong> Viewport matching via <code>&lt;picture&gt;</code> avoids bandwidth bloat.</li>
+            <li><strong>Zero External Frameworks:</strong> Instant sub-second initial paint without JS runtime overhead.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================= -->
+  <!-- SEMANTIC FOOTER                                               -->
+  <!-- ============================================================= -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>Experiment 1: HTML5 Specification</h4>
+        <p>Curriculum Course Outcome: <strong>CO2</strong> — Web Technologies &amp; Software Engineering Laboratory.</p>
+        <p class="copyright">&copy; <time datetime="2026">2026</time> Academic Web Engineering Lab. All rights reserved.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation Landmarks</h4>
+        <ul class="footer-links">
+          <li><a href="#semantic-section">Semantic Elements</a></li>
+          <li><a href="#html4-vs-html5">HTML4 vs HTML5</a></li>
+          <li><a href="#forms-section">Form Controls</a></li>
+          <li><a href="#multimedia-section">Multimedia Elements</a></li>
+          <li><a href="#dom-section">DOM Structure</a></li>
+          <li><a href="#seo-a11y-section">SEO &amp; Accessibility</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Standards Compliance</h4>
+        <div class="compliance-badges">
+          <span class="compliance-pill">W3C HTML5 Validated</span>
+          <span class="compliance-pill">WCAG 2.1 AA Compliant</span>
+          <span class="compliance-pill">Zero Framework Pure Web</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- External Script -->
+  <script src="app.js"></script>
+</body>
+</html>

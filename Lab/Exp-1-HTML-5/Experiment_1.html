@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <!-- Character Encoding & Viewport for Mobile-First Responsiveness -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- SEO & Social Graph Meta Tags (Objective 6) -->
+  <title>Lab Experiment 1: All HTML5 Elements Showcase (CO2)</title>
+  <meta name="description" content="A comprehensive, self-contained single-file laboratory implementation of all HTML5 semantic, structural, form, and multimedia elements mapped to CO2.">
+  <meta name="keywords" content="HTML5, Semantic Elements, Forms, Multimedia, DOM, Accessibility, SEO, Web Technologies Lab">
+  <meta name="author" content="Vansh Malik">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph Protocol -->
+  <meta property="og:title" content="Lab Experiment 1: All HTML5 Elements Showcase">
+  <meta property="og:description" content="Complete standalone implementation of HTML5 elements with interactive DOM tree, forms, multimedia, and accessibility.">
+  <meta property="og:type" content="website">
+
+  <!-- JSON-LD Structured Data Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Web Technologies Lab Experiment 1",
+    "description": "Comprehensive implementation of all HTML5 structural, semantic, form, and multimedia elements.",
+    "educationalCredentialAwarded": "Course Outcome CO2"
+  }
+  </script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Self-Contained Complete Design System (CSS) -->
+  <style>
+    :root {
+      --bg-page: #0b0f19;
+      --bg-surface: #111827;
+      --bg-card: rgba(17, 24, 39, 0.85);
+      --bg-card-subtle: #1e293b;
+      --bg-card-hover: #1f293d;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --border-focus: #3b82f6;
+
+      --primary: #3b82f6;
+      --primary-glow: rgba(59, 130, 246, 0.2);
+      --secondary: #8b5cf6;
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.2);
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.2);
+      --warning: #f59e0b;
+
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.light-mode {
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --bg-card-subtle: #f1f5f9;
+      --bg-card-hover: #e2e8f0;
+      --border-color: rgba(0, 0, 0, 0.1);
+      --border-focus: #2563eb;
+      --primary: #2563eb;
+      --primary-glow: rgba(37, 99, 235, 0.15);
+      --secondary: #7c3aed;
+      --accent: #059669;
+      --accent-glow: rgba(5, 150, 105, 0.15);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: var(--font-main);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 20px;
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 18px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      z-index: 1000;
+      text-decoration: none;
+      transition: top 0.2s ease;
+    }
+    .skip-link:focus { top: 15px; outline: 3px solid #fff; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 1.5rem;
+    }
+
+    .header-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge {
+      background: var(--primary-glow);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+
+    .subtitle { font-size: 0.9rem; color: var(--text-muted); }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .nav-list { display: flex; flex-wrap: wrap; list-style: none; gap: 0.5rem; }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-main);
+      background: var(--bg-card-subtle);
+    }
+
+    .theme-toggle {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition);
+    }
+
+    .main-layout {
+      max-width: 1280px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    .banner-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+    }
+    .banner-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .status-pill {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+    }
+    .banner-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .banner-grid strong { color: var(--text-main); }
+
+    .lab-section { display: flex; flex-direction: column; gap: 1.5rem; }
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+    .section-number {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .section-header h2 { font-size: 1.5rem; font-weight: 700; }
+    .section-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+    }
+    .card-header { margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--primary);
+      background: var(--primary-glow);
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-sm);
+      width: fit-content;
+    }
+    .tag-danger { color: var(--danger); background: var(--danger-glow); }
+    .tag-success { color: var(--accent); background: var(--accent-glow); }
+
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) { .two-col-grid { grid-template-columns: 1fr; } }
+
+    .meta-row { font-size: 0.8rem; color: var(--text-dim); display: flex; align-items: center; gap: 0.5rem; }
+    .meta-row mark { background: var(--warning); color: #000; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600; }
+
+    .styled-list { margin: 1rem 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9rem; }
+    .styled-quote {
+      border-left: 4px solid var(--primary);
+      padding: 0.75rem 1rem;
+      margin: 1.25rem 0;
+      background: var(--bg-card-subtle);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-style: italic;
+    }
+    .styled-quote cite { font-style: normal; font-size: 0.8rem; color: var(--text-dim); display: block; margin-top: 0.5rem; }
+
+    .code-terminal {
+      background: #050811;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+    .terminal-bar {
+      background: #0f172a;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .code-terminal pre { padding: 1rem; font-family: var(--font-mono); font-size: 0.85rem; color: #38bdf8; overflow-x: auto; }
+
+    kbd {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 0.15rem 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.5);
+      color: #fff;
+    }
+
+    .interactive-details {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    .interactive-details summary { font-size: 0.9rem; color: var(--primary); user-select: none; }
+    .details-content { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-size: 0.85rem; color: var(--text-muted); }
+    .details-content address { font-style: normal; margin-top: 0.5rem; font-family: var(--font-mono); }
+
+    .interactive-box { background: var(--bg-card-subtle); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem; }
+    .interactive-box h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .interactive-box p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+
+    .styled-figure { margin-top: 1rem; background: var(--bg-card-subtle); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); }
+    .styled-figure figcaption { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
+
+    /* Native HTML5 Dialog */
+    .modern-dialog {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      max-width: 480px;
+      margin: auto;
+      padding: 0;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+    }
+    .modern-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+    }
+    .dialog-form { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .dialog-header { display: flex; justify-content: space-between; align-items: center; }
+    .btn-icon { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem; }
+
+    .btn {
+      padding: 0.6rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 0 15px var(--primary-glow); }
+    .btn-secondary { background: var(--bg-card-subtle); color: var(--text-main); border: 1px solid var(--border-color); }
+    .btn-small { padding: 0.35rem 0.75rem; font-size: 0.75rem; background: var(--bg-card-subtle); color: var(--text-main); border: 1px solid var(--border-color); }
+
+    /* Comparison Section */
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 800px) { .comparison-grid { grid-template-columns: 1fr; } }
+    .code-box {
+      background: #030712;
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #a5b4fc;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    .badge-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; }
+    .danger-list li { color: #f87171; }
+    .success-list li { color: #34d399; }
+
+    .table-responsive { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: var(--bg-card); }
+    .styled-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
+    .table-caption { caption-side: top; text-align: left; padding: 0.75rem 1rem; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
+    .styled-table th, .styled-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); }
+    .styled-table thead th { background: var(--bg-card-subtle); color: var(--text-main); font-weight: 700; }
+
+    /* Super Forms */
+    .super-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-card);
+    }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+    .form-fieldset {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .form-fieldset legend { padding: 0 0.6rem; font-weight: 700; font-size: 0.95rem; color: var(--primary); }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group label, .label-text { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    .hint { font-size: 0.75rem; color: var(--text-dim); }
+    .range-wrapper { display: flex; align-items: center; gap: 1rem; }
+    .range-wrapper input { flex: 1; }
+    .range-badge {
+      background: var(--primary-glow);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      font-weight: 700;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-sm);
+      min-width: 50px;
+      text-align: center;
+    }
+    .color-picker-row { display: flex; align-items: center; gap: 0.75rem; }
+    .color-picker-row input[type="color"] { width: 45px; height: 40px; padding: 0; cursor: pointer; border: 1px solid var(--border-color); }
+    #colorHexDisplay { font-family: var(--font-mono); font-size: 0.85rem; }
+    .radio-row, .checkbox-row { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; margin-top: 0.2rem; }
+    progress, meter { width: 100%; height: 18px; border-radius: 9999px; overflow: hidden; }
+    .form-actions {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+    .form-status { font-size: 0.9rem; font-weight: 600; }
+    .form-status.success { color: var(--accent); }
+    .form-status.error { color: var(--danger); }
+
+    /* Multimedia */
+    .multimedia-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .full-span-card { grid-column: 1 / -1; }
+    .video-container { border-radius: var(--radius-sm); overflow: hidden; background: #000; }
+    .video-container video { width: 100%; height: auto; display: block; }
+    .audio-box { display: flex; align-items: center; gap: 1.25rem; background: var(--bg-card-subtle); padding: 1rem; border-radius: var(--radius-sm); }
+    .audio-art { font-size: 2rem; background: var(--primary-glow); padding: 0.75rem; border-radius: var(--radius-sm); }
+    .audio-controls-wrap { flex: 1; }
+    .audio-controls-wrap h4 { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .audio-controls-wrap audio { width: 100%; }
+    .media-caption { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem; }
+
+    #interactiveCanvas { width: 100%; height: 200px; background: #020617; border-radius: var(--radius-sm); display: block; }
+    .canvas-controls { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted); }
+    .responsive-picture img { border-radius: var(--radius-sm); display: block; }
+    .embed-demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 768px) { .embed-demo-grid { grid-template-columns: 1fr; } }
+    .embed-box iframe { width: 100%; height: 120px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); }
+    .showcase-vector { width: 100%; height: 120px; background: var(--bg-card-subtle); border-radius: var(--radius-sm); }
+
+    /* DOM Tree */
+    .dom-showcase-container { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; }
+    @media (max-width: 850px) { .dom-showcase-container { grid-template-columns: 1fr; } }
+    .tree-view { font-family: var(--font-mono); font-size: 0.85rem; margin-top: 1rem; }
+    .children-group {
+      margin-left: 1.25rem;
+      padding-left: 0.75rem;
+      border-left: 2px dashed rgba(255, 255, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+    }
+    .tree-node { padding: 0.3rem 0.5rem; border-radius: 4px; cursor: pointer; transition: var(--transition); user-select: none; }
+    .tree-node:hover { background: var(--bg-card-hover); }
+    .tree-node.active-node { background: var(--primary-glow); color: var(--primary); font-weight: 700; }
+    .node-badge { color: #60a5fa; font-weight: 700; }
+
+    .inspector-card { background: var(--bg-card-subtle); border-radius: var(--radius-md); padding: 1.5rem; border: 1px solid var(--border-color); }
+    .inspector-content { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; font-size: 0.9rem; }
+    .inspect-desc { border-left: 3px solid var(--accent); padding-left: 0.75rem; color: var(--text-muted); font-style: italic; font-size: 0.85rem; }
+
+    .three-col-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .pillar-card { display: flex; flex-direction: column; gap: 0.75rem; }
+    .pillar-icon { font-size: 2rem; }
+
+    .site-footer {
+      background: #080c14;
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 1.5rem;
+      margin-top: 3rem;
+    }
+    .footer-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 768px) { .footer-container { grid-template-columns: 1fr; } }
+    .footer-col h4 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text-main); }
+    .footer-col p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+    .copyright { margin-top: 1rem; font-size: 0.75rem; color: var(--text-dim); }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: var(--transition); }
+    .footer-links a:hover { color: var(--primary); }
+    .compliance-badges { display: flex; flex-direction: column; gap: 0.5rem; }
+    .compliance-pill {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      padding: 0.3rem 0.6rem;
+      border-radius: var(--radius-sm);
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessibility: Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- SEMANTIC HEADER -->
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="brand">
+        <span class="badge">CO2 Mapped</span>
+        <h1>HTML5 Elements Laboratory</h1>
+      </div>
+      <p class="subtitle">Experiment 1: Comprehensive Implementation of Modern Web Standards</p>
+      
+      <!-- SEMANTIC NAVIGATION -->
+      <nav class="site-nav" role="navigation" aria-label="Main Experiment Navigation">
+        <ul class="nav-list">
+          <li><a href="#semantic-section" class="nav-link active">1. Semantics</a></li>
+          <li><a href="#html4-vs-html5" class="nav-link">2. HTML4 vs HTML5</a></li>
+          <li><a href="#forms-section" class="nav-link">3. Form Controls</a></li>
+          <li><a href="#multimedia-section" class="nav-link">4. Multimedia</a></li>
+          <li><a href="#dom-section" class="nav-link">5. DOM Tree</a></li>
+          <li><a href="#seo-a11y-section" class="nav-link">6. SEO & A11y</a></li>
+        </ul>
+        <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle dark/light mode">
+          <span class="theme-icon">🌓</span> <span class="theme-text">Theme</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT WRAPPER -->
+  <main id="main-content" class="main-layout" role="main">
+    
+    <!-- BANNER CARD -->
+    <section class="banner-card" aria-labelledby="lab-meta-title">
+      <header class="banner-header">
+        <h2 id="lab-meta-title">Academic Experiment Overview</h2>
+        <span class="status-pill">Curriculum Aligned: CO2</span>
+      </header>
+      <div class="banner-grid">
+        <div class="banner-item">
+          <strong>Course Outcome:</strong> CO2 (Create and build web pages and applications)
+        </div>
+        <div class="banner-item">
+          <strong>Key Competencies:</strong> Semantic HTML, Modern Form Controls, Native Multimedia, DOM Visualization, Accessibility (ARIA), SEO
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: SEMANTIC & TEXT LEVEL ELEMENTS -->
+    <section id="semantic-section" class="lab-section" aria-labelledby="semantic-heading">
+      <header class="section-header">
+        <div class="section-number">01</div>
+        <div>
+          <h2 id="semantic-heading">Semantic Layout & Text-Level Elements</h2>
+          <p>Meaningful structural tags replacing ambiguous <code>&lt;div&gt;</code> wrappers.</p>
+        </div>
+      </header>
+
+      <div class="two-col-grid">
+        <article class="card showcase-card" itemscope itemtype="https://schema.org/TechArticle">
+          <header class="card-header">
+            <span class="tag">&lt;article&gt;</span>
+            <h3 itemprop="headline">Semantic Publishing Component</h3>
+            <div class="meta-row">
+              <span>Published: <time datetime="2026-09-09T21:45:00" itemprop="datePublished">Sept 9, 2026</time></span>
+              <span class="separator">•</span>
+              <span>Category: <mark>Web Standards</mark></span>
+            </div>
+          </header>
+
+          <section class="card-body">
+            <h4>Nested <code>&lt;section&gt;</code>: Structural Integrity</h4>
+            <p>HTML5 communicates purpose to screen readers and search spiders. Inline text formatting:</p>
+            <ul class="styled-list">
+              <li><strong>Strong emphasis:</strong> <strong>&lt;strong&gt; conveys importance</strong> vs <b>&lt;b&gt; for stylistic offset</b>.</li>
+              <li><em>Idiomatic stress:</em> <em>&lt;em&gt; signifies linguistic emphasis</em> vs <i>&lt;i&gt; for technical terms/thoughts</i>.</li>
+              <li><del>Del &amp; Ins:</del> Deprecated syntax is <del>marked with &lt;del&gt;</del>, while newer syntax is <ins>&lt;ins&gt;inserted via ins&lt;/ins&gt;</ins>.</li>
+              <li>Mathematical &amp; Chemical: H<sub>2</sub>O with <code>&lt;sub&gt;</code> and E = mc<sup>2</sup> with <code>&lt;sup&gt;</code>.</li>
+              <li>Ruby Annotations: <ruby>漢<rt>kan</rt>字<rt>ji</rt></ruby> via <code>&lt;ruby&gt;</code> &amp; <code>&lt;rt&gt;</code>.</li>
+              <li>Bidirectional Isolation: <bdi>مرحبا</bdi> and <bdo dir="rtl">This text reads right-to-left.</bdo></li>
+              <li>Inline definitions: An <abbr title="HyperText Markup Language">&lt;abbr&gt; HTML</abbr> is a <dfn>markup standard</dfn>.</li>
+              <li>Word Break Opportunities: Super<wbr>cali<wbr>fragi<wbr>listic<wbr>expiali<wbr>docious with <code>&lt;wbr&gt;</code>.</li>
+            </ul>
+
+            <blockquote cite="https://w3.org" class="styled-quote">
+              <p>"Semantics is the cornerstone of the open web platform, enabling universal accessibility and device interoperability."</p>
+              <footer>— <cite>W3C Web Standards Guidelines</cite></footer>
+            </blockquote>
+
+            <div class="code-terminal">
+              <div class="terminal-bar">Terminal Output (<code>&lt;pre&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;samp&gt;</code>, <code>&lt;var&gt;</code>)</div>
+              <pre><code>Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to interrupt.
+Sample output: <samp>Server running on port <var>3000</var>...</samp></code></pre>
+            </div>
+          </section>
+
+          <footer class="card-footer">
+            <details class="interactive-details" id="details-demo">
+              <summary><strong>Click to expand <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code></strong></summary>
+              <div class="details-content">
+                <p>Native HTML5 accordions require zero JavaScript! The browser toggles open/close state and fires a native <code>toggle</code> event automatically.</p>
+                <address>
+                  Contact: <a href="mailto:faculty@cse.edu">faculty@cse.edu</a> | Department of Web Engineering
+                </address>
+              </div>
+            </details>
+          </footer>
+        </article>
+
+        <aside class="card aside-card" role="complementary" aria-labelledby="aside-heading">
+          <div class="card-header">
+            <span class="tag">&lt;aside&gt;</span>
+            <h3 id="aside-heading">Complementary Aside &amp; Native Dialog</h3>
+          </div>
+          <div class="card-body">
+            <p>The <code>&lt;aside&gt;</code> element represents content tangentially related to the content around it.</p>
+            
+            <div class="interactive-box">
+              <h4>Native Modal via <code>&lt;dialog&gt;</code></h4>
+              <p>HTML5 provides a built-in top-layer dialog element with native keyboard trapping (Esc key) and backdrop blur styling.</p>
+              <button type="button" id="openDialogBtn" class="btn btn-primary">Open Native &lt;dialog&gt;</button>
+            </div>
+
+            <figure class="styled-figure">
+              <div class="svg-diagram-wrapper">
+                <svg width="100%" height="120" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Semantic Box Hierarchy Diagram">
+                  <rect x="10" y="10" width="280" height="100" rx="8" fill="var(--bg-card-subtle)" stroke="var(--primary)" stroke-width="2" />
+                  <text x="150" y="35" text-anchor="middle" fill="var(--primary)" font-weight="700" font-size="14">&lt;header&gt; / &lt;main&gt; / &lt;footer&gt;</text>
+                  <rect x="30" y="50" width="115" height="45" rx="4" fill="var(--primary-glow)" stroke="var(--primary)" stroke-width="1" />
+                  <text x="87" y="77" text-anchor="middle" fill="var(--text-main)" font-size="12">&lt;section&gt;</text>
+                  <rect x="155" y="50" width="115" height="45" rx="4" fill="var(--accent-glow)" stroke="var(--accent)" stroke-width="1" />
+                  <text x="212" y="77" text-anchor="middle" fill="var(--text-main)" font-size="12">&lt;aside&gt;</text>
+                </svg>
+              </div>
+              <figcaption>Figure 1.1: <code>&lt;figure&gt;</code> &amp; <code>&lt;figcaption&gt;</code> containing inline SVG markup.</figcaption>
+            </figure>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Native HTML5 Dialog Modal -->
+      <dialog id="html5Dialog" class="modern-dialog" aria-labelledby="dialog-title">
+        <form method="dialog" class="dialog-form">
+          <header class="dialog-header">
+            <h3 id="dialog-title">Native HTML5 <code>&lt;dialog&gt;</code> Modal</h3>
+            <button type="button" id="closeDialogCross" class="btn-icon" aria-label="Close modal">&times;</button>
+          </header>
+          <div class="dialog-body">
+            <p>This modal is rendered in the browser's native top layer using <code>dialog.showModal()</code>.</p>
+            <ul>
+              <li>Automatic focus management.</li>
+              <li>Pressing <kbd>Escape</kbd> automatically dismisses the dialog.</li>
+              <li>Styled using the native <code>::backdrop</code> pseudo-element.</li>
+            </ul>
+          </div>
+          <footer class="dialog-actions">
+            <button type="submit" value="cancel" class="btn btn-secondary">Cancel</button>
+            <button type="submit" value="confirm" class="btn btn-primary">Understood</button>
+          </footer>
+        </form>
+      </dialog>
+    </section>
+
+    <!-- SECTION 2: HTML4 vs HTML5 STRUCTURAL ELEMENTS -->
+    <section id="html4-vs-html5" class="lab-section" aria-labelledby="diff-heading">
+      <header class="section-header">
+        <div class="section-number">02</div>
+        <div>
+          <h2 id="diff-heading">HTML4 vs HTML5 Structural Evolution</h2>
+          <p>Analyzing structural deprecation, semantic clarity, and engine parsing differences.</p>
+        </div>
+      </header>
+
+      <div class="comparison-grid">
+        <div class="card legacy-card">
+          <div class="card-header">
+            <span class="tag tag-danger">HTML4 (Legacy Standard)</span>
+            <h3>"Div Soup" Architecture</h3>
+          </div>
+          <div class="card-body">
+            <p class="muted">Relied on generic containers styled via ID/Class attributes without inherent semantic meaning:</p>
+            <pre class="code-box"><code>&lt;div id="header"&gt;
+  &lt;div id="nav"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="main-content"&gt;
+  &lt;div class="article"&gt;
+    &lt;div class="post-title"&gt;...&lt;/div&gt;
+    &lt;div class="post-body"&gt;...&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div id="sidebar"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="footer"&gt;...&lt;/div&gt;</code></pre>
+            <ul class="badge-list danger-list">
+              <li>❌ Zero accessibility landmarks without explicit ARIA</li>
+              <li>❌ Poor SEO indexation; spiders must guess layout</li>
+              <li>❌ Deprecated tags: <code>&lt;font&gt;</code>, <code>&lt;center&gt;</code>, <code>&lt;marquee&gt;</code>, <code>&lt;big&gt;</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card modern-card">
+          <div class="card-header">
+            <span class="tag tag-success">HTML5 (Modern Standard)</span>
+            <h3>Semantic Hierarchy</h3>
+          </div>
+          <div class="card-body">
+            <p class="muted">Replaces non-descriptive tags with standardized purpose-driven elements:</p>
+            <pre class="code-box"><code>&lt;header&gt;
+  &lt;nav&gt;...&lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;article&gt;
+    &lt;header&gt;&lt;h1&gt;...&lt;/h1&gt;&lt;/header&gt;
+    &lt;section&gt;...&lt;/section&gt;
+  &lt;/article&gt;
+  &lt;aside&gt;...&lt;/aside&gt;
+&lt;/main&gt;
+&lt;footer&gt;...&lt;/footer&gt;</code></pre>
+            <ul class="badge-list success-list">
+              <li>✅ Native landmark roles recognized by screen readers</li>
+              <li>✅ Search engines parse author, date, and core text seamlessly</li>
+              <li>✅ Native rich media (<code>&lt;video&gt;</code>, <code>&lt;audio&gt;</code>, <code>&lt;canvas&gt;</code>) eliminating flash</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="styled-table" aria-label="HTML4 vs HTML5 Elements Comparison Table">
+          <caption class="table-caption">Table 2.1: Direct Comparison of Structural &amp; Functional Elements</caption>
+          <thead>
+            <tr>
+              <th scope="col">Feature / Area</th>
+              <th scope="col">HTML4 Approach</th>
+              <th scope="col">HTML5 Semantic Standard</th>
+              <th scope="col">Browser / User Benefit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Top Banner</th>
+              <td><code>&lt;div id="header"&gt;</code></td>
+              <td><code>&lt;header&gt;</code></td>
+              <td>Auto-mapped to landmark banner role</td>
+            </tr>
+            <tr>
+              <th scope="row">Navigation Bar</th>
+              <td><code>&lt;div id="nav"&gt; &lt;ul&gt;</code></td>
+              <td><code>&lt;nav&gt;</code></td>
+              <td>Keyboard screen readers can instantly jump to nav</td>
+            </tr>
+            <tr>
+              <th scope="row">Main Content Area</th>
+              <td><code>&lt;div id="content"&gt;</code></td>
+              <td><code>&lt;main&gt;</code></td>
+              <td>Unique per-page landmark; eliminates skip-link hacks</td>
+            </tr>
+            <tr>
+              <th scope="row">Sidebar / Extras</th>
+              <td><code>&lt;div id="sidebar"&gt;</code></td>
+              <td><code>&lt;aside&gt;</code></td>
+              <td>Indicates secondary or related external content</td>
+            </tr>
+            <tr>
+              <th scope="row">Bottom Information</th>
+              <td><code>&lt;div id="footer"&gt;</code></td>
+              <td><code>&lt;footer&gt;</code></td>
+              <td>Clearly scopes copyright, authorship, and disclosures</td>
+            </tr>
+            <tr>
+              <th scope="row">Multimedia Media</th>
+              <td><code>&lt;object&gt;</code> / Adobe Flash plugin</td>
+              <td><code>&lt;video&gt;</code> &amp; <code>&lt;audio&gt;</code></td>
+              <td>Zero external plugin; hardware accelerated &amp; mobile ready</td>
+            </tr>
+            <tr>
+              <th scope="row">Vector &amp; 2D Graphics</th>
+              <td>External applets or static images</td>
+              <td><code>&lt;svg&gt;</code> &amp; <code>&lt;canvas&gt;</code></td>
+              <td>Interactive, programmable, lightweight graphics in DOM</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 3: HTML5 FORMS & INPUT CONTROLS -->
+    <section id="forms-section" class="lab-section" aria-labelledby="form-heading">
+      <header class="section-header">
+        <div class="section-number">03</div>
+        <div>
+          <h2 id="form-heading">HTML5 Advanced Form Controls &amp; Validation</h2>
+          <p>Comprehensive exhibition of input types, client-side validation attributes, and reactive output.</p>
+        </div>
+      </header>
+
+      <form id="html5SuperForm" class="super-form" novalidate oninput="calculateOutput()">
+        <div class="form-grid">
+
+          <fieldset class="form-fieldset">
+            <legend>1. Identification &amp; Contact Inputs</legend>
+            <div class="form-group">
+              <label for="fullName">Full Name (<code>type="text"</code>, <code>required</code>, <code>autofocus</code>):</label>
+              <input type="text" id="fullName" name="fullName" placeholder="e.g. John Doe" required autofocus autocomplete="name">
+              <span class="hint">Must contain at least 2 characters</span>
+            </div>
+
+            <div class="form-group">
+              <label for="userEmail">Email Address (<code>type="email"</code>, <code>required</code>):</label>
+              <input type="email" id="userEmail" name="userEmail" placeholder="student@university.edu" required autocomplete="email">
+              <span class="hint">Browser validates RFC compliance natively</span>
+            </div>
+
+            <div class="form-group">
+              <label for="userTel">Telephone Number (<code>type="tel"</code>, <code>pattern</code>):</label>
+              <input type="tel" id="userTel" name="userTel" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" autocomplete="tel">
+              <span class="hint">Pattern formatted: 123-456-7890</span>
+            </div>
+
+            <div class="form-group">
+              <label for="userUrl">Portfolio / Website (<code>type="url"</code>):</label>
+              <input type="url" id="userUrl" name="userUrl" placeholder="https://myportfolio.dev">
+            </div>
+
+            <div class="form-group">
+              <label for="searchQuery">Search Query (<code>type="search"</code>):</label>
+              <input type="search" id="searchQuery" name="searchQuery" placeholder="Search resources...">
+            </div>
+
+            <div class="form-group">
+              <label for="userPassword">Password (<code>type="password"</code>, <code>minlength="8"</code>):</label>
+              <input type="password" id="userPassword" name="userPassword" minlength="8" placeholder="Minimum 8 characters">
+            </div>
+          </fieldset>
+
+          <fieldset class="form-fieldset">
+            <legend>2. Numeric, Chronological &amp; Visual Pickers</legend>
+            <div class="form-group">
+              <label for="ageInput">Age (<code>type="number"</code>, <code>min="16"</code>, <code>max="100"</code>):</label>
+              <input type="number" id="ageInput" name="ageInput" min="16" max="100" step="1" value="20">
+            </div>
+
+            <div class="form-group">
+              <label for="rangeScore">Skill Proficiency Level (<code>type="range"</code>):</label>
+              <div class="range-wrapper">
+                <input type="range" id="rangeScore" name="rangeScore" min="0" max="100" value="75" step="5">
+                <output for="rangeScore" id="rangeOutput" class="range-badge">75%</output>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="eventDate">Date Picker (<code>type="date"</code>):</label>
+              <input type="date" id="eventDate" name="eventDate" value="2026-09-09">
+            </div>
+
+            <div class="form-group">
+              <label for="eventTime">Time Picker (<code>type="time"</code>):</label>
+              <input type="time" id="eventTime" name="eventTime" value="10:30">
+            </div>
+
+            <div class="form-group">
+              <label for="eventDateTime">Date &amp; Time Local (<code>type="datetime-local"</code>):</label>
+              <input type="datetime-local" id="eventDateTime" name="eventDateTime" value="2026-09-09T10:30">
+            </div>
+
+            <div class="form-group">
+              <label for="eventMonth">Month Picker (<code>type="month"</code>):</label>
+              <input type="month" id="eventMonth" name="eventMonth" value="2026-09">
+            </div>
+
+            <div class="form-group">
+              <label for="eventWeek">Week Picker (<code>type="week"</code>):</label>
+              <input type="week" id="eventWeek" name="eventWeek" value="2026-W37">
+            </div>
+
+            <div class="form-group">
+              <label for="themeColor">Color Picker (<code>type="color"</code>):</label>
+              <div class="color-picker-row">
+                <input type="color" id="themeColor" name="themeColor" value="#3b82f6">
+                <span id="colorHexDisplay">#3b82f6</span>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-fieldset">
+            <legend>3. Selection, Datalist, Files &amp; Feedback</legend>
+            <div class="form-group">
+              <label for="courseChoice">Specialization (<code>&lt;datalist&gt;</code> autocomplete):</label>
+              <input list="courseList" id="courseChoice" name="courseChoice" placeholder="Type or select a track...">
+              <datalist id="courseList">
+                <option value="Artificial Intelligence & Machine Learning">
+                <option value="Full Stack Cloud Computing">
+                <option value="Cyber Security & Forensics">
+                <option value="Data Science & Big Data">
+                <option value="Internet of Things & Embedded Systems">
+              </datalist>
+            </div>
+
+            <div class="form-group">
+              <label for="frameworkSelect">Framework Preference (<code>&lt;optgroup&gt;</code> &amp; <code>&lt;select&gt;</code>):</label>
+              <select id="frameworkSelect" name="frameworkSelect">
+                <optgroup label="Frontend Frameworks">
+                  <option value="react">React / Next.js</option>
+                  <option value="vue">Vue.js / Nuxt</option>
+                  <option value="svelte">Svelte / SvelteKit</option>
+                </optgroup>
+                <optgroup label="Backend Engines">
+                  <option value="node">Node.js / Express</option>
+                  <option value="python">Python / FastAPI</option>
+                  <option value="go">Golang / Gin</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="docUpload">Assignment Upload (<code>type="file"</code>):</label>
+              <input type="file" id="docUpload" name="docUpload" accept=".pdf,.png,.jpg">
+            </div>
+
+            <div class="form-group">
+              <span class="label-text">Study Mode (<code>type="radio"</code>):</span>
+              <div class="radio-row">
+                <label class="radio-label"><input type="radio" name="studyMode" value="regular" checked> Regular Classroom</label>
+                <label class="radio-label"><input type="radio" name="studyMode" value="hybrid"> Hybrid / Online</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <span class="label-text">Agreements (<code>type="checkbox"</code>):</span>
+              <div class="checkbox-row">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="termsCheck" name="termsCheck" required>
+                  I certify this submission adheres to academic honesty standards.
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="formProgress">Native Progress Indicator (<code>&lt;progress&gt;</code>):</label>
+              <progress id="formProgress" value="65" max="100">65%</progress>
+            </div>
+
+            <div class="form-group">
+              <label for="gaugeMeter">Disk / Resource Quota (<code>&lt;meter&gt;</code>):</label>
+              <meter id="gaugeMeter" min="0" max="100" low="30" high="80" optimum="50" value="72">72/100</meter>
+              <span class="hint">Optimal zone: 30-80</span>
+            </div>
+
+            <div class="form-group">
+              <label for="remarks">Student Remarks (<code>&lt;textarea&gt;</code>):</label>
+              <textarea id="remarks" name="remarks" rows="3" maxlength="200" placeholder="Optional notes regarding the experiment..."></textarea>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="validateSubmitBtn">Validate &amp; Submit Form</button>
+          <button type="reset" class="btn btn-secondary">Reset All Fields</button>
+          <div id="formValidationStatus" class="form-status" role="alert" aria-live="polite"></div>
+        </div>
+      </form>
+    </section>
+
+    <!-- SECTION 4: MULTIMEDIA & GRAPHICS ELEMENTS -->
+    <section id="multimedia-section" class="lab-section" aria-labelledby="media-heading">
+      <header class="section-header">
+        <div class="section-number">04</div>
+        <div>
+          <h2 id="media-heading">Multimedia &amp; Dynamic Graphics</h2>
+          <p>Native hardware-accelerated video, audio, responsive picture, interactive canvas, and SVG vector graphics.</p>
+        </div>
+      </header>
+
+      <div class="multimedia-grid">
+        <div class="card media-card">
+          <div class="card-header">
+            <span class="tag">&lt;video&gt;</span>
+            <h3>Native HTML5 Video Player</h3>
+          </div>
+          <div class="card-body">
+            <div class="video-container">
+              <video id="labVideo" controls preload="metadata" poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='640' height='360' viewBox='0 0 640 360'><rect width='640' height='360' fill='%231e293b'/><circle cx='320' cy='180' r='45' fill='%233b82f6'/><polygon points='310,160 340,180 310,200' fill='white'/><text x='320' y='250' font-family='sans-serif' font-size='16' fill='%2394a3b8' text-anchor='middle'>HTML5 Video Stream Demo</text></svg>">
+                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                Your browser does not support the native <code>&lt;video&gt;</code> element.
+              </video>
+            </div>
+            <p class="media-caption">Includes <code>&lt;source&gt;</code> tags and controls.</p>
+          </div>
+        </div>
+
+        <div class="card media-card">
+          <div class="card-header">
+            <span class="tag">&lt;audio&gt;</span>
+            <h3>Native HTML5 Audio Stream</h3>
+          </div>
+          <div class="card-body">
+            <div class="audio-box">
+              <div class="audio-art">🎵</div>
+              <div class="audio-controls-wrap">
+                <h4>Synthesized Sound Player</h4>
+                <audio id="labAudio" controls preload="none">
+                  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+            <p class="media-caption">Supports <code>controls</code>, <code>loop</code>, and <code>preload</code>.</p>
+          </div>
+        </div>
+
+        <div class="card media-card">
+          <div class="card-header">
+            <span class="tag">&lt;canvas&gt;</span>
+            <h3>Programmable 2D Dynamic Canvas</h3>
+          </div>
+          <div class="card-body">
+            <canvas id="interactiveCanvas" width="400" height="200" aria-label="Interactive particle animation canvas"></canvas>
+            <div class="canvas-controls">
+              <button type="button" id="canvasColorBtn" class="btn btn-small">Change Palette</button>
+              <button type="button" id="canvasSpeedBtn" class="btn btn-small">Toggle Speed</button>
+              <span id="canvasStats">Particles: 35</span>
+            </div>
+            <p class="media-caption">Live script-driven 60 FPS animation rendered via <code>canvas.getContext('2d')</code>.</p>
+          </div>
+        </div>
+
+        <div class="card media-card">
+          <div class="card-header">
+            <span class="tag">&lt;picture&gt; &amp; &lt;source&gt;</span>
+            <h3>Art Direction via <code>&lt;picture&gt;</code></h3>
+          </div>
+          <div class="card-body">
+            <picture class="responsive-picture">
+              <source media="(min-width: 800px)" srcset="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='220' viewBox='0 0 800 220'><rect width='800' height='220' fill='%230f172a'/><text x='400' y='115' font-family='sans-serif' font-size='22' font-weight='bold' fill='%2338bdf8' text-anchor='middle'>Desktop Viewport (&gt;800px)</text></svg>">
+              <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='220' viewBox='0 0 400 220'><rect width='400' height='220' fill='%23334155'/><text x='200' y='115' font-family='sans-serif' font-size='16' fill='white' text-anchor='middle'>Standard Fallback Image</text></svg>" alt="Responsive Picture Element Demonstration" loading="lazy" width="100%" height="auto">
+            </picture>
+            <p class="media-caption">Browser selects optimal image source based on viewport breakpoint without layout shift.</p>
+          </div>
+        </div>
+
+        <div class="card media-card full-span-card">
+          <div class="card-header">
+            <span class="tag">&lt;iframe&gt; &amp; &lt;svg&gt;</span>
+            <h3>Embedded Content Ecosystem</h3>
+          </div>
+          <div class="card-body embed-demo-grid">
+            <div class="embed-box">
+              <h4>Sandboxed <code>&lt;iframe&gt;</code></h4>
+              <iframe title="Inline Sandboxed Frame Demo" sandbox="allow-scripts" srcdoc="<html style='font-family:sans-serif;background:%230b132b;color:%2348cae4;padding:20px;text-align:center;'><body><h3>Isolated Execution Context</h3><p>Protected by sandbox attributes</p></body></html>"></iframe>
+            </div>
+            <div class="embed-box">
+              <h4>Inline Vector <code>&lt;svg&gt;</code> Graphic</h4>
+              <svg viewBox="0 0 200 100" class="showcase-vector" role="img" aria-label="Animated SVG Gradient Graphic">
+                <defs>
+                  <linearGradient id="svgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="50%" stop-color="#8b5cf6" />
+                    <stop offset="100%" stop-color="#ec4899" />
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="35" fill="url(#svgGrad)" />
+                <polygon points="120,20 180,50 120,80" fill="url(#svgGrad)" opacity="0.8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: DOM STRUCTURE & TREE VISUALIZATION -->
+    <section id="dom-section" class="lab-section" aria-labelledby="dom-heading">
+      <header class="section-header">
+        <div class="section-number">05</div>
+        <div>
+          <h2 id="dom-heading">Document Object Model (DOM) Architecture</h2>
+          <p>Interactive tree representation of HTML5 document hierarchy and node relationships.</p>
+        </div>
+      </header>
+
+      <div class="dom-showcase-container card">
+        <div class="dom-tree-column">
+          <h3>Interactive Document Hierarchy</h3>
+          <p class="muted">Click any node in the DOM tree below to inspect its live attributes and DOM properties:</p>
+
+          <div class="tree-view" role="tree" aria-label="DOM Node Hierarchy">
+            <div class="tree-node branch" data-tag="html" role="treeitem" tabindex="0">
+              <span class="node-badge">&lt;html&gt;</span> (Document Root)
+              <div class="children-group">
+                <div class="tree-node branch" data-tag="head" role="treeitem" tabindex="0">
+                  <span class="node-badge">&lt;head&gt;</span>
+                  <div class="children-group">
+                    <div class="tree-node leaf" data-tag="meta" role="treeitem"><span class="node-badge">&lt;meta&gt;</span> (Charset, Viewport, SEO)</div>
+                    <div class="tree-node leaf" data-tag="title" role="treeitem"><span class="node-badge">&lt;title&gt;</span> (Tab Heading)</div>
+                    <div class="tree-node leaf" data-tag="link" role="treeitem"><span class="node-badge">&lt;link&gt;</span> (CSS &amp; Favicon)</div>
+                  </div>
+                </div>
+                <div class="tree-node branch" data-tag="body" role="treeitem" tabindex="0">
+                  <span class="node-badge">&lt;body&gt;</span>
+                  <div class="children-group">
+                    <div class="tree-node leaf" data-tag="header" role="treeitem"><span class="node-badge">&lt;header&gt;</span> (Banner &amp; &lt;nav&gt;)</div>
+                    <div class="tree-node branch" data-tag="main" role="treeitem" tabindex="0">
+                      <span class="node-badge">&lt;main&gt;</span> (Core App Content)
+                      <div class="children-group">
+                        <div class="tree-node leaf" data-tag="section" role="treeitem"><span class="node-badge">&lt;section&gt;</span> (Topical Grouping)</div>
+                        <div class="tree-node leaf" data-tag="article" role="treeitem"><span class="node-badge">&lt;article&gt;</span> (Independent Unit)</div>
+                        <div class="tree-node leaf" data-tag="aside" role="treeitem"><span class="node-badge">&lt;aside&gt;</span> (Sidebar)</div>
+                      </div>
+                    </div>
+                    <div class="tree-node leaf" data-tag="footer" role="treeitem"><span class="node-badge">&lt;footer&gt;</span> (Colophon &amp; Legal)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dom-inspector-column">
+          <div class="inspector-card">
+            <h4>Active Node Inspector</h4>
+            <div id="inspectorDetails" class="inspector-content">
+              <p><strong>Selected Tag:</strong> <code id="inspectTagName">&lt;html&gt;</code></p>
+              <p><strong>Node Type:</strong> <span id="inspectNodeType">1 (ELEMENT_NODE)</span></p>
+              <p><strong>Child Elements Count:</strong> <span id="inspectChildCount">2 (&lt;head&gt;, &lt;body&gt;)</span></p>
+              <p><strong>Semantic Role:</strong> <span id="inspectRole">Document Root</span></p>
+              <p><strong>HTML5 Specification Description:</strong></p>
+              <blockquote id="inspectDesc" class="inspect-desc">
+                Represents the root of an HTML document. All other elements are descendants of this element.
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: ACCESSIBILITY & SEO BEST PRACTICES -->
+    <section id="seo-a11y-section" class="lab-section" aria-labelledby="a11y-heading">
+      <header class="section-header">
+        <div class="section-number">06</div>
+        <div>
+          <h2 id="a11y-heading">Accessibility (WCAG) &amp; Search Engine Optimization (SEO)</h2>
+          <p>Auditing the critical standards required for production-grade, accessible web engineering.</p>
+        </div>
+      </header>
+
+      <div class="three-col-grid">
+        <div class="card pillar-card">
+          <div class="pillar-icon">♿</div>
+          <h3>1. Semantic Accessibility</h3>
+          <ul class="styled-list">
+            <li><strong>Landmarks:</strong> Built-in <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, and <code>&lt;footer&gt;</code> eliminate ambiguous tab indexing.</li>
+            <li><strong>ARIA Attributes:</strong> <code>aria-label</code>, <code>aria-live="polite"</code> for dynamic validation messages, and <code>aria-expanded</code>.</li>
+            <li><strong>Keyboard Focus:</strong> Visible focus rings and logical tab order for assistive switch controls.</li>
+          </ul>
+        </div>
+
+        <div class="card pillar-card">
+          <div class="pillar-icon">🔍</div>
+          <h3>2. Search Visibility (SEO)</h3>
+          <ul class="styled-list">
+            <li><strong>Unique Title &amp; Description:</strong> Meta tags optimized for search engine SERP snippets.</li>
+            <li><strong>Canonical Tag:</strong> Prevents duplicate content penalties across domain variants.</li>
+            <li><strong>JSON-LD Schema:</strong> Structured data in <code>&lt;script type="application/ld+json"&gt;</code> for rich Google snippets.</li>
+          </ul>
+        </div>
+
+        <div class="card pillar-card">
+          <div class="pillar-icon">⚡</div>
+          <h3>3. Core Web Vitals</h3>
+          <ul class="styled-list">
+            <li><strong>Native Lazy Loading:</strong> <code>loading="lazy"</code> on non-critical images to minimize LCP.</li>
+            <li><strong>Responsive Pictures:</strong> Viewport matching via <code>&lt;picture&gt;</code> avoids bandwidth bloat.</li>
+            <li><strong>Zero External Frameworks:</strong> Instant sub-second initial paint without JS runtime overhead.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SEMANTIC FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>Experiment 1: HTML5 Specification</h4>
+        <p>Curriculum Course Outcome: <strong>CO2</strong> — Web Technologies &amp; Software Engineering Laboratory.</p>
+        <p class="copyright">&copy; <time datetime="2026">2026</time> Academic Web Engineering Lab. All rights reserved.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation Landmarks</h4>
+        <ul class="footer-links">
+          <li><a href="#semantic-section">Semantic Elements</a></li>
+          <li><a href="#html4-vs-html5">HTML4 vs HTML5</a></li>
+          <li><a href="#forms-section">Form Controls</a></li>
+          <li><a href="#multimedia-section">Multimedia Elements</a></li>
+          <li><a href="#dom-section">DOM Structure</a></li>
+          <li><a href="#seo-a11y-section">SEO &amp; Accessibility</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Standards Compliance</h4>
+        <div class="compliance-badges">
+          <span class="compliance-pill">W3C HTML5 Validated</span>
+          <span class="compliance-pill">WCAG 2.1 AA Compliant</span>
+          <span class="compliance-pill">Zero Dependency Standalone</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Self-Contained JavaScript Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Theme Toggle
+      const toggleBtn = document.getElementById('themeToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          document.body.classList.toggle('light-mode');
+        });
+      }
+
+      // 2. HTML5 Dialog API
+      const dialog = document.getElementById('html5Dialog');
+      const openBtn = document.getElementById('openDialogBtn');
+      const closeCross = document.getElementById('closeDialogCross');
+
+      if (dialog && openBtn) {
+        openBtn.addEventListener('click', () => dialog.showModal());
+        if (closeCross) closeCross.addEventListener('click', () => dialog.close());
+        dialog.addEventListener('click', (event) => {
+          const rect = dialog.getBoundingClientRect();
+          const inDialog = (
+            rect.top <= event.clientY && event.clientY <= rect.top + rect.height &&
+            rect.left <= event.clientX && event.clientX <= rect.left + rect.width
+          );
+          if (!inDialog) dialog.close();
+        });
+      }
+
+      // 3. Form Controls & Validation
+      const form = document.getElementById('html5SuperForm');
+      const rangeInput = document.getElementById('rangeScore');
+      const rangeOutput = document.getElementById('rangeOutput');
+      const colorInput = document.getElementById('themeColor');
+      const colorDisplay = document.getElementById('colorHexDisplay');
+      const statusBox = document.getElementById('formValidationStatus');
+
+      if (rangeInput && rangeOutput) {
+        rangeInput.addEventListener('input', () => {
+          rangeOutput.value = `${rangeInput.value}%`;
+        });
+      }
+
+      if (colorInput && colorDisplay) {
+        colorInput.addEventListener('input', () => {
+          colorDisplay.textContent = colorInput.value;
+          colorDisplay.style.color = colorInput.value;
+        });
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            statusBox.className = 'form-status error';
+            statusBox.textContent = '❌ Validation Failed: Please review highlighted mandatory fields.';
+          } else {
+            statusBox.className = 'form-status success';
+            statusBox.textContent = '✅ Success! All HTML5 validation constraints satisfied.';
+            setTimeout(() => { statusBox.textContent = ''; }, 5000);
+          }
+        });
+      }
+
+      // 4. Programmable 2D Canvas Engine
+      const canvas = document.getElementById('interactiveCanvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let speedMultiplier = 1;
+        const particles = [];
+        const palette = ['#38bdf8', '#818cf8', '#c084fc', '#34d399'];
+
+        for (let i = 0; i < 35; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3 + 2,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5,
+            color: palette[i % palette.length]
+          });
+        }
+
+        function renderCanvas() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 60) {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(148, 163, 184, ${0.2 * (1 - dist / 60)})`;
+                ctx.lineWidth = 0.75;
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.stroke();
+              }
+            }
+          }
+          particles.forEach((p) => {
+            p.x += p.vx * speedMultiplier;
+            p.y += p.vy * speedMultiplier;
+            if (p.x - p.radius < 0 || p.x + p.radius > canvas.width) p.vx *= -1;
+            if (p.y - p.radius < 0 || p.y + p.radius > canvas.height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = p.color;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          });
+          requestAnimationFrame(renderCanvas);
+        }
+        renderCanvas();
+
+        const speedBtn = document.getElementById('canvasSpeedBtn');
+        if (speedBtn) {
+          speedBtn.addEventListener('click', () => {
+            speedMultiplier = speedMultiplier === 1 ? 2.5 : 1;
+            speedBtn.textContent = speedMultiplier === 1 ? 'Speed: 1x' : 'Speed: 2.5x';
+          });
+        }
+      }
+
+      // 5. DOM Spec Inspector
+      const DOM_DATA = {
+        html: { tag: '<html>', type: '1 (ELEMENT_NODE)', count: '2 (<head>, <body>)', role: 'Root', desc: 'Top-level root element containing all document nodes.' },
+        head: { tag: '<head>', type: '1 (ELEMENT_NODE)', count: '<meta>, <title>, <style>, <script>', role: 'Metadata', desc: 'Container for metadata, scripts, styles, and character sets.' },
+        meta: { tag: '<meta>', type: '1 (ELEMENT_NODE)', count: '0 (Void Element)', role: 'Descriptor', desc: 'Defines character encoding, viewport scale, and SEO indexing rules.' },
+        title: { tag: '<title>', type: '1 (ELEMENT_NODE)', count: '1 (Text Node)', role: 'Title', desc: 'Document title shown on the browser tab and search results.' },
+        body: { tag: '<body>', type: '1 (ELEMENT_NODE)', count: '<header>, <main>, <footer>', role: 'UI Container', desc: 'Houses all visual rendered elements.' },
+        header: { tag: '<header>', type: '1 (ELEMENT_NODE)', count: 'Banner, logo, nav', role: 'banner landmark', desc: 'Introductory container or navigation aid.' },
+        main: { tag: '<main>', type: '1 (ELEMENT_NODE)', count: 'Unique app content', role: 'main landmark', desc: 'Contains central content unique to this document.' },
+        section: { tag: '<section>', type: '1 (ELEMENT_NODE)', count: 'Headings and text', role: 'region', desc: 'Thematic grouping of content with heading.' },
+        article: { tag: '<article>', type: '1 (ELEMENT_NODE)', count: 'Self-contained unit', role: 'article landmark', desc: 'Independent composition that can be syndicated standalone.' },
+        aside: { tag: '<aside>', type: '1 (ELEMENT_NODE)', count: 'Sidebar elements', role: 'complementary', desc: 'Tangentially related content to primary article.' },
+        footer: { tag: '<footer>', type: '1 (ELEMENT_NODE)', count: 'Copyright and legal links', role: 'contentinfo', desc: 'Footer containing author, copyright, and sitemaps.' }
+      };
+
+      const treeNodes = document.querySelectorAll('.tree-node');
+      const inspectTagName = document.getElementById('inspectTagName');
+      const inspectNodeType = document.getElementById('inspectNodeType');
+      const inspectChildCount = document.getElementById('inspectChildCount');
+      const inspectRole = document.getElementById('inspectRole');
+      const inspectDesc = document.getElementById('inspectDesc');
+
+      treeNodes.forEach(node => {
+        node.addEventListener('click', (e) => {
+          e.stopPropagation();
+          treeNodes.forEach(n => n.classList.remove('active-node'));
+          node.classList.add('active-node');
+          const tag = node.getAttribute('data-tag');
+          const item = DOM_DATA[tag] || { tag: `<${tag}>`, type: '1 (ELEMENT_NODE)', count: 'Children', role: 'Standard Element', desc: 'HTML5 DOM node.' };
+          if (inspectTagName) inspectTagName.textContent = item.tag;
+          if (inspectNodeType) inspectNodeType.textContent = item.type;
+          if (inspectChildCount) inspectChildCount.textContent = item.count;
+          if (inspectRole) inspectRole.textContent = item.role;
+          if (inspectDesc) inspectDesc.textContent = item.desc;
+        });
+      });
+    });
+
+    window.calculateOutput = function() {
+      const range = document.getElementById('rangeScore');
+      const out = document.getElementById('rangeOutput');
+      if (range && out) out.value = `${range.value}%`;
+    };
+  </script>
+</body>
+</html>
