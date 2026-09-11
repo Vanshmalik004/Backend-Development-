@@ -1,0 +1,25 @@
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>Exp-12: Node.js, Express & EJS Templating</strong>
+      <p style="margin-top: 0.25rem; font-size: 0.8rem; color: var(--text-faint);">
+        Academic Laboratory Assignment &bull; Web Technologies / Full Stack Backend Development &bull; CO3 &amp; CO4 Mapped
+      </p>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <span class="footer-badge">
+        <span>⚡ Runtime:</span>
+        <span class="font-mono">Node <%= typeof nodeVersion !== 'undefined' ? nodeVersion : process.version %></span>
+      </span>
+      <span style="font-size: 0.85rem; color: var(--text-muted);">
+        &copy; <%= typeof currentYear !== 'undefined' ? currentYear : new Date().getFullYear() %> Vansh Malik
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- Client Scripts -->
+<script src="/js/main.js"></script>
+</body>
+</html>

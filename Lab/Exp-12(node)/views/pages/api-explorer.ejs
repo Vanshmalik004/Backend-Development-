@@ -1,0 +1,197 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<main class="container" style="padding-top: 2rem; padding-bottom: 3rem;">
+  <%- include('../partials/alerts') %>
+
+  <!-- Page Header -->
+  <div style="margin-bottom: 2rem;">
+    <span class="hero-tag">Live HTTP Workbench</span>
+    <h1 style="font-size: 2.25rem; font-weight: 800; margin-top: 0.5rem;">
+      Interactive REST API Playground
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1rem; max-width: 800px;">
+      Construct, dispatch, and inspect actual live HTTP requests against the running Express.js server. Test <code>GET</code>, <code>POST</code>, <code>PUT</code>, and <code>DELETE</code> verbs with custom headers, query parameters, and JSON payloads in real time.
+    </p>
+  </div>
+
+  <!-- API Console Grid -->
+  <div class="api-console-grid">
+    <!-- Left Column: Request Builder & Presets -->
+    <div>
+      <!-- Presets Card -->
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header">
+          <h3 class="card-title" style="font-size: 1.1rem;">⚡ Quick Request Presets</h3>
+          <span style="font-size: 0.8rem; color: var(--text-faint);">Click to auto-fill</span>
+        </div>
+
+        <div class="endpoint-selector">
+          <button type="button" class="endpoint-btn selected" 
+                  data-preset 
+                  data-method="GET" 
+                  data-url="/api/products" 
+                  data-body="">
+            <div>
+              <span class="method-badge method-get">GET</span>
+              <strong style="margin-left: 0.5rem;">/api/products</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">List all (200)</span>
+          </button>
+
+          <button type="button" class="endpoint-btn" 
+                  data-preset 
+                  data-method="GET" 
+                  data-url="/api/products?category=Peripherals&sort=price_asc" 
+                  data-body="">
+            <div>
+              <span class="method-badge method-get">GET</span>
+              <strong style="margin-left: 0.5rem;">/api/products?...</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Filter &amp; Sort (200)</span>
+          </button>
+
+          <button type="button" class="endpoint-btn" 
+                  data-preset 
+                  data-method="GET" 
+                  data-url="/api/products/1" 
+                  data-body="">
+            <div>
+              <span class="method-badge method-get">GET</span>
+              <strong style="margin-left: 0.5rem;">/api/products/1</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">req.params.id (200)</span>
+          </button>
+
+          <button type="button" class="endpoint-btn" 
+                  data-preset 
+                  data-method="GET" 
+                  data-url="/api/products/999" 
+                  data-body="">
+            <div>
+              <span class="method-badge method-get">GET</span>
+              <strong style="margin-left: 0.5rem;">/api/products/999</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Non-existent ID (404)</span>
+          </button>
+
+          <button type="button" class="endpoint-btn" 
+                  data-preset 
+                  data-method="POST" 
+                  data-url="/api/products" 
+                  data-body='{"name":"Apex Pro Wireless Headset","category":"Audio","price":199.99,"stock":24,"description":"Ultra-low latency lossless 2.4GHz wireless audio with planar magnetic drivers.","badge":"New Release","featured":true}'>
+            <div>
+              <span class="method-badge method-post">POST</span>
+              <strong style="margin-left: 0.5rem;">/api/products</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Create Resource (201)</span>
+          </button>
+
+          <button type="button" class="endpoint-btn" 
+                  data-preset 
+                  data-method="PUT" 
+                  data-url="/api/products/1" 
+                  data-body='{"price":139.99,"stock":50,"badge":"Discounted"}'>
+            <div>
+              <span class="method-badge method-put">PUT</span>
+              <strong style="margin-left: 0.5rem;">/api/products/1</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Update Item (200)</span>
+          </button>
+
+          <button type="button" class="endpoint-btn" 
+                  data-preset 
+                  data-method="DELETE" 
+                  data-url="/api/products/8" 
+                  data-body="">
+            <div>
+              <span class="method-badge method-delete">DELETE</span>
+              <strong style="margin-left: 0.5rem;">/api/products/8</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Remove Item (200)</span>
+          </button>
+
+          <button type="button" class="endpoint-btn" 
+                  data-preset 
+                  data-method="GET" 
+                  data-url="/api/system/info" 
+                  data-body="">
+            <div>
+              <span class="method-badge method-get">GET</span>
+              <strong style="margin-left: 0.5rem;">/api/system/info</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Node Telemetry (200)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Request Builder Form -->
+      <div class="card">
+        <h3 class="card-title" style="font-size: 1.1rem; margin-bottom: 1rem;">🔧 Custom Request Configurator</h3>
+
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+          <select id="apiMethod" class="form-select" style="width: 120px; font-weight: 700;">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+          <input type="text" id="apiUrl" class="form-control font-mono" value="/api/products" style="flex: 1;">
+        </div>
+
+        <div id="requestBodyBox" style="display: none; margin-bottom: 1rem;">
+          <label class="form-label" for="requestBodyInput">JSON Request Body (application/json):</label>
+          <textarea id="requestBodyInput" class="form-control font-mono" rows="6" placeholder="{\n  &quot;name&quot;: &quot;...&quot;\n}"></textarea>
+        </div>
+
+        <button type="button" id="sendRequestBtn" class="btn btn-primary" style="width: 100%;">
+          <span>⚡ Send Request</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column: Live Response Viewer -->
+    <div>
+      <div class="card" style="height: 100%; display: flex; flex-direction: column;">
+        <div class="card-header" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem; margin-bottom: 1rem;">
+          <div>
+            <h3 class="card-title" style="font-size: 1.1rem;">Live Server Response</h3>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+              Response latency: <strong id="responseTime" class="font-mono" style="color: var(--secondary);">-</strong>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div id="responseStatus">
+              <span class="badge badge-gray">Ready</span>
+            </div>
+            <button type="button" class="btn btn-sm btn-secondary" id="copyResponseBtn">
+              Copy JSON
+            </button>
+          </div>
+        </div>
+
+        <!-- Formatted Response Payload -->
+        <div style="margin-bottom: 1rem; flex-grow: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">
+              JSON Payload
+            </span>
+          </div>
+          <pre id="responseViewer" class="response-viewer">Click "Send Request" or select a preset to dispatch an HTTP request...</pre>
+        </div>
+
+        <!-- Response Headers Box -->
+        <div>
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 0.4rem;">
+            HTTP Response Headers (Captured via Fetch)
+          </span>
+          <pre id="responseHeaders" class="code-editor-box" style="max-height: 120px; overflow-y: auto; font-size: 0.78rem;">{}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<script src="/js/api-tester.js"></script>

@@ -1,0 +1,23 @@
+{
+  "watch": [
+    "server.js",
+    "routes/",
+    "middleware/",
+    "data/",
+    "views/",
+    "public/css/",
+    "public/js/"
+  ],
+  "ext": "js,json,ejs,css",
+  "ignore": [
+    "node_modules",
+    "public/images/*",
+    "*.log"
+  ],
+  "delay": "300",
+  "env": {
+    "NODE_ENV": "development",
+    "PORT": "3000"
+  },
+  "verbose": true
+}

@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<main class="container" style="padding: 5rem 1.5rem; text-align: center;">
+  <div style="font-size: 5rem; font-weight: 800; font-family: 'Outfit', sans-serif; background: linear-gradient(135deg, #dc2626, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    500
+  </div>
+  <h1 style="font-size: 2rem; margin-bottom: 1rem;">Internal Server Error</h1>
+  <p style="color: var(--text-muted); max-width: 550px; margin: 0 auto 2rem; font-size: 1.05rem;">
+    <%= typeof message !== 'undefined' ? message : 'An unexpected exception occurred during processing.' %>
+  </p>
+
+  <div style="display: flex; gap: 1rem; justify-content: center;">
+    <a href="/" class="btn btn-primary">Return to Dashboard</a>
+    <a href="/products" class="btn btn-secondary">Products Catalog</a>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

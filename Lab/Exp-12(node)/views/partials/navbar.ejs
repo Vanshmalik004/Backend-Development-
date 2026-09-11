@@ -1,0 +1,46 @@
+<nav class="site-navbar">
+  <div class="container nav-inner">
+    <a href="/" class="brand-logo" id="navBrandLogo">
+      <span class="logo-badge">Node.js</span>
+      <span class="brand-title">Exp-12 <span>Express & EJS</span></span>
+    </a>
+
+    <ul class="nav-links">
+      <li>
+        <a href="/" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'home' ? 'active' : '' %>" id="navHomeLink">
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/products" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'products' ? 'active' : '' %>" id="navProductsLink">
+          Products (SSR)
+        </a>
+      </li>
+      <li>
+        <a href="/api-explorer" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'api-explorer' ? 'active' : '' %>" id="navApiExplorerLink">
+          API Playground
+        </a>
+      </li>
+      <li>
+        <a href="/architecture" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'architecture' ? 'active' : '' %>" id="navArchLink">
+          Event Loop Visualizer
+        </a>
+      </li>
+      <li>
+        <a href="/lab-manual" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'lab-manual' ? 'active' : '' %>" id="navManualLink">
+          Lab Manual & Viva
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark/Light Theme">
+        <span id="themeIcon">🌙</span>
+        <span id="themeText">Dark</span>
+      </button>
+      <a href="/api/products" target="_blank" class="btn btn-sm btn-secondary" id="rawApiBtn" title="View Raw JSON Output">
+        ⚡ Raw JSON
+      </a>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,256 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<main class="container" style="padding-top: 2rem; padding-bottom: 3rem;">
+  <%- include('../partials/alerts') %>
+
+  <!-- Page Title & Top Actions -->
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+    <div>
+      <h1 style="font-size: 2rem; font-weight: 800;">Inventory Catalog (SSR CRUD)</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Server-side rendered via EJS templating engine with URL query filtering (<code>req.query</code>) and form POST mutations (<code>req.body</code>).
+      </p>
+    </div>
+
+    <div style="display: flex; gap: 0.75rem;">
+      <button class="btn btn-primary" id="openAddProductBtn">
+        <span>➕</span> Add Product
+      </button>
+      <form action="/api/products/reset" method="POST" onsubmit="return confirm('Reset product list to default 8 seed items?');">
+        <button type="submit" class="btn btn-secondary" title="Reset dataset to initial state">
+          <span>🔄</span> Reset Catalog
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Search & Filter Bar (HTML Form demonstrating GET with Query Parameters) -->
+  <form action="/products" method="GET" class="filter-bar" id="productFilterForm">
+    <!-- Search Query -->
+    <div class="search-input-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        name="search" 
+        class="form-control" 
+        placeholder="Search by name or keyword..." 
+        value="<%= query.search %>"
+        id="searchInput"
+      >
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="pill-group">
+      <a href="/products?category=all&sort=<%= query.sort %>&stock=<%= query.stock %>" 
+         class="pill-btn <%= query.category === 'all' ? 'active' : '' %>">
+        All
+      </a>
+      <% categories.forEach(cat => { %>
+        <a href="/products?category=<%= encodeURIComponent(cat) %>&sort=<%= query.sort %>&stock=<%= query.stock %>" 
+           class="pill-btn <%= query.category.toLowerCase() === cat.toLowerCase() ? 'active' : '' %>">
+          <%= cat %>
+        </a>
+      <% }) %>
+    </div>
+
+    <!-- Stock Status Filter -->
+    <div class="filter-group">
+      <select name="stock" class="form-select" style="width: auto;" onchange="this.form.submit()">
+        <option value="all" <%= query.stock === 'all' ? 'selected' : '' %>>All Stock Status</option>
+        <option value="in-stock" <%= query.stock === 'in-stock' ? 'selected' : '' %>>In Stock Only</option>
+        <option value="out-of-stock" <%= query.stock === 'out-of-stock' ? 'selected' : '' %>>Out of Stock Only</option>
+      </select>
+
+      <!-- Sort Order -->
+      <select name="sort" class="form-select" style="width: auto;" onchange="this.form.submit()">
+        <option value="default" <%= query.sort === 'default' ? 'selected' : '' %>>Sort: Default</option>
+        <option value="price-low" <%= query.sort === 'price-low' ? 'selected' : '' %>>Price: Low to High</option>
+        <option value="price-high" <%= query.sort === 'price-high' ? 'selected' : '' %>>Price: High to Low</option>
+        <option value="name-az" <%= query.sort === 'name-az' ? 'selected' : '' %>>Name: A to Z</option>
+        <option value="rating" <%= query.sort === 'rating' ? 'selected' : '' %>>Highest Rated</option>
+      </select>
+
+      <button type="submit" class="btn btn-sm btn-primary">Filter</button>
+      <% if (query.search || query.category !== 'all' || query.stock !== 'all' || query.sort !== 'default') { %>
+        <a href="/products" class="btn btn-sm btn-secondary" title="Clear all filters">Clear</a>
+      <% } %>
+    </div>
+  </form>
+
+  <!-- Inventory Table Showcase -->
+  <div class="card">
+    <div class="card-header">
+      <div style="font-weight: 600; color: var(--text-muted); font-size: 0.9rem;">
+        Showing <strong style="color: var(--text-main);"><%= products.length %></strong> of <strong><%= totalCount %></strong> Products
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-faint);">
+        Rendered on Server via <code>products.ejs</code>
+      </div>
+    </div>
+
+    <% if (products.length === 0) { %>
+      <div style="text-align: center; padding: 4rem 1rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🔎</div>
+        <h3 style="margin-bottom: 0.5rem;">No Products Match Your Filter</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+          Try adjusting your search criteria or clearing active filters.
+        </p>
+        <a href="/products" class="btn btn-secondary">Reset Filters</a>
+      </div>
+    <% } else { %>
+      <div class="table-wrapper">
+        <table class="modern-table" id="productsTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product Details</th>
+              <th>Category</th>
+              <th>Price (USD)</th>
+              <th>Inventory Status</th>
+              <th>Rating</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% products.forEach(prod => { %>
+              <tr>
+                <td class="font-mono" style="font-weight: 700; color: var(--primary);">#<%= prod.id %></td>
+                <td>
+                  <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem;">
+                    <a href="/products/<%= prod.id %>" style="color: inherit;">
+                      <%= prod.name %>
+                    </a>
+                    <% if (prod.badge) { %>
+                      <span class="badge badge-primary" style="margin-left: 0.4rem;"><%= prod.badge %></span>
+                    <% } %>
+                  </div>
+                  <div style="color: var(--text-muted); font-size: 0.82rem; max-width: 320px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    <%= prod.description %>
+                  </div>
+                </td>
+                <td>
+                  <span class="badge badge-gray"><%= prod.category %></span>
+                </td>
+                <td style="font-weight: 700; font-size: 1rem;">
+                  <%= formatCurrency(prod.price) %>
+                </td>
+                <td>
+                  <% if (prod.stock > 0) { %>
+                    <span class="badge badge-success">● <%= prod.stock %> In Stock</span>
+                  <% } else { %>
+                    <span class="badge badge-danger">○ Out of Stock</span>
+                  <% } %>
+                </td>
+                <td>
+                  <span style="font-weight: 600; color: #fbbf24;">★ <%= prod.rating %></span>
+                </td>
+                <td style="text-align: right;">
+                  <div style="display: inline-flex; align-items: center; gap: 0.4rem;">
+                    <!-- View single product (URL parameter demo) -->
+                    <a href="/products/<%= prod.id %>" class="btn btn-sm btn-secondary" title="View details via URL params">
+                      👁️
+                    </a>
+                    <!-- Edit Button triggers modal with preloaded attributes -->
+                    <button 
+                      type="button" 
+                      class="btn btn-sm btn-secondary edit-product-btn"
+                      data-id="<%= prod.id %>"
+                      data-name="<%= prod.name %>"
+                      data-category="<%= prod.category %>"
+                      data-price="<%= prod.price %>"
+                      data-stock="<%= prod.stock %>"
+                      data-badge="<%= prod.badge %>"
+                      data-featured="<%= prod.featured %>"
+                      data-description="<%= prod.description %>"
+                      title="Edit product"
+                    >
+                      ✏️
+                    </button>
+                    <!-- Form POST for deletion -->
+                    <form action="/products/delete/<%= prod.id %>" method="POST" onsubmit="return confirm('Delete product <%= prod.name %>?');" style="display: inline;">
+                      <button type="submit" class="btn btn-sm btn-danger" title="Delete product">
+                        🗑️
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Reusable Add/Edit Product Modal Dialog -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle" style="font-size: 1.25rem;">Add New Product</h3>
+        <button type="button" class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+
+      <form id="productModalForm" action="/products" method="POST">
+        <input type="hidden" id="modalProductId" name="id">
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="prodName" class="form-label">Product Name *</label>
+            <input type="text" id="prodName" name="name" class="form-control" required placeholder="e.g. Apex Mechanical Keyboard">
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="prodCategory" class="form-label">Category *</label>
+              <select id="prodCategory" name="category" class="form-select" required>
+                <option value="Peripherals">Peripherals</option>
+                <option value="Displays">Displays</option>
+                <option value="Storage">Storage</option>
+                <option value="Audio">Audio</option>
+                <option value="Video">Video</option>
+                <option value="Components">Components</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="prodPrice" class="form-label">Price ($ USD) *</label>
+              <input type="number" id="prodPrice" name="price" step="0.01" min="0.01" class="form-control" required placeholder="149.99">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="prodStock" class="form-label">Stock Quantity</label>
+              <input type="number" id="prodStock" name="stock" min="0" value="10" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label for="prodBadge" class="form-label">Badge Tag (Optional)</label>
+              <input type="text" id="prodBadge" name="badge" class="form-control" placeholder="e.g. Best Seller">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="prodDescription" class="form-label">Description</label>
+            <textarea id="prodDescription" name="description" class="form-control" rows="3" placeholder="Detailed product specifications..."></textarea>
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" id="prodFeatured" name="featured" style="width: 1.1rem; height: 1.1rem;">
+            <label for="prodFeatured" style="font-size: 0.9rem; cursor: pointer; user-select: none;">
+              Show as Featured on Dashboard
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveProductBtn">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

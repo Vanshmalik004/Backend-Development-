@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "Quantum Pro Mechanical Keyboard",
+    "category": "Peripherals",
+    "price": 149.99,
+    "stock": 38,
+    "rating": 4.8,
+    "featured": true,
+    "description": "Hot-swappable custom tactile switches with RGB per-key backlighting and aircraft-grade aluminum top frame.",
+    "badge": "Best Seller",
+    "createdAt": "2026-01-15T08:30:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "AeroGlide Wireless Gaming Mouse",
+    "category": "Peripherals",
+    "price": 79.5,
+    "stock": 55,
+    "rating": 4.7,
+    "featured": true,
+    "description": "Ultra-lightweight 58g honeycomb shell with 26,000 DPI optical sensor and 80-hour rechargeable battery life.",
+    "badge": "Top Rated",
+    "createdAt": "2026-01-20T10:15:00.000Z"
+  },
+  {
+    "id": 3,
+    "name": "OmniView 27\" 4K HDR Monitor",
+    "category": "Displays",
+    "price": 429,
+    "stock": 14,
+    "rating": 4.9,
+    "featured": true,
+    "description": "IPS panel with 99% DCI-P3 color gamut, 144Hz refresh rate, 1ms response time, and 90W USB-C Power Delivery.",
+    "badge": "Premium",
+    "createdAt": "2026-02-01T14:45:00.000Z"
+  },
+  {
+    "id": 4,
+    "name": "HyperDrive NVMe M.2 2TB SSD",
+    "category": "Storage",
+    "price": 189.99,
+    "stock": 25,
+    "rating": 4.6,
+    "featured": false,
+    "description": "PCIe Gen 4.0 x4 internal solid state drive delivering up to 7,400 MB/s sequential read speed with nickel heatsink.",
+    "badge": "Fast",
+    "createdAt": "2026-02-10T12:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "name": "SoundWave Studio ANC Headphones",
+    "category": "Audio",
+    "price": 249,
+    "stock": 19,
+    "rating": 4.8,
+    "featured": true,
+    "description": "Active noise cancellation over-ear studio headphones with spatial audio and high-resolution 40mm beryllium drivers.",
+    "badge": "Staff Pick",
+    "createdAt": "2026-02-18T16:20:00.000Z"
+  },
+  {
+    "id": 6,
+    "name": "StreamPulse 4K USB-C Webcam",
+    "category": "Video",
+    "price": 119,
+    "stock": 0,
+    "rating": 4.3,
+    "featured": false,
+    "description": "Ultra HD webcam with dual stereo beamforming noise-cancelling microphones and magnetic privacy shutter.",
+    "badge": "Out of Stock",
+    "createdAt": "2026-02-25T09:10:00.000Z"
+  },
+  {
+    "id": 7,
+    "name": "TitanCore 1000W Modular PSU",
+    "category": "Components",
+    "price": 179.99,
+    "stock": 12,
+    "rating": 4.9,
+    "featured": false,
+    "description": "80 PLUS Platinum certified fully modular power supply unit with 135mm silent fluid dynamic bearing fan.",
+    "badge": "Platinum",
+    "createdAt": "2026-03-01T11:30:00.000Z"
+  },
+  {
+    "id": 8,
+    "name": "VortexFlux 360mm AIO Liquid Cooler",
+    "category": "Components",
+    "price": 159,
+    "stock": 22,
+    "rating": 4.7,
+    "featured": false,
+    "description": "Triple ARGB radiator fans with infinity mirror pump block and braided zero-permeability sleeved rubber tubing.",
+    "badge": "Cooling",
+    "createdAt": "2026-03-05T15:00:00.000Z"
+  }
+]

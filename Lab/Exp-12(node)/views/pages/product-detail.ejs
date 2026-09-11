@@ -1,0 +1,153 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<main class="container" style="padding-top: 2rem; padding-bottom: 3rem;">
+  <%- include('../partials/alerts') %>
+
+  <!-- Breadcrumb & Back button -->
+  <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+    <a href="/products" class="btn btn-sm btn-secondary">
+      &larr; Back to Catalog
+    </a>
+    <span class="badge badge-primary">Demonstration of URL Parameters (req.params.id = <%= product.id %>)</span>
+  </div>
+
+  <!-- Educational Explainer Banner -->
+  <div class="card" style="margin-bottom: 2rem; background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.25);">
+    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+      <span style="font-size: 1.75rem;">💡</span>
+      <div>
+        <h3 style="font-size: 1.05rem; margin-bottom: 0.25rem;">Server-Side URL Parameter Resolution</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.5rem;">
+          This page was resolved by the Express router matching <code>/products/:id</code>. Express parsed the request URL and made the value available on <code>req.params.id</code> (<code class="font-mono" style="color: var(--primary);"><%= product.id %></code>). The server queried the data store and injected this object directly into <code>product-detail.ejs</code>.
+        </p>
+        <div style="font-size: 0.8rem;" class="font-mono">
+          Route Pattern: <span style="color: #38bdf8;">router.get('/products/:id', (req, res) =&gt; { const id = req.params.id; ... })</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Product Detail View -->
+  <div class="grid-2" style="grid-template-columns: 1.2fr 0.8fr; gap: 2rem; margin-bottom: 3rem;">
+    <!-- Product Specification Card -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+        <div>
+          <span class="badge badge-gray" style="margin-bottom: 0.5rem;"><%= product.category %></span>
+          <h1 style="font-size: 2.2rem; font-weight: 800;"><%= product.name %></h1>
+        </div>
+        <% if (product.badge) { %>
+          <span class="badge badge-primary" style="font-size: 0.85rem;"><%= product.badge %></span>
+        <% } %>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="font-size: 2rem; font-weight: 800; color: var(--text-main);">
+          <%= formatCurrency(product.price) %>
+        </div>
+        <div>
+          <% if (product.stock > 0) { %>
+            <span class="badge badge-success" style="font-size: 0.85rem;">● <%= product.stock %> In Stock</span>
+          <% } else { %>
+            <span class="badge badge-danger" style="font-size: 0.85rem;">○ Currently Out of Stock</span>
+          <% } %>
+        </div>
+        <div style="color: #fbbf24; font-weight: 700; font-size: 1rem;">
+          ★ <%= product.rating %> / 5.0
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-glass); padding-top: 1.25rem; margin-bottom: 1.5rem;">
+        <h4 style="font-size: 0.95rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 0.5rem;">
+          Description
+        </h4>
+        <p style="font-size: 1.05rem; line-height: 1.6; color: var(--text-main);">
+          <%= product.description %>
+        </p>
+      </div>
+
+      <!-- JSON REST API Inspector Link -->
+      <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+          <div style="font-size: 0.85rem; font-weight: 600;">REST API JSON Endpoint:</div>
+          <div class="font-mono" style="font-size: 0.8rem; color: var(--primary);">GET /api/products/<%= product.id %></div>
+        </div>
+        <a href="/api/products/<%= product.id %>" target="_blank" class="btn btn-sm btn-secondary">
+          View JSON &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Metadata & Technical Properties Card -->
+    <div class="card">
+      <h3 class="card-title" style="margin-bottom: 1.25rem;">Hardware Metadata</h3>
+
+      <div class="table-wrapper">
+        <table class="modern-table">
+          <tbody>
+            <tr>
+              <td style="color: var(--text-muted);">Database Record ID</td>
+              <td class="font-mono" style="font-weight: 700;">#<%= product.id %></td>
+            </tr>
+            <tr>
+              <td style="color: var(--text-muted);">Product Category</td>
+              <td><%= product.category %></td>
+            </tr>
+            <tr>
+              <td style="color: var(--text-muted);">Unit Base Price</td>
+              <td style="font-weight: 700;"><%= formatCurrency(product.price) %></td>
+            </tr>
+            <tr>
+              <td style="color: var(--text-muted);">Available Stock</td>
+              <td><%= product.stock %> units</td>
+            </tr>
+            <tr>
+              <td style="color: var(--text-muted);">Featured Status</td>
+              <td><%= product.featured ? 'Yes (Dashboard)' : 'Standard' %></td>
+            </tr>
+            <tr>
+              <td style="color: var(--text-muted);">Created Timestamp</td>
+              <td><%= formatDate(product.createdAt) %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+        <a href="/api-explorer" class="btn btn-secondary" style="flex: 1;">
+          Test in API Explorer
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products (Loop in EJS) -->
+  <% if (related && related.length > 0) { %>
+    <section>
+      <div class="card-header">
+        <h3 class="card-title">More in <%= product.category %></h3>
+        <a href="/products?category=<%= encodeURIComponent(product.category) %>" class="btn btn-sm btn-secondary">View Category</a>
+      </div>
+
+      <div class="grid-3">
+        <% related.forEach(rel => { %>
+          <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h4 style="font-size: 1rem; margin-bottom: 0.4rem;"><%= rel.name %></h4>
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">
+                <%= rel.description.substring(0, 70) %>...
+              </p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; pt: 0.5rem; border-top: 1px solid var(--border-glass); padding-top: 0.5rem;">
+              <span style="font-weight: 700;"><%= formatCurrency(rel.price) %></span>
+              <a href="/products/<%= rel.id %>" class="btn btn-sm btn-primary">Details</a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

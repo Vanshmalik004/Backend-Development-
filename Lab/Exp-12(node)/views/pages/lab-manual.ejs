@@ -1,0 +1,316 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<main class="container" style="padding-top: 2rem; padding-bottom: 3rem;">
+  <%- include('../partials/alerts') %>
+
+  <!-- Header -->
+  <div style="margin-bottom: 2rem;">
+    <span class="hero-tag">Academic Documentation</span>
+    <h1 style="font-size: 2.25rem; font-weight: 800; margin-top: 0.5rem;">
+      Lab Experiment 12 Manual &amp; Viva-Voce
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1rem; max-width: 820px;">
+      Official lab manual documentation for <strong>Experiment 12: Node.js, Express.js, and EJS Templating</strong>. Includes theoretical foundations, architecture diagrams, step-by-step verification, and oral examination viva-voce questions.
+    </p>
+  </div>
+
+  <!-- Quick Info Box -->
+  <div class="card" style="margin-bottom: 2rem; background: rgba(99, 102, 241, 0.05); border-color: rgba(99, 102, 241, 0.2);">
+    <div class="grid-4">
+      <div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Course</div>
+        <strong style="font-size: 0.95rem;">Web Technologies / Backend</strong>
+      </div>
+      <div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Course Outcome Mapped</div>
+        <strong style="font-size: 0.95rem; color: var(--primary);">CO3 &amp; CO4 (APIs &amp; SSR)</strong>
+      </div>
+      <div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Runtime Engine</div>
+        <strong style="font-size: 0.95rem;" class="font-mono">Node.js <%= nodeVersion %></strong>
+      </div>
+      <div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Dev Tool</div>
+        <strong style="font-size: 0.95rem;" class="font-mono">Nodemon Hot Reload</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experiment Objectives -->
+  <section class="card" style="margin-bottom: 2rem;">
+    <h2 class="card-title" style="margin-bottom: 1rem;">1. Objectives</h2>
+    <ul style="padding-left: 1.5rem; line-height: 1.8; color: var(--text-main);">
+      <li><strong>Understand Server-Side JavaScript:</strong> Gain deep comprehension of the Node.js single-threaded event loop, non-blocking asynchronous I/O, and Libuv worker thread pool.</li>
+      <li><strong>Build RESTful Web APIs:</strong> Implement industry-standard REST conventions utilizing Express.js for HTTP verbs (<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>), returning structured JSON with proper HTTP response status codes.</li>
+      <li><strong>Request &amp; Response Processing:</strong> Handle URL route parameters (<code>req.params</code>), URL query strings (<code>req.query</code>), and request payloads (<code>req.body</code>) using middleware parsers.</li>
+      <li><strong>Server-Side Templating with EJS:</strong> Architect a modular multi-page web application leveraging reusable partials, scriptlets, iteration loops, and XSS sanitization.</li>
+      <li><strong>Middleware Pipeline Engineering:</strong> Implement custom and built-in middleware for request timing, CORS headers, logging, and centralized error handling (404 and 500).</li>
+      <li><strong>Development Workflow with Nodemon:</strong> Configure automated hot-reloading using <code>nodemon.json</code> to enhance developer productivity during active code refactoring.</li>
+    </ul>
+  </section>
+
+  <!-- Theoretical Summary -->
+  <section class="card" style="margin-bottom: 2rem;">
+    <h2 class="card-title" style="margin-bottom: 1rem;">2. Theoretical Comparison: Multi-Threaded vs Event-Driven</h2>
+
+    <div class="table-wrapper">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>Architecture Characteristic</th>
+            <th>Traditional Multi-Threaded (e.g. Apache / Java Servlet)</th>
+            <th>Node.js Event-Driven (Single-Threaded + Libuv)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Concurrency Model</strong></td>
+            <td>Thread-per-request model (1 thread allocated per incoming socket)</td>
+            <td>Single-threaded Event Loop handles all concurrent network connections</td>
+          </tr>
+          <tr>
+            <td><strong>Memory Footprint</strong></td>
+            <td>High overhead (1-2 MB stack memory allocated per thread)</td>
+            <td>Minimal overhead (~few kilobytes per active connection)</td>
+          </tr>
+          <tr>
+            <td><strong>I/O Blocking</strong></td>
+            <td>Thread blocks on Disk/Network I/O operations</td>
+            <td>Non-blocking asynchronous calls offloaded to Libuv C++ threadpool</td>
+          </tr>
+          <tr>
+            <td><strong>Scalability Bottleneck</strong></td>
+            <td>Thread exhaustion under high concurrent connection spikes (C10K problem)</td>
+            <td>CPU-bound computations (mitigated via Worker Threads or clustering)</td>
+          </tr>
+          <tr>
+            <td><strong>Templating / SSR</strong></td>
+            <td>JSP / PHP parsed synchronously per page load</td>
+            <td>EJS compiled to JavaScript functions and cached in V8 memory</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- EJS Tags Cheat Sheet -->
+  <section class="card" style="margin-bottom: 2rem;">
+    <h2 class="card-title" style="margin-bottom: 1rem;">3. EJS Templating Tags Syntax Matrix</h2>
+
+    <div class="table-wrapper">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>EJS Tag Syntax</th>
+            <th>Operation Name</th>
+            <th>Behavior &amp; Security Characteristics</th>
+            <th>Code Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>&lt;%= %&gt;</code></td>
+            <td>Escaped Output</td>
+            <td>Evaluates expression and HTML-escapes output (prevents Cross-Site Scripting / XSS)</td>
+            <td><code>&lt;%= product.name %&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>&lt;%- %&gt;</code></td>
+            <td>Unescaped Output</td>
+            <td>Outputs raw unescaped HTML. Essential for rendering nested partials or rich content</td>
+            <td><code>&lt;%- include('partials/header') %&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>&lt;% %&gt;</code></td>
+            <td>Scriptlet (Execution)</td>
+            <td>Executes JavaScript control-flow code (loops, conditionals) with zero HTML output</td>
+            <td><code>&lt;% if (items.length &gt; 0) { %&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>&lt;%# %&gt;</code></td>
+            <td>Server Comment</td>
+            <td>Server-side comment; stripped out entirely before reaching the HTTP response stream</td>
+            <td><code>&lt;%# TODO: Add pagination %&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>&lt;%_ _%&gt;</code></td>
+            <td>Whitespace Slurping</td>
+            <td>Removes leading and trailing whitespace around template scriptlet tags</td>
+            <td><code>&lt;%_ items.forEach(i =&gt; { _%&gt;</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Interactive Viva-Voce Accordion -->
+  <section class="card" style="margin-bottom: 2rem;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">❓ Viva-Voce Examination Questions &amp; Detailed Answers</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Click any question to expand the technical answer.</p>
+      </div>
+      <button type="button" class="btn btn-sm btn-secondary" id="toggleAllVivaBtn">Expand All</button>
+    </div>
+
+    <!-- Question 1 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Q1: What is the Node.js Event Loop, and how does it achieve high concurrency despite being single-threaded?</span>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <p>
+          Node.js executes JavaScript on a single main thread via Google's V8 engine. High concurrency is achieved through <strong>asynchronous non-blocking I/O</strong> mediated by <strong>Libuv</strong>. When an asynchronous operation (such as a database query, file read, or network request) is initiated, Node offloads the heavy lifting to the operating system kernel or the Libuv worker thread pool. The main thread continues processing subsequent requests without waiting. When the I/O finishes, its callback is enqueued onto the Callback Queue, and the Event Loop transfers it to the Call Stack as soon as the stack becomes clear.
+        </p>
+      </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Q2: What is the difference between <code>req.params</code>, <code>req.query</code>, and <code>req.body</code> in Express.js?</span>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <ul>
+          <li><strong><code>req.params</code>:</strong> Contains route parameters defined in the path with a colon prefix (e.g., in <code>/api/products/:id</code>, accessing <code>/api/products/42</code> produces <code>{ id: '42' }</code>).</li>
+          <li><strong><code>req.query</code>:</strong> Contains URL query string parameters appended after a <code>?</code> (e.g., in <code>/api/products?category=Audio&amp;sort=asc</code>, produces <code>{ category: 'Audio', sort: 'asc' }</code>).</li>
+          <li><strong><code>req.body</code>:</strong> Contains payload data submitted in the HTTP request body (e.g., via JSON or HTML form submission). Requires body-parsing middleware such as <code>express.json()</code> or <code>express.urlencoded()</code> to populate.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Q3: What is Express middleware, and what happens if you forget to invoke <code>next()</code>?</span>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <p>
+          Middleware functions are functions that have access to the request object (<code>req</code>), response object (<code>res</code>), and the <code>next</code> function in the application's request-response cycle. If a middleware function does not end the request-response cycle (e.g., by calling <code>res.send()</code>, <code>res.json()</code>, or <code>res.render()</code>), it <strong>must</strong> invoke <code>next()</code> to pass control to the subsequent middleware function in the stack. If you forget to invoke <code>next()</code>, the HTTP request will hang indefinitely until the client times out.
+        </p>
+      </div>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Q4: Why should <code>&lt;%= %&gt;</code> be used instead of <code>&lt;%- %&gt;</code> when outputting user data in EJS?</span>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <p>
+          <code>&lt;%= %&gt;</code> automatically HTML-escapes special characters such as <code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&quot;</code>, and <code>&#39;</code> into HTML entities (e.g. <code>&amp;lt;script&amp;gt;</code>). This prevents <strong>Cross-Site Scripting (XSS)</strong> attacks where an attacker injects malicious client-side JavaScript into database records. <code>&lt;%- %&gt;</code> renders raw unescaped HTML, which should strictly be reserved for trusted server templates (e.g., <code>&lt;%- include(...) %&gt;</code>).
+        </p>
+      </div>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Q5: How does an Express error-handling middleware function differ in signature from regular middleware?</span>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <p>
+          Error-handling middleware functions are explicitly identified by having <strong>four arguments</strong> instead of three: <code>(err, req, res, next)</code>. Even if you do not use the <code>next</code> object, Express inspects function arity (<code>fn.length === 4</code>) to differentiate error handlers from normal middleware. If an error is passed to <code>next(err)</code>, Express skips all subsequent regular middleware and routes directly to the registered 4-parameter error handler.
+        </p>
+      </div>
+    </div>
+
+    <!-- Question 6 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Q6: What is the purpose of Nodemon, and how does it detect changes?</span>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <p>
+          In standard Node.js, server code changes require manually killing the node process and restarting it. <strong>Nodemon</strong> is a CLI development utility that wraps around your Node application, monitors the directory tree for filesystem modification events on specified extensions (<code>.js</code>, <code>.json</code>, <code>.ejs</code>), and automatically restarts the Node server process.
+        </p>
+      </div>
+    </div>
+
+    <!-- Question 7 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Q7: What are the primary HTTP status code families, and when should they be returned in a REST API?</span>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <ul>
+          <li><strong>200 OK:</strong> Standard success for GET, PUT, and DELETE operations.</li>
+          <li><strong>201 Created:</strong> Resource successfully created via POST.</li>
+          <li><strong>400 Bad Request:</strong> Client sent invalid payload or failed input validation.</li>
+          <li><strong>404 Not Found:</strong> The requested route or resource ID does not exist.</li>
+          <li><strong>500 Internal Server Error:</strong> Unhandled runtime exception occurred on the server.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Question 8 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Q8: What is the difference between <code>res.send()</code>, <code>res.json()</code>, and <code>res.render()</code>?</span>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <ul>
+          <li><strong><code>res.send()</code>:</strong> Sends generic HTTP response body (string, Buffer, or object) and auto-sets the <code>Content-Type</code>.</li>
+          <li><strong><code>res.json()</code>:</strong> Explicitly serializes an object into a JSON string and sets the <code>Content-Type: application/json; charset=utf-8</code> header.</li>
+          <li><strong><code>res.render()</code>:</strong> Invokes the configured template engine (EJS), compiles the specified view with passed variables, and sends the resulting HTML string with <code>Content-Type: text/html</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Run & Verification Guide -->
+  <section class="card">
+    <h2 class="card-title" style="margin-bottom: 1rem;">4. Execution and Verification Guide</h2>
+    
+    <div class="code-editor-box" style="margin-bottom: 1rem;">
+<span style="color: #6b7280;"># 1. Install dependencies</span>
+npm install
+
+<span style="color: #6b7280;"># 2. Run automated test suite</span>
+npm test
+
+<span style="color: #6b7280;"># 3. Start development server with Nodemon (Hot-Reload)</span>
+npm run dev
+
+<span style="color: #6b7280;"># 4. Open in browser</span>
+open http://localhost:3000
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+
+<script>
+  // Accordion Toggle Logic
+  document.addEventListener('DOMContentLoaded', () => {
+    const accordions = document.querySelectorAll('.accordion-header');
+    accordions.forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.parentElement;
+        item.classList.toggle('open');
+      });
+    });
+
+    const toggleAllBtn = document.getElementById('toggleAllVivaBtn');
+    let allOpen = false;
+    if (toggleAllBtn) {
+      toggleAllBtn.addEventListener('click', () => {
+        allOpen = !allOpen;
+        document.querySelectorAll('.accordion-item').forEach(item => {
+          if (allOpen) item.classList.add('open');
+          else item.classList.remove('open');
+        });
+        toggleAllBtn.textContent = allOpen ? 'Collapse All' : 'Expand All';
+      });
+    }
+  });
+</script>

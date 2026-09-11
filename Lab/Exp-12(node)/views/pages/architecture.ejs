@@ -1,0 +1,221 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<main class="container" style="padding-top: 2rem; padding-bottom: 3rem;">
+  <%- include('../partials/alerts') %>
+
+  <div style="margin-bottom: 2rem;">
+    <span class="hero-tag">Core Internals</span>
+    <h1 style="font-size: 2.25rem; font-weight: 800; margin-top: 0.5rem;">
+      Node.js Event Loop &amp; Express Pipeline Architecture
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1rem; max-width: 820px;">
+      Understand how Node.js executes JavaScript on a single thread using non-blocking asynchronous event-driven I/O backed by Libuv, and how Express chains requests through cascading middleware.
+    </p>
+  </div>
+
+  <!-- 1. Interactive Event Loop Visualizer -->
+  <section class="card" style="margin-bottom: 2.5rem;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <span id="eventLoopSpinner" style="display: inline-block; transition: transform 0.4s ease;">🔄</span>
+          Interactive Node.js Event Loop Simulator
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">
+          Step through how Call Stack, Libuv worker threads, and task queues interact in real time.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button type="button" class="btn btn-sm btn-secondary" id="btnSimSync">
+          ▶ Sync Task
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" id="btnSimTimer">
+          ⏱️ setTimeout()
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" id="btnSimIO">
+          📂 fs.readFile()
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" id="btnSimPromise">
+          ⚡ Promise Microtask
+        </button>
+      </div>
+    </div>
+
+    <!-- Visual Architecture Grid -->
+    <div class="grid-4" style="margin-bottom: 1.5rem;">
+      <!-- Call Stack -->
+      <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-glass);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <strong style="font-size: 0.85rem; text-transform: uppercase; color: #818cf8;">1. Call Stack (V8)</strong>
+          <span class="badge badge-primary">LIFO</span>
+        </div>
+        <div id="callStackList" style="min-height: 140px; border: 1px dashed var(--border-glass); border-radius: 6px; padding: 0.5rem; display: flex; flex-direction: column-reverse; justify-content: flex-start;">
+          <!-- Items pushed here -->
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-faint); margin-top: 0.5rem;">Synchronous execution thread</div>
+      </div>
+
+      <!-- Node APIs / Libuv -->
+      <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-glass);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <strong style="font-size: 0.85rem; text-transform: uppercase; color: #22d3ee;">2. Node APIs / Libuv</strong>
+          <span class="badge badge-primary">Threads</span>
+        </div>
+        <div id="nodeApisList" style="min-height: 140px; border: 1px dashed var(--border-glass); border-radius: 6px; padding: 0.5rem;">
+          <!-- Offloaded async tasks -->
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-faint); margin-top: 0.5rem;">Non-blocking C++ threadpool</div>
+      </div>
+
+      <!-- Microtask Queue -->
+      <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-glass);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <strong style="font-size: 0.85rem; text-transform: uppercase; color: #fbbf24;">3. Microtask Queue</strong>
+          <span class="badge badge-warning">High Priority</span>
+        </div>
+        <div id="microtasksList" style="min-height: 140px; border: 1px dashed var(--border-glass); border-radius: 6px; padding: 0.5rem;">
+          <!-- Promises / nextTick -->
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-faint); margin-top: 0.5rem;">Promises &amp; process.nextTick</div>
+      </div>
+
+      <!-- Callback (Macrotask) Queue -->
+      <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-glass);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <strong style="font-size: 0.85rem; text-transform: uppercase; color: #4ade80;">4. Callback Queue</strong>
+          <span class="badge badge-success">FIFO</span>
+        </div>
+        <div id="callbackQueueList" style="min-height: 140px; border: 1px dashed var(--border-glass); border-radius: 6px; padding: 0.5rem;">
+          <!-- I/O and timers -->
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-faint); margin-top: 0.5rem;">Timers, I/O, check callbacks</div>
+      </div>
+    </div>
+
+    <!-- Live Step Telemetry Console -->
+    <div style="background: #090d16; border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+          Execution Timeline &amp; Event Loop Actions
+        </span>
+        <button type="button" class="btn btn-sm btn-secondary" id="btnClearConsole" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
+          Clear
+        </button>
+      </div>
+      <div id="consoleOutput" class="font-mono" style="max-height: 140px; overflow-y: auto; font-size: 0.82rem; line-height: 1.6; color: #94a3b8;">
+        <div>[Ready] Click one of the simulation buttons above to visualize the execution lifecycle.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Express.js Cascading Middleware Pipeline -->
+  <section class="card" style="margin-bottom: 2.5rem;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">⛓️ Express.js Middleware Pipeline (Request &rarr; Response)</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">
+          Every incoming HTTP request travels sequentially through registered middleware layers until a response is dispatched.
+        </p>
+      </div>
+    </div>
+
+    <div class="pipeline-flow">
+      <div class="pipeline-node">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌐</div>
+        <strong>HTTP Request</strong>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">Client Browser</div>
+      </div>
+
+      <div class="pipeline-arrow">&rarr;</div>
+
+      <div class="pipeline-node">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🛡️</div>
+        <strong>CORS &amp; Headers</strong>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">app.use(cors())</div>
+      </div>
+
+      <div class="pipeline-arrow">&rarr;</div>
+
+      <div class="pipeline-node">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">⏱️</div>
+        <strong>Request Logger</strong>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">logger.js (next())</div>
+      </div>
+
+      <div class="pipeline-arrow">&rarr;</div>
+
+      <div class="pipeline-node">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">📦</div>
+        <strong>Body Parser</strong>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">json() &amp; urlencoded</div>
+      </div>
+
+      <div class="pipeline-arrow">&rarr;</div>
+
+      <div class="pipeline-node active-step">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🎯</div>
+        <strong>Route Handlers</strong>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">/api &amp; /views</div>
+      </div>
+
+      <div class="pipeline-arrow">&rarr;</div>
+
+      <div class="pipeline-node">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🚨</div>
+        <strong>Error Handler</strong>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">(err,req,res,next)</div>
+      </div>
+
+      <div class="pipeline-arrow">&rarr;</div>
+
+      <div class="pipeline-node">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">⚡</div>
+        <strong>HTTP Response</strong>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">res.json() / res.render()</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. EJS Templating Compilation Pipeline -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">🧩 EJS Server-Side Rendering (SSR) Architecture</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">
+          How templates are transformed on the server into raw HTML before reaching the browser.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1.25rem; border: 1px solid var(--border-glass);">
+        <h4 style="font-size: 1rem; color: var(--primary); margin-bottom: 0.5rem;">1. Template Input</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">
+          Express reads the <code>.ejs</code> file from the <code>views/</code> directory containing embedded tags (<code>&lt;%= %&gt;</code>).
+        </p>
+        <pre class="font-mono" style="background: #0a0e17; padding: 0.6rem; border-radius: 4px; font-size: 0.75rem; color: #a5b4fc;">&lt;h1&gt;&lt;%= product.name %&gt;&lt;/h1&gt;</pre>
+      </div>
+
+      <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1.25rem; border: 1px solid var(--border-glass);">
+        <h4 style="font-size: 1rem; color: var(--secondary); margin-bottom: 0.5rem;">2. EJS Compilation</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">
+          EJS compiles the template into an in-memory JavaScript function, passing <code>res.locals</code> and route variables.
+        </p>
+        <pre class="font-mono" style="background: #0a0e17; padding: 0.6rem; border-radius: 4px; font-size: 0.75rem; color: #22d3ee;">fn(data) =&gt; escape(data.name)</pre>
+      </div>
+
+      <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1.25rem; border: 1px solid var(--border-glass);">
+        <h4 style="font-size: 1rem; color: var(--node-green); margin-bottom: 0.5rem;">3. HTML Output Stream</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">
+          Pure compiled HTML string is emitted with <code>Content-Type: text/html</code>. Client receives fully formed DOM with 0 JS overhead!
+        </p>
+        <pre class="font-mono" style="background: #0a0e17; padding: 0.6rem; border-radius: 4px; font-size: 0.75rem; color: #4ade80;">&lt;h1&gt;Quantum Keyboard&lt;/h1&gt;</pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<script src="/js/event-loop.js"></script>

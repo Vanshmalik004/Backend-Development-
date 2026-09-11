@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<main class="container" style="padding: 5rem 1.5rem; text-align: center;">
+  <div style="font-size: 5rem; font-weight: 800; font-family: 'Outfit', sans-serif; background: linear-gradient(135deg, #ef4444, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    404
+  </div>
+  <h1 style="font-size: 2rem; margin-bottom: 1rem;">Resource Not Found</h1>
+  <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 2rem; font-size: 1.05rem;">
+    <%= typeof message !== 'undefined' ? message : 'The requested page or endpoint could not be found on this server.' %>
+  </p>
+
+  <div style="display: flex; gap: 1rem; justify-content: center;">
+    <a href="/" class="btn btn-primary">Return to Dashboard</a>
+    <a href="/products" class="btn btn-secondary">Browse Catalog</a>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,218 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<main class="container" style="padding-top: 2rem; padding-bottom: 3rem;">
+  <%- include('../partials/alerts') %>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <span class="hero-tag">Lab Experiment 12 &bull; CO3 & CO4</span>
+    <h1 class="hero-title">
+      Node.js, Express.js &amp; <span class="gradient-text">EJS Templating</span>
+    </h1>
+    <p class="hero-subtitle">
+      A complete, production-grade showcase of server-side JavaScript architecture: non-blocking asynchronous I/O, Express routing pipelines, dynamic SSR templating, RESTful CRUD endpoints, and hot-reloading with Nodemon.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="/products" class="btn btn-primary" id="heroExploreProductsBtn">
+        📦 Explore Products Catalog (SSR)
+      </a>
+      <a href="/api-explorer" class="btn btn-secondary" id="heroApiExplorerBtn">
+        🧪 Interactive API Playground
+      </a>
+      <a href="/architecture" class="btn btn-secondary" id="heroArchBtn">
+        🔄 Event Loop Visualizer
+      </a>
+      <a href="/lab-manual" class="btn btn-secondary" id="heroManualBtn">
+        📖 Lab Manual &amp; Viva
+      </a>
+    </div>
+  </section>
+
+  <!-- Node.js Live Runtime Diagnostics -->
+  <section style="margin-bottom: 2.5rem;">
+    <div class="card-header">
+      <h2 class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <span>🖥️</span> Node.js Server Diagnostics &amp; Runtime Telemetry
+      </h2>
+      <span class="badge badge-success">Live Status: Healthy</span>
+    </div>
+
+    <div class="grid-4">
+      <div class="card metric-card">
+        <div class="metric-icon icon-green">🟢</div>
+        <div class="metric-content">
+          <div class="metric-label">Node Runtime</div>
+          <div class="metric-value font-mono" style="font-size: 1.4rem;"><%= runtime.nodeVersion %></div>
+          <div style="font-size: 0.75rem; color: var(--text-faint); margin-top: 0.25rem;">V8 <%= runtime.v8Version %></div>
+        </div>
+      </div>
+
+      <div class="card metric-card">
+        <div class="metric-icon icon-purple">⏱️</div>
+        <div class="metric-content">
+          <div class="metric-label">Server Uptime</div>
+          <div class="metric-value" style="font-size: 1.4rem;"><%= runtime.uptime %></div>
+          <div style="font-size: 0.75rem; color: var(--text-faint); margin-top: 0.25rem;">Platform: <%= runtime.platform %></div>
+        </div>
+      </div>
+
+      <div class="card metric-card">
+        <div class="metric-icon icon-cyan">🧠</div>
+        <div class="metric-content">
+          <div class="metric-label">Heap Memory</div>
+          <div class="metric-value font-mono" style="font-size: 1.4rem;"><%= runtime.heapUsed %></div>
+          <div style="font-size: 0.75rem; color: var(--text-faint); margin-top: 0.25rem;">RSS: <%= runtime.memoryRss %></div>
+        </div>
+      </div>
+
+      <div class="card metric-card">
+        <div class="metric-icon icon-amber">⚙️</div>
+        <div class="metric-content">
+          <div class="metric-label">Processor Cores</div>
+          <div class="metric-value" style="font-size: 1.4rem;"><%= runtime.cpuCores %> Cores</div>
+          <div style="font-size: 0.75rem; color: var(--text-faint); margin-top: 0.25rem;"><%= runtime.cpuModel.split(' ')[0] %> Architecture</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Academic Concepts Showcase -->
+  <section style="margin-bottom: 2.5rem;">
+    <div class="card-header">
+      <h2 class="card-title">🔬 Key Laboratory Competencies Implemented</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">🌐</div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">RESTful API &amp; HTTP Routing</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+          Clean separation of concerns with full HTTP verb support (<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>), standard status codes, and input validation.
+        </p>
+        <span class="badge badge-primary">Express Router</span>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">🧩</div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">EJS Server-Side Templating</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+          Modular UI composition using reusable partials, scriptlets (<code>&lt;% %&gt;</code>), XSS-safe output (<code>&lt;%= %&gt;</code>), and dynamic loops rendering inventory.
+        </p>
+        <span class="badge badge-success">SSR Engine</span>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">⛓️</div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Middleware Pipeline</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+          Cascading middleware flow: request timing logging, body parsers (<code>express.json</code> &amp; <code>urlencoded</code>), static asset serving, and centralized error handling.
+        </p>
+        <span class="badge badge-warning">next() Pipeline</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products & Quick CRUD Preview -->
+  <section style="margin-bottom: 2.5rem;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">⭐ Featured Products (Server-Side Rendered via EJS)</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Rendered dynamically from server memory using <code>&lt;% featured.forEach(...) %&gt;</code></p>
+      </div>
+      <a href="/products" class="btn btn-sm btn-primary">View All (<%= stats.totalProducts %>)</a>
+    </div>
+
+    <div class="grid-4">
+      <% featured.forEach(product => { %>
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span class="badge badge-primary"><%= product.category %></span>
+              <span class="badge <%= product.stock > 0 ? 'badge-success' : 'badge-danger' %>">
+                <%= product.stock > 0 ? `${product.stock} In Stock` : 'Out of Stock' %>
+              </span>
+            </div>
+            <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;"><%= product.name %></h4>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.4;">
+              <%= product.description.substring(0, 75) %>...
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; pt: 0.75rem; border-top: 1px solid var(--border-glass); margin-top: 1rem; padding-top: 0.75rem;">
+            <div style="font-weight: 800; font-size: 1.2rem; color: var(--text-main);">
+              <%= formatCurrency(product.price) %>
+            </div>
+            <a href="/products/<%= product.id %>" class="btn btn-sm btn-secondary" title="View details via req.params.id">
+              View &rarr;
+            </a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+
+  <!-- REST Endpoints Reference Table -->
+  <section>
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">📡 Server Endpoints Mapping Reference</h2>
+        <a href="/api-explorer" class="btn btn-sm btn-primary">Launch Live Tester &rarr;</a>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Endpoint URL</th>
+              <th>Request Parameters</th>
+              <th>Handler &amp; Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="method-badge method-get">GET</span></td>
+              <td><code>/api/products</code></td>
+              <td>Query: <code>?category,search,sort,minPrice</code></td>
+              <td>Returns filtered array of products with metadata (200 OK)</td>
+            </tr>
+            <tr>
+              <td><span class="method-badge method-get">GET</span></td>
+              <td><code>/api/products/:id</code></td>
+              <td>URL Param: <code>:id</code></td>
+              <td>Fetches individual product by numeric ID (200 / 404)</td>
+            </tr>
+            <tr>
+              <td><span class="method-badge method-post">POST</span></td>
+              <td><code>/api/products</code></td>
+              <td>Body: <code>{ name, category, price, stock }</code></td>
+              <td>Validates and creates new product resource (201 Created)</td>
+            </tr>
+            <tr>
+              <td><span class="method-badge method-put">PUT</span></td>
+              <td><code>/api/products/:id</code></td>
+              <td>Param: <code>:id</code> + Body JSON</td>
+              <td>Updates existing product attributes (200 OK)</td>
+            </tr>
+            <tr>
+              <td><span class="method-badge method-delete">DELETE</span></td>
+              <td><code>/api/products/:id</code></td>
+              <td>URL Param: <code>:id</code></td>
+              <td>Removes specified product from dataset (200 OK)</td>
+            </tr>
+            <tr>
+              <td><span class="method-badge method-get">GET</span></td>
+              <td><code>/api/system/info</code></td>
+              <td>None</td>
+              <td>Exposes live Node.js memory, CPU, and uptime telemetry</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
