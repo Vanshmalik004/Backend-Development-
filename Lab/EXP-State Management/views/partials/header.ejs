@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Experiment 12 B: State Management' %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="<%= theme === 'dark' ? 'theme-dark' : '' %>">
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            ⚡ Exp 12 B <span class="badge">State Management</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Overview</a></li>
+            <li><a href="/todos" class="<%= currentPath.startsWith('/todos') ? 'active' : '' %>">To-Do Manager <% if (todosCount > 0) { %>(<%= todosCount %>)<% } %></a></li>
+            <li><a href="/inspector" class="<%= currentPath.startsWith('/cookies') || currentPath === '/inspector' ? 'active' : '' %>">State Inspector</a></li>
+            <% if (user) { %>
+                <li><a href="/dashboard" class="<%= currentPath === '/dashboard' ? 'active' : '' %>">Dashboard</a></li>
+            <% } %>
+        </ul>
+
+        <div class="nav-actions">
+            <!-- Theme Toggle via Cookie -->
+            <form action="/cookies/theme" method="POST" style="display: inline;">
+                <input type="hidden" name="theme" value="<%= theme === 'dark' ? 'light' : 'dark' %>">
+                <button type="submit" class="btn-theme-toggle" title="Toggle Light/Dark Theme Cookie">
+                    <%= theme === 'dark' ? '☀️ Light' : '🌙 Dark' %>
+                </button>
+            </form>
+
+            <!-- Visit Counter Badge -->
+            <span class="tag tag-blue" title="Session Visit Counter">Visits: <%= views %></span>
+
+            <!-- Auth Status -->
+            <% if (user) { %>
+                <span class="tag tag-green">👤 <%= user.username %></span>
+                <a href="/logout" class="btn btn-sm btn-secondary">Logout</a>
+            <% } else { %>
+                <a href="/login" class="btn btn-sm btn-secondary">Login</a>
+                <a href="/register" class="btn btn-sm btn-primary">Register</a>
+            <% } %>
+        </div>
+    </nav>
+    <div class="container">

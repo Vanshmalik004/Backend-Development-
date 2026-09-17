@@ -1,0 +1,114 @@
+<%- include('partials/header') %>
+
+<div class="card" style="border-left: 4px solid var(--accent-amber);">
+    <h1 class="card-title">🔍 Live State Inspector: Cookies vs Sessions</h1>
+    <p class="card-subtitle">
+        Visualizing how the HTTP client and server maintain state across requests.
+    </p>
+    <div>
+        <a href="/cookies/api" target="_blank" class="btn btn-secondary btn-sm">View Raw JSON API (/cookies/api) ↗</a>
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Cookies (Client State) -->
+    <div class="card">
+        <h2 class="card-title">🍪 Client Cookies (`req.cookies`)</h2>
+        <p class="card-subtitle">
+            Values sent in the HTTP <code>Cookie</code> header on every request.
+        </p>
+
+        <% const cookieKeys = Object.keys(cookies); %>
+        <% if (cookieKeys.length === 0) { %>
+            <p style="color: var(--text-muted);">No custom cookies currently parsed.</p>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% cookieKeys.forEach(key => { %>
+                            <tr>
+                                <td><code><%= key %></code></td>
+                                <td><strong><%= cookies[key] %></strong></td>
+                                <td>
+                                    <form action="/cookies/delete" method="POST" style="display:inline;">
+                                        <input type="hidden" name="cookieName" value="<%= key %>">
+                                        <button type="submit" class="btn btn-danger btn-sm">Clear</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+
+        <!-- Set Custom Cookie Form -->
+        <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">Set a Test Cookie</h3>
+            <form action="/cookies/custom" method="POST">
+                <div class="form-group">
+                    <label class="form-label">Cookie Name</label>
+                    <input type="text" name="cookieName" class="form-control" placeholder="e.g. language" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Cookie Value</label>
+                    <input type="text" name="cookieValue" class="form-control" placeholder="e.g. en-US" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Max-Age (seconds)</label>
+                    <input type="number" name="maxAgeSeconds" class="form-control" value="3600">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Set Cookie</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sessions (Server State) -->
+    <div class="card">
+        <h2 class="card-title">🖥️ Server Session (`req.session`)</h2>
+        <p class="card-subtitle">
+            Values stored on the server and looked up using <code>connect.sid</code>.
+        </p>
+
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td><strong>Session ID</strong></td>
+                        <td><code><%= sessionID %></code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Session Cookie TTL</strong></td>
+                        <td><%= cookieExpires %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Authenticated User</strong></td>
+                        <td><%= session.user ? session.user.username : '(Anonymous guest)' %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visit Counter</strong></td>
+                        <td><%= session.views || 0 %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>To-Do Items in Session</strong></td>
+                        <td><%= (session.todos || []).length %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Complete JSON Payload:</h3>
+            <pre><code><%= JSON.stringify(session, null, 2) %></code></pre>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

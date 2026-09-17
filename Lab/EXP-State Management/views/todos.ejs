@@ -1,0 +1,73 @@
+<%- include('partials/header') %>
+
+<div class="card" style="border-left: 4px solid var(--accent-purple);">
+    <h1 class="card-title">📝 Exercise 2: Session-Based To-Do List Manager</h1>
+    <p class="card-subtitle">
+        Unlike traditional to-do apps that save tasks in a database, this manager stores tasks <strong>strictly inside your session</strong> (<code>req.session.todos</code>).
+    </p>
+    <div style="background: var(--bg-subtle); padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; color: var(--text-secondary);">
+        💡 <strong>Session Isolation Demo:</strong> Open this same URL in an <em>Incognito / Private Window</em> or a different browser. You will see a separate, empty list because the session cookie is isolated per browser!
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Add To-Do Form -->
+    <div class="card">
+        <h2 class="card-title">Add New Task</h2>
+        <form action="/todos/add" method="POST">
+            <div class="form-group">
+                <label for="todoItem" class="form-label">Task Description</label>
+                <input type="text" id="todoItem" name="todoItem" class="form-control" placeholder="e.g., Study Express Sessions" required autofocus>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Add to Session</button>
+        </form>
+
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.9rem; color: var(--text-secondary);">Session ID:</span>
+                <code><%= sessionID.substring(0, 14) %>...</code>
+            </div>
+            <% if (todos && todos.length > 0) { %>
+                <form action="/todos/clear" method="POST" style="margin-top: 1rem;">
+                    <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%;">Clear All Session Tasks</button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Active To-Do List -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2 class="card-title" style="margin-bottom: 0;">Session Tasks (<%= todos.length %>)</h2>
+            <span class="tag tag-purple">Stored in RAM</span>
+        </div>
+
+        <% if (todos.length === 0) { %>
+            <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted);">
+                <p style="font-size: 2rem; margin-bottom: 0.5rem;">📋</p>
+                <p>Your session to-do list is currently empty.</p>
+                <p style="font-size: 0.85rem;">Add a task on the left to see session storage in action!</p>
+            </div>
+        <% } else { %>
+            <% todos.forEach(item => { %>
+                <div class="todo-item <%= item.completed ? 'completed' : '' %>">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <form action="/todos/toggle/<%= item.id %>" method="POST" style="margin: 0;">
+                            <input type="checkbox" onchange="this.form.submit()" <%= item.completed ? 'checked' : '' %> style="cursor: pointer; width: 1.1rem; height: 1.1rem;">
+                        </form>
+                        <div>
+                            <span><%= item.text %></span>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);"><%= item.createdAt %></div>
+                        </div>
+                    </div>
+
+                    <form action="/todos/delete/<%= item.id %>" method="POST" style="margin: 0;">
+                        <button type="submit" class="btn btn-danger btn-sm" title="Delete from Session">🗑️</button>
+                    </form>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

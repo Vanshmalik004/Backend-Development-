@@ -1,0 +1,99 @@
+<%- include('partials/header') %>
+
+<div class="card" style="border-left: 4px solid var(--accent-blue);">
+    <h1 class="card-title">Experiment 12 B: State Management in Node.js</h1>
+    <p class="card-subtitle">
+        HTTP is inherently <strong>stateless</strong>. To build personalized web applications (user accounts, shopping carts, session persistence), servers utilize <strong>Cookies</strong> and <strong>Sessions</strong>.
+    </p>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+        <span class="tag tag-blue">Your Session Visits: <strong><%= views %></strong></span>
+        <span class="tag tag-purple">Active Session ID: <code><%= sessionID ? sessionID.substring(0, 12) + '...' : 'None' %></code></span>
+        <span class="tag tag-green">Current Theme Cookie: <code>theme=<%= theme %></code></span>
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Exercise 1 Card -->
+    <div class="card">
+        <h2 class="card-title">🔐 Lab Exercise 1: User Login System</h2>
+        <p class="card-subtitle">
+            Demonstrates user authentication, <code>bcrypt</code> password hashing, session-based login persistence, and route protection via <code>authMiddleware</code>.
+        </p>
+        <ul style="margin: 0 0 1.25rem 1.25rem; color: var(--text-secondary); font-size: 0.95rem;">
+            <li>Registration with secure password hashing</li>
+            <li>Login creates <code>req.session.user</code></li>
+            <li>Protected <code>/dashboard</code> route</li>
+            <li>Logout destroys session and clears <code>connect.sid</code></li>
+        </ul>
+        <div style="display: flex; gap: 0.75rem;">
+            <% if (user) { %>
+                <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+                <a href="/logout" class="btn btn-secondary">Logout</a>
+            <% } else { %>
+                <a href="/login" class="btn btn-primary">Try Login</a>
+                <a href="/register" class="btn btn-secondary">Register New User</a>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Exercise 2 Card -->
+    <div class="card">
+        <h2 class="card-title">📝 Lab Exercise 2: Session To-Do Manager</h2>
+        <p class="card-subtitle">
+            Demonstrates storing user-specific data inside <code>req.session.todos</code>. Each browser session maintains an isolated list without persistent database storage.
+        </p>
+        <ul style="margin: 0 0 1.25rem 1.25rem; color: var(--text-secondary); font-size: 0.95rem;">
+            <li>Per-session array storage</li>
+            <li>Add, toggle, and delete to-do items</li>
+            <li>Session isolation (Incognito window has empty list)</li>
+            <li>Data disappears when session expires or is cleared</li>
+        </ul>
+        <a href="/todos" class="btn btn-primary">Open To-Do Manager (<%= todosCount %> items)</a>
+    </div>
+</div>
+
+<!-- Cookies vs Sessions Comparison Table -->
+<div class="card">
+    <h2 class="card-title">📊 State Management Comparison: Cookies vs Sessions</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Cookies (<code>cookie-parser</code>)</th>
+                    <th>Sessions (<code>express-session</code>)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Storage Location</strong></td>
+                    <td>Client browser</td>
+                    <td>Server-side (Memory, Redis, DB)</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Capacity</strong></td>
+                    <td>~4 KB limit per domain</td>
+                    <td>Limited only by server memory/storage</td>
+                </tr>
+                <tr>
+                    <td><strong>Security</strong></td>
+                    <td>Exposed to client unless <code>HttpOnly</code>/<code>Secure</code></td>
+                    <td>High; only encrypted Session ID is exposed</td>
+                </tr>
+                <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Theme preferences, language, tracking IDs</td>
+                    <td>Authentication, user credentials, shopping cart</td>
+                </tr>
+                <tr>
+                    <td><strong>Manual Code</strong></td>
+                    <td><code>Source/cookie-example.js</code></td>
+                    <td><code>Source/session-example.js</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

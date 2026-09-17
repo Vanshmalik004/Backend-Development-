@@ -1,0 +1,79 @@
+<%- include('partials/header') %>
+
+<div class="card" style="border-left: 4px solid var(--accent-green);">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 class="card-title">Welcome, <%= user.username %>! 🎉</h1>
+            <p class="card-subtitle">
+                This dashboard is protected by <code>authMiddleware</code>. Only requests with an authenticated session cookie can access this page.
+            </p>
+        </div>
+        <div>
+            <a href="/logout" class="btn btn-danger">Log Out & Destroy Session</a>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Session Information -->
+    <div class="card">
+        <h2 class="card-title">🔑 Active Session Details</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td><strong>Authenticated User</strong></td>
+                        <td><code><%= user.username %></code> (ID: <%= user.id %>)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Session ID (req.sessionID)</strong></td>
+                        <td><code><%= sessionID %></code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Logged In Since</strong></td>
+                        <td><%= new Date(user.loginTime).toLocaleString() %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Session Visits</strong></td>
+                        <td><span class="tag tag-blue"><%= views %> views</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cookie Max-Age</strong></td>
+                        <td><%= cookieExpiration ? (cookieExpiration / 1000) + ' seconds' : 'Session only' %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Security & Protection Mechanics -->
+    <div class="card">
+        <h2 class="card-title">🛡️ How Route Protection Works</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem;">
+            When this page is requested, Express executes the following middleware check:
+        </p>
+        <pre><code>function authMiddleware(req, res, next) {
+    if (req.session && req.session.user) {
+        return next(); // Allow request to proceed
+    }
+    // Deny access and redirect to login
+    return res.redirect('/login?msg=unauthorized');
+}</code></pre>
+
+        <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem;">
+            <a href="/todos" class="btn btn-primary">Go to Session To-Dos</a>
+            <a href="/inspector" class="btn btn-secondary">Inspect State</a>
+        </div>
+    </div>
+</div>
+
+<!-- Raw Session State Dump -->
+<div class="card">
+    <h2 class="card-title">📦 Raw Server-Side Session Object (`req.session`)</h2>
+    <p class="card-subtitle">
+        This is the actual in-memory session object stored on the server for your current Session ID:
+    </p>
+    <pre><code><%= rawSession %></code></pre>
+</div>
+
+<%- include('partials/footer') %>

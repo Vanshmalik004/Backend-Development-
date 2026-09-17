@@ -1,0 +1,14 @@
+[
+  {
+    "id": "usr_demo123",
+    "username": "demo_user",
+    "password": "$2a$10$wN3rLpqv63m2GfH.5gC5hOH89W231xXq6a4wP6Hl5sD8Xg5k8Rau.",
+    "createdAt": "2026-09-17T07:45:00.000Z"
+  },
+  {
+    "id": "usr_1789631441017",
+    "username": "user_1789631440957",
+    "password": "$2a$10$PbtNkcWtULvOKAEiV9GyIOVDD.a9rBHga81OXnNvUok7Ww./Xi3Vy",
+    "createdAt": "2026-09-17T07:50:41.017Z"
+  }
+]
