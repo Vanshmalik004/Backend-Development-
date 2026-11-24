@@ -1,0 +1,65 @@
+<%- include('partials/header') %>
+
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h1>✏️ Edit Note</h1>
+      <p class="dashboard-subtitle">Update and save changes for this note</p>
+    </div>
+
+    <% if (errorMessage) { %>
+      <div class="alert alert-danger">
+        <span>⚠️ <%= errorMessage %></span>
+      </div>
+    <% } %>
+
+    <form action="/notes/<%= note._id %>/edit" method="POST">
+      <!-- Title Field -->
+      <div class="form-group">
+        <label for="title" class="form-label">Note Title <span style="color: var(--danger);">*</span></label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          class="form-control"
+          value="<%= note.title %>"
+          required
+          autofocus
+        >
+      </div>
+
+      <!-- Category Field -->
+      <div class="form-group">
+        <label for="category" class="form-label">Category</label>
+        <select id="category" name="category" class="form-control">
+          <% categories.forEach(cat => { %>
+            <option
+              value="<%= cat %>"
+              <%= note.category === cat ? 'selected' : '' %>
+            >
+              <%= cat %>
+            </option>
+          <% }); %>
+        </select>
+      </div>
+
+      <!-- Content Field -->
+      <div class="form-group">
+        <label for="content" class="form-label">Note Content <span style="color: var(--danger);">*</span></label>
+        <textarea
+          id="content"
+          name="content"
+          class="form-control"
+          required
+        ><%= note.content %></textarea>
+      </div>
+
+      <div class="form-actions">
+        <a href="/notes" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn btn-primary">💾 Update Note</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

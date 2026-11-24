@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+
+<div class="empty-state-card" style="border-color: rgba(239, 68, 68, 0.3);">
+  <div class="empty-state-icon" style="background-color: var(--danger-light); color: var(--danger);">⚠️</div>
+  <h2 class="empty-state-title"><%= typeof title !== 'undefined' ? title : 'An Error Occurred' %></h2>
+  <p class="empty-state-desc"><%= typeof message !== 'undefined' ? message : 'Something went wrong while processing your request.' %></p>
+
+  <% if (typeof error !== 'undefined' && error && error.stack) { %>
+    <pre style="text-align: left; background: #f8fafc; padding: 12px; border-radius: 8px; font-size: 0.8rem; overflow-x: auto; margin-bottom: 20px;"><%= error.stack %></pre>
+  <% } %>
+
+  <div style="display: flex; gap: 12px; justify-content: center;">
+    <a href="/notes" class="btn btn-primary">Return to Notes Dashboard</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

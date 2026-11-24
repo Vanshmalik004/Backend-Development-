@@ -32,7 +32,9 @@ function makeRequest(server, options, postData = null) {
 async function startDatabase() {
   // First check if DB_URL or a local MongoDB is reachable
   const targetUrl = process.env.DB_URL;
-  if (targetUrl) {
+  const hasPlaceholders = targetUrl && (targetUrl.includes('<db_username>') || targetUrl.includes('<username>') || targetUrl.includes('<password>'));
+
+  if (targetUrl && !hasPlaceholders) {
     try {
       console.log(`Checking connection to: ${targetUrl}...`);
       await mongoose.connect(targetUrl, { serverSelectionTimeoutMS: 2000 });
@@ -41,6 +43,8 @@ async function startDatabase() {
     } catch (e) {
       console.log(' Configured MongoDB unreachable, starting in-memory MongoDB instance...');
     }
+  } else if (hasPlaceholders) {
+    console.log(' Configured DB_URL contains username/password placeholders. Using in-memory MongoDB instance for tests...');
   }
 
   // Fallback to in-memory MongoDB

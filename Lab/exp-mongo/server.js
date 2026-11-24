@@ -18,6 +18,13 @@ app.use(express.urlencoded({ extended: true }));
 const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/userdb';
 
 function connectDB(url = DB_URL) {
+  if (url.includes('<db_username>') || url.includes('<username>') || url.includes('<password>')) {
+    console.warn('\n⚠️  MongoDB Atlas Setup Reminder:');
+    console.warn('   Your connection string contains placeholder angle brackets (e.g., <db_username>).');
+    console.warn('   Please edit .env and replace <db_username> with your MongoDB Atlas database user.');
+    console.warn('   (Found in Atlas Console -> Security -> Database Access)\n');
+  }
+
   return mongoose.connect(url)
     .then(() => {
       console.log('Connected to MongoDB successfully');

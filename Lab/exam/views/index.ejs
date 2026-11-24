@@ -1,0 +1,147 @@
+<%- include('partials/header') %>
+
+<div class="dashboard-header">
+  <div class="dashboard-title-row">
+    <div class="dashboard-title-group">
+      <h1>Notes Dashboard</h1>
+      <p class="dashboard-subtitle">
+        Showing <%= notes.length %> <%= notes.length === 1 ? 'note' : 'notes' %>
+        <% if (currentFilter.category && currentFilter.category !== 'All') { %>
+          in category <strong>"<%= currentFilter.category %>"</strong>
+        <% } %>
+        <% if (currentFilter.search) { %>
+          matching <strong>"<%= currentFilter.search %>"</strong>
+        <% } %>
+      </p>
+    </div>
+    <div>
+      <a href="/notes/new" class="btn btn-primary">➕ Create New Note</a>
+    </div>
+  </div>
+
+  <% if (successMessage) { %>
+    <div class="alert alert-success">
+      <span>✅ <%= successMessage %></span>
+    </div>
+  <% } %>
+
+  <!-- Search & Category Filters (Bonus Requirements) -->
+  <div class="search-filter-card">
+    <form action="/notes" method="GET" class="search-form">
+      <!-- Preserve category filter while searching -->
+      <% if (currentFilter.category && currentFilter.category !== 'All') { %>
+        <input type="hidden" name="category" value="<%= currentFilter.category %>">
+      <% } %>
+
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          name="search"
+          class="search-input"
+          placeholder="Search notes by title..."
+          value="<%= currentFilter.search %>"
+        >
+      </div>
+
+      <button type="submit" class="btn btn-outline">Search</button>
+      <% if (currentFilter.search || (currentFilter.category && currentFilter.category !== 'All')) { %>
+        <a href="/notes" class="btn btn-outline">Reset Filter</a>
+      <% } %>
+    </form>
+
+    <!-- Category Pills -->
+    <div class="category-pills">
+      <span class="category-pills-label">Categories:</span>
+
+      <a
+        href="/notes<%= currentFilter.search ? '?search=' + encodeURIComponent(currentFilter.search) : '' %>"
+        class="filter-pill <%= (!currentFilter.category || currentFilter.category === 'All') ? 'active' : '' %>"
+      >
+        All <span class="pill-count"><%= totalNotes %></span>
+      </a>
+
+      <% categories.forEach(cat => { %>
+        <a
+          href="/notes?category=<%= encodeURIComponent(cat) %><%= currentFilter.search ? '&search=' + encodeURIComponent(currentFilter.search) : '' %>"
+          class="filter-pill <%= currentFilter.category === cat ? 'active' : '' %>"
+        >
+          <%= cat %>
+          <% if (categoryCounts && categoryCounts[cat] !== undefined) { %>
+            <span class="pill-count"><%= categoryCounts[cat] %></span>
+          <% } %>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</div>
+
+<!-- Notes Listing -->
+<% if (notes && notes.length > 0) { %>
+  <div class="notes-grid">
+    <% notes.forEach(note => { %>
+      <div class="note-card">
+        <div class="note-card-header">
+          <a href="/notes/<%= note._id %>" class="note-title"><%= note.title %></a>
+          <span class="badge badge-<%= (note.category || 'other').toLowerCase() %>">
+            <%= note.category || 'Other' %>
+          </span>
+        </div>
+
+        <div class="note-content-preview">
+          <%= note.content %>
+        </div>
+
+        <div class="note-card-footer">
+          <div class="note-date">
+            <span>📅</span>
+            <span>
+              <%= note.createdAt ? new Date(note.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently' %>
+            </span>
+          </div>
+
+          <div class="note-card-actions">
+            <!-- View Details -->
+            <a href="/notes/<%= note._id %>" class="btn btn-outline btn-sm" title="View Note">
+              👁️ View
+            </a>
+
+            <!-- Edit Note (Bonus Requirement) -->
+            <a href="/notes/<%= note._id %>/edit" class="btn btn-outline btn-sm" title="Edit Note">
+              ✏️ Edit
+            </a>
+
+            <!-- Delete Note (Compulsory Requirement 3) -->
+            <form
+              action="/notes/<%= note._id %>/delete"
+              method="POST"
+              class="delete-form"
+              data-title="<%= note.title %>"
+              style="display: inline;"
+            >
+              <button type="submit" class="btn btn-danger btn-sm" title="Delete Note">
+                🗑️ Delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+<% } else { %>
+  <!-- Compulsory Requirement 1: Display a suitable message if no notes are available -->
+  <div class="empty-state-card">
+    <div class="empty-state-icon">📝</div>
+    <h3 class="empty-state-title">No Notes Available</h3>
+    <p class="empty-state-desc">
+      <% if (currentFilter.search || (currentFilter.category && currentFilter.category !== 'All')) { %>
+        No notes matched your search or category filter. Try resetting the filters or add a new note.
+      <% } else { %>
+        Your notebook is currently empty. Get started by creating your very first note!
+      <% } %>
+    </p>
+    <a href="/notes/new" class="btn btn-primary">➕ Create First Note</a>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>

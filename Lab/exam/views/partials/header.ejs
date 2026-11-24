@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'My Notes - Notes Management Application' %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-content">
+      <a href="/notes" class="navbar-brand">
+        <div class="navbar-logo-icon">📝</div>
+        <span>My Notes</span>
+      </a>
+
+      <div class="navbar-actions">
+        <a href="/notes" class="btn btn-outline <%= currentPath === '/notes' || currentPath === '/' ? 'active' : '' %>">
+          <span>📋 All Notes</span>
+        </a>
+        <a href="/notes/new" class="btn btn-primary">
+          <span>➕ Add Note</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
