@@ -1,1 +1,0 @@
-# Theory Class 1
