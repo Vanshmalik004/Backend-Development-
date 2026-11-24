@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L07 - Notes App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Notes App</h1>
+      <p class="subtitle">Powered by <code>localStorage</code> & <code>JSON</code></p>
+    </header>
+
+    <!-- Note Input Form -->
+    <form id="note-form" class="card-form">
+      <input type="text" id="note-title" placeholder="Note Title" required>
+      <textarea id="note-content" placeholder="Write your note..." rows="3" required></textarea>
+      <button type="submit" id="add-btn">Add Note</button>
+    </form>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <input type="text" id="search-input" placeholder="🔍 Search notes...">
+      <button id="clear-all-btn" class="danger-btn">Clear All</button>
+    </div>
+
+    <!-- Notes Container -->
+    <main>
+      <div id="notes-grid" class="notes-grid"></div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
