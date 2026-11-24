@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Child templates can override the page title. -->
+    <title>{% block title %}Task Tracker{% endblock %}</title>
+
+    <!-- Load the shared stylesheet from the static-files system. -->
+    <link rel="stylesheet" href="{% static 'todo/css/style.css' %}">
+
+    <!-- Child templates can add page-specific CSS in this block. -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% include 'todo/header.html' %}
+
+    <main class="container">
+        <!-- Child templates replace this block with page content. -->
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'todo/footer.html' %}
+
+    <!-- Load shared JavaScript after the page markup. -->
+    <script src="{% static 'todo/js/app.js' %}" defer></script>
+
+    <!-- Child templates can add page-specific JavaScript here. -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
