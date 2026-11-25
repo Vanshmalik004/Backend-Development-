@@ -21,8 +21,8 @@ For example:
 
 ```json
 {
-  "name": "Ritkriti",
-  "age": 21,
+  "name": "Vansh Malik",
+  "age": 20,
   "skills": ["Java", "Python", "React"]
 }
 ```
@@ -55,7 +55,7 @@ Now we can store JSON documents inside the `user_data` column.
 INSERT INTO users (user_data)
 VALUES (
     '{
-        "name": "Ritkriti",
+        "name": "Bhushan",
         "age": 21,
         "skills": ["Java", "Python", "React"]
     }'
