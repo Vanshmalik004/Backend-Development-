@@ -1,246 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Vansh Malik Backend Notebook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+    :root {
+      --bg:#f5f7f6;
+      --surface:#ffffff;
+      --surface-alt:#eef3f0;
+      --fg:#12201b;
+      --muted:#53635d;
+      --line:#d5ddd9;
+      --accent:#0b6b4f;
+      --accent-ink:#ffffff;
+      --accent-soft:#dff0e9;
+      --font-display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+      --font-body:"Inter","Segoe UI",system-ui,sans-serif;
+      --font-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+      color-scheme:light dark;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg:#0e1714;--surface:#15211d;--surface-alt:#1a2a24;--fg:#e6efeb;--muted:#9bb0a8;--line:#27372f;
+        --accent:#4fd1a1;--accent-ink:#06150f;--accent-soft:#17342a;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg:#0e1714;--surface:#15211d;--surface-alt:#1a2a24;--fg:#e6efeb;--muted:#9bb0a8;--line:#27372f;
+      --accent:#4fd1a1;--accent-ink:#06150f;--accent-soft:#17342a;
+      color-scheme:dark;
+    }
+    :root[data-theme="light"] {
+      color-scheme:light;
+    }
 
-<title>Vansh Malik Backend Notebook</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
-<style>
-/* Layout: sticky top bar, split hero (name left, ID card right), two sections with indexed rows, footer link to the repo */
-:root{
-  --bg:#f5f7f6;
-  --surface:#ffffff;
-  --fg:#12201b;
-  --muted:#53635d;
-  --line:#d5ddd9;
-  --accent:#0b6b4f;
-  --accent-ink:#ffffff;
-  --accent-soft:#dff0e9;
-  --font-display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
-  --font-body:"Inter","Segoe UI",system-ui,sans-serif;
-  --font-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0e1714;--surface:#15211d;--fg:#e6efeb;--muted:#9bb0a8;--line:#27372f;
-    --accent:#4fd1a1;--accent-ink:#06150f;--accent-soft:#17342a;color-scheme:dark}
-}
-:root[data-theme="dark"]{
-  --bg:#0e1714;--surface:#15211d;--fg:#e6efeb;--muted:#9bb0a8;--line:#27372f;
-  --accent:#4fd1a1;--accent-ink:#06150f;--accent-soft:#17342a;color-scheme:dark}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:72px}
+    body{
+      margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;
+      padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+    }
+    a{color:inherit}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+    .visually-hidden:where(:not(:focus-within,:active)){
+      position:absolute!important;clip-path:inset(50%)!important;overflow:hidden!important;
+      width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;border:0!important;white-space:nowrap!important;
+    }
+    .skip-link:focus{
+      position:fixed;top:12px;left:16px;z-index:50;background:var(--accent);color:var(--accent-ink);
+      padding:8px 14px;border-radius:6px;font-weight:600;text-decoration:none;
+    }
+    .wrap{max-width:1040px;margin:0 auto}
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:72px}
-body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
-.wrap{max-width:1040px;margin:0 auto}
+    header.bar{
+      position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);
+      margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));
+      padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+    }
+    .bar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;flex-wrap:wrap}
+    .brand{font-family:var(--font-display);font-weight:700;letter-spacing:-.01em;text-decoration:none}
+    .bar-right{display:flex;align-items:center;gap:8px}
+    nav{display:flex;gap:4px}
+    nav a{font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:6px}
+    nav a:hover{color:var(--fg);background:var(--accent-soft)}
+    .theme-btn{
+      font:inherit;font-size:13px;font-weight:500;background:var(--surface);color:var(--fg);
+      border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer;
+    }
+    .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);
-  margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.bar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;flex-wrap:wrap}
-.brand{font-family:var(--font-display);font-weight:700;letter-spacing:-.01em;text-decoration:none}
-nav{display:flex;gap:4px}
-nav a{font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:6px}
-nav a:hover{color:var(--fg);background:var(--accent-soft)}
+    .hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:end;padding-block:56px 48px}
+    .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+    h1{font-family:var(--font-display);font-weight:700;font-size:clamp(2.4rem,6vw,4.1rem);line-height:1.02;letter-spacing:-.03em;margin:0 0 18px;text-wrap:balance}
+    .lede{color:var(--muted);max-width:54ch;margin:0 0 22px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+    .idcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 22px;min-width:0}
+    .idcard dl{margin:0;display:grid;gap:12px}
+    .idcard dt{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .idcard dd{margin:2px 0 0;font-family:var(--font-display);font-size:1.18rem;font-weight:600;overflow-wrap:anywhere}
+    .idcard dd.mono{font-family:var(--font-mono);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.02em}
 
-.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:end;padding-block:64px 56px}
-.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
-h1{font-family:var(--font-display);font-weight:700;font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.03em;margin:0 0 20px;text-wrap:balance}
-.lede{color:var(--muted);max-width:52ch;margin:0}
-.idcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 22px;min-width:0}
-.idcard dl{margin:0;display:grid;gap:14px}
-.idcard dt{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.idcard dd{margin:2px 0 0;font-family:var(--font-display);font-size:1.25rem;font-weight:600;overflow-wrap:anywhere}
-.idcard dd.mono{font-family:var(--font-mono);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+    .counts{display:flex;gap:32px;flex-wrap:wrap;padding-block:20px;border-block:1px solid var(--line);font-variant-numeric:tabular-nums}
+    .counts div{display:flex;align-items:baseline;gap:10px}
+    .counts b{font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--accent)}
+    .counts span{color:var(--muted);font-size:14px}
 
-.counts{display:flex;gap:32px;flex-wrap:wrap;padding-block:20px;border-block:1px solid var(--line);font-variant-numeric:tabular-nums}
-.counts div{display:flex;align-items:baseline;gap:10px}
-.counts b{font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--accent)}
-.counts span{color:var(--muted);font-size:14px}
+    section{padding-block:48px 8px}
+    .sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+    h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.5vw,2.2rem);letter-spacing:-.02em;margin:0;line-height:1.1}
+    .sec-head p{margin:6px 0 0;color:var(--muted);max-width:56ch}
+    .sec-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:0 12px;min-width:min(100%,250px)}
+    .search input{flex:1;min-width:0;border:0;background:transparent;color:var(--fg);font:inherit;font-size:14px;padding:9px 0;outline:0}
+    .search:focus-within{border-color:var(--accent)}
+    .search label{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .toggle-all-btn{
+      font:inherit;font-size:13px;font-weight:600;background:var(--surface);color:var(--fg);
+      border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer;white-space:nowrap;
+    }
+    .toggle-all-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-section{padding-block:56px 8px}
-.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
-h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.5vw,2.2rem);letter-spacing:-.02em;margin:0;line-height:1.1}
-.sec-head p{margin:6px 0 0;color:var(--muted);max-width:56ch}
-.search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:0 12px;min-width:min(100%,260px)}
-.search input{flex:1;min-width:0;border:0;background:transparent;color:var(--fg);font:inherit;font-size:14px;padding:10px 0;outline:0}
-.search:focus-within{border-color:var(--accent)}
-.search label{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    ul.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+    li.item{padding:18px 4px;border-bottom:1px solid var(--line)}
+    li.item[hidden]{display:none!important}
+    .item-top{display:grid;grid-template-columns:68px minmax(0,1fr) auto;gap:8px 20px;align-items:center}
+    .idx{font-family:var(--font-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+    .name{font-family:var(--font-display);font-weight:600;font-size:1.15rem;letter-spacing:-.01em;margin:0}
+    .path{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);margin:2px 0 0;overflow-wrap:anywhere}
+    .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+    .tag{font-family:var(--font-mono);font-size:11.5px;background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:999px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .open{font-size:13.5px;font-weight:600;text-decoration:none;color:var(--accent-ink);background:var(--accent);padding:8px 14px;border-radius:8px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+    .open:hover{filter:brightness(1.08)}
+    .open.secondary{background:var(--surface);color:var(--fg);border:1px solid var(--line)}
+    .open.secondary:hover{border-color:var(--accent);color:var(--accent);filter:none}
+    .empty{padding:24px 4px;color:var(--muted)}
 
-ul.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-li.item{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:8px 20px;align-items:center;padding:18px 4px;border-bottom:1px solid var(--line)}
-li.item[hidden]{display:none!important}
-.idx{font-family:var(--font-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-.name{font-family:var(--font-display);font-weight:600;font-size:1.15rem;letter-spacing:-.01em;margin:0}
-.path{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);margin:2px 0 0;overflow-wrap:anywhere}
-.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.tag{font-family:var(--font-mono);font-size:11.5px;background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:999px}
-.open{font-size:14px;font-weight:600;text-decoration:none;color:var(--accent-ink);background:var(--accent);padding:8px 14px;border-radius:8px;white-space:nowrap}
-.open:hover{filter:brightness(1.08)}
-.empty{padding:24px 4px;color:var(--muted)}
+    details.readme-panel{margin-top:12px;margin-left:88px;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+    details.readme-panel summary{
+      list-style:none;display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;
+      font-size:13.5px;font-weight:600;color:var(--accent);user-select:none;
+    }
+    details.readme-panel summary::-webkit-details-marker{display:none}
+    details.readme-panel summary::before{
+      content:"";inline-size:10px;block-size:10px;flex-shrink:0;
+      border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+      transform:rotate(-45deg);margin-right:2px;
+    }
+    details.readme-panel[open] > summary{border-bottom:1px solid var(--line);background:var(--surface-alt)}
+    details.readme-panel[open] > summary::before{transform:rotate(45deg)}
+    @media (prefers-reduced-motion:no-preference){
+      details.readme-panel summary::before{transition:transform .2s ease}
+      details.readme-panel::details-content{
+        interpolate-size:allow-keywords;overflow:clip;contain:layout;
+        transition:block-size .28s ease-in-out,content-visibility .28s ease-in-out,display .28s ease-in-out;
+        transition-behavior:allow-discrete;
+      }
+      details.readme-panel:not([open])::details-content{block-size:0}
+    }
+    .readme-body{padding:14px 16px;font-size:14px}
+    .readme-summary{margin:0 0 12px;color:var(--fg)}
+    .readme-body h4{font-family:var(--font-display);font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 6px}
+    .readme-highlights,.file-list{margin:0;padding-left:18px;display:grid;gap:5px}
+    .file-list{list-style:disc}
+    .file-list code{font-family:var(--font-mono);font-size:12.5px;color:var(--accent);background:var(--accent-soft);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+    .file-list a{text-decoration:none}
+    .file-list a:hover code{text-decoration:underline}
+    .file-desc{color:var(--muted);font-size:13px}
 
-footer{margin-top:64px;border-top:1px solid var(--line);padding-block:28px 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:14px}
-footer a{color:var(--accent);font-weight:500}
+    .reports-box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+    .reports-box h2{font-size:1.35rem;margin:0 0 6px}
+    .reports-box p{margin:0;color:var(--muted);font-size:14.5px;max-width:60ch}
 
-@media (max-width:760px){
-  .hero{grid-template-columns:minmax(0,1fr);padding-block:40px 40px;gap:28px}
-  li.item{grid-template-columns:44px minmax(0,1fr)}
-  li.item .open{grid-column:2;justify-self:start;margin-top:6px}
-  nav a{padding:6px 8px}
-}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style>
+    footer{margin-top:64px;border-top:1px solid var(--line);padding-block:28px 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+    footer a{color:var(--accent);font-weight:500}
 
-<header class="bar">
-  <div class="bar-in">
-    <a class="brand" href="#top">Vansh Malik</a>
-    <nav aria-label="Sections">
-      <a href="#theory">Theory</a>
-      <a href="#lab">Lab</a>
-    </nav>
-  </div>
-</header>
+    @media (max-width:760px){
+      .hero{grid-template-columns:minmax(0,1fr);padding-block:36px;gap:24px}
+      .item-top{grid-template-columns:48px minmax(0,1fr)}
+      .actions{grid-column:2;justify-self:start;margin-top:8px}
+      details.readme-panel{margin-left:0}
+      nav a{padding:6px 8px}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link visually-hidden">Skip to main content</a>
 
-<main class="wrap" id="top">
-  <div class="hero">
-    <div>
-      <p class="eyebrow">Backend Development · Course Record</p>
-      <h1>Vansh Malik</h1>
-      <p class="lede">Theory units and lab experiments from my Backend Development course, collected in one place. Each entry opens the matching folder in my GitHub repository.</p>
-    </div>
-    <div class="idcard">
-      <dl>
-        <div><dt>Name</dt><dd>Vansh Malik</dd></div>
-        <div><dt>SAP ID</dt><dd class="mono">590014886</dd></div>
-        <div><dt>Repository</dt><dd><a href="https://github.com/Vanshmalik004/Backend-Development-" target="_blank" rel="noopener">Vanshmalik004 / Backend-Development-</a></dd></div>
-      </dl>
-    </div>
-  </div>
-
-  <div class="counts" aria-label="Contents">
-    <div><b>4</b><span>theory units</span></div>
-    <div><b>9</b><span>lab experiments</span></div>
-  </div>
-
-  <section id="theory">
-    <div class="sec-head">
-      <div>
-        <h2>Theory</h2>
-        <p>Unit-wise material. Unit 4 includes a Dockerised FastAPI student API.</p>
+  <header class="bar">
+    <div class="bar-in">
+      <a class="brand" href="#top">Vansh Malik</a>
+      <div class="bar-right">
+        <nav aria-label="Sections">
+          <a href="#theory">Theory</a>
+          <a href="#lab">Lab</a>
+          <a href="#reports">Reports</a>
+        </nav>
+        <button type="button" class="theme-btn" id="themeToggle" aria-pressed="false">Theme: Auto</button>
       </div>
-      <div class="search"><label for="q-theory">Filter</label><input id="q-theory" type="search" placeholder="Search theory" data-target="list-theory" autocomplete="off"></div>
     </div>
-    <ul class="list" id="list-theory">
-      <li class="item" data-text="unit 1 theory unit1">
-        <span class="idx">U1</span>
-        <div><h3 class="name">Unit 1</h3><p class="path">Theory/Unit1</p></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Theory/Unit1">Open folder</a>
-      </li>
-      <li class="item" data-text="unit 2 theory unit2">
-        <span class="idx">U2</span>
-        <div><h3 class="name">Unit 2</h3><p class="path">Theory/Unit2</p></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Theory/Unit2">Open folder</a>
-      </li>
-      <li class="item" data-text="unit 3 theory unit3">
-        <span class="idx">U3</span>
-        <div><h3 class="name">Unit 3</h3><p class="path">Theory/Unit3</p></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Theory/Unit3">Open folder</a>
-      </li>
-      <li class="item" data-text="unit 4 docker fastapi student api python">
-        <span class="idx">U4</span>
-        <div>
-          <h3 class="name">Unit 4 · Docker student API</h3>
-          <p class="path">Theory/unit4/docker-student-api/fastapi-app</p>
-          <div class="tags"><span class="tag">Docker</span><span class="tag">FastAPI</span></div>
+  </header>
+
+  <main class="wrap" id="main-content">
+    <div class="hero" id="top">
+      <div>
+        <p class="eyebrow">Backend Development · Course Record</p>
+        <h1>Vansh Malik</h1>
+        <p class="lede">Complete index, README documentation, file inventories, and downloadable Word reports for all Theory units and Lab experiments in my Backend Development repository.</p>
+        <div class="hero-actions">
+          <a class="open" href="Reports_Vansh_Malik_590014886_Batch4.zip" download>Download All Reports (.zip)</a>
+          <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/00_Complete_Master_Index_Report.docx" download>Master Index (.docx)</a>
         </div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Theory/unit4/docker-student-api/fastapi-app">Open folder</a>
-      </li>
-    </ul>
-    <p class="empty" id="list-theory-empty" hidden>No theory entry matches that search.</p>
-  </section>
-
-  <section id="lab">
-    <div class="sec-head">
-      <div>
-        <h2>Lab</h2>
-        <p>Experiments from HTML5 and state management through Node.js, MongoDB, Mongoose and Django.</p>
       </div>
-      <div class="search"><label for="q-lab">Filter</label><input id="q-lab" type="search" placeholder="Search experiments" data-target="list-lab" autocomplete="off"></div>
+      <div class="idcard">
+        <dl>
+          <div><dt>Name</dt><dd>Vansh Malik</dd></div>
+          <div><dt>SAP ID</dt><dd class="mono">590014886</dd></div>
+          <div><dt>Batch</dt><dd class="mono">Batch-4</dd></div>
+          <div><dt>Repository</dt><dd><a href="https://github.com/Vanshmalik004/Backend-Development-" target="_blank" rel="noopener">Vanshmalik004 / Backend-Development-</a></dd></div>
+        </dl>
+      </div>
     </div>
-    <ul class="list" id="list-lab">
-      <li class="item" data-text="experiment 1 html5 html">
-        <span class="idx">Exp 1</span>
-        <div><h3 class="name">Experiment 1 · HTML5</h3><p class="path">Lab/Exp-1-HTML-5</p><div class="tags"><span class="tag">HTML5</span></div></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Exp-1-HTML-5">Open folder</a>
-      </li>
-      <li class="item" data-text="experiment 7 8 experiments">
-        <span class="idx">Exp 7, 8</span>
-        <div><h3 class="name">Experiments 7 and 8</h3><p class="path">Lab/Experiment7,8</p></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Experiment7%2C8">Open folder</a>
-      </li>
-      <li class="item" data-text="state management">
-        <span class="idx">Exp</span>
-        <div><h3 class="name">State Management</h3><p class="path">Lab/EXP-State Management</p></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/EXP-State%20Management">Open folder</a>
-      </li>
-      <li class="item" data-text="experiment 12 node nodejs">
-        <span class="idx">Exp 12</span>
-        <div><h3 class="name">Experiment 12 · Node.js</h3><p class="path">Lab/Exp-12(node)</p><div class="tags"><span class="tag">Node.js</span></div></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Exp-12%28node%29">Open folder</a>
-      </li>
-      <li class="item" data-text="experiment 13 mongoose demo mongodb">
-        <span class="idx">Exp 13</span>
-        <div><h3 class="name">Experiment 13 · Mongoose demo</h3><p class="path">Lab/Experiment13/mongoose-demo</p><div class="tags"><span class="tag">Mongoose</span></div></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Experiment13/mongoose-demo">Open folder</a>
-      </li>
-      <li class="item" data-text="mongo mongodb database">
-        <span class="idx">Exp</span>
-        <div><h3 class="name">MongoDB</h3><p class="path">Lab/exp-mongo</p><div class="tags"><span class="tag">MongoDB</span></div></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/exp-mongo">Open folder</a>
-      </li>
-      <li class="item" data-text="experiment 15 django todo app python">
-        <span class="idx">Exp 15</span>
-        <div><h3 class="name">Experiment 15 · Django to-do app</h3><p class="path">Lab/Experiment15/django_todo_app</p><div class="tags"><span class="tag">Django</span></div></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Experiment15/django_todo_app">Open folder</a>
-      </li>
-      <li class="item" data-text="experiment 15b">
-        <span class="idx">Exp 15B</span>
-        <div><h3 class="name">Experiment 15B</h3><p class="path">Lab/Experiment15B</p></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Experiment15B">Open folder</a>
-      </li>
-      <li class="item" data-text="exam lab exam">
-        <span class="idx">Exam</span>
-        <div><h3 class="name">Lab Exam</h3><p class="path">Lab/exam</p></div>
-        <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/exam">Open folder</a>
-      </li>
-    </ul>
-    <p class="empty" id="list-lab-empty" hidden>No experiment matches that search.</p>
-  </section>
 
-  <footer>
-    <span>Vansh Malik · SAP ID 590014886</span>
+    <div class="counts" aria-label="Contents">
+      <div><b>4</b><span>theory units</span></div>
+      <div><b>9</b><span>lab experiments</span></div>
+      <div><b>14</b><span>Word (.docx) reports</span></div>
+    </div>
+
+    <section id="theory" aria-labelledby="theory-heading">
+      <div class="sec-head">
+        <div>
+          <h2 id="theory-heading">Theory</h2>
+          <p>Unit-wise coursework with full README notes, every source file linked directly, and downloadable Word reports.</p>
+        </div>
+        <div class="sec-controls">
+          <search class="search">
+            <label for="q-theory">Filter</label>
+            <input id="q-theory" type="search" placeholder="Search units, stacks, or files" data-target="list-theory" autocomplete="off">
+          </search>
+          <button type="button" class="toggle-all-btn" data-section-list="list-theory" aria-expanded="false">Expand all</button>
+        </div>
+      </div>
+      <ul class="list" id="list-theory">
+      <li class="item" data-text="unit 1 theory unit1 assignment1 notesapp demo1 express ejs demo2 flask demo3 fastapi pydantic lecture06 cookies session lecture07 todo lecture08 jinja2">
+        <div class="item-top">
+          <span class="idx">U1</span>
+          <div class="item-meta">
+            <h3 class="name">Unit 1 · Web Foundations, Express, Flask, FastAPI &amp; State</h3>
+            <p class="path">Theory/Unit1</p>
+            <div class="tags"><span class="tag">HTML/JS</span><span class="tag">Express 5</span><span class="tag">EJS</span><span class="tag">Flask</span><span class="tag">FastAPI</span><span class="tag">Jinja2</span><span class="tag">Cookies/Session</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Theory/Theory_Unit1_Web_Basics_Express_Flask_FastAPI_State_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Theory/Unit1">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (22)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Covers client-side browser storage (localStorage &amp; sessionStorage), server-side rendering in both Express+EJS and FastAPI+Jinja2, REST API basics in Flask and FastAPI, and HTTP state management with cookies and express-session.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Assignment1_notesApp: Client-side Notes CRUD with localStorage persistence, live search, and escapeHtml() XSS protection.</li><li>demo1 / demo2 / demo3: Equivalent Student Management APIs across Express 5+EJS, Flask, and FastAPI+Pydantic (GET/POST/PUT/DELETE).</li><li>lecture06: Demonstrates cookie-parser (httpOnly, maxAge, clearCookie) vs express-session (req.session.username, destroy).</li><li>lecture07 &amp; lecture08: Browser localStorage/sessionStorage To-Do app and FastAPI Jinja2Templates HTML table rendering.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/Assignment1_notesApp/index.html" target="_blank" rel="noopener"><code>Theory/Unit1/Assignment1_notesApp/index.html</code></a> <span class="file-desc">— Notes App UI with form, search toolbar, and grid</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/Assignment1_notesApp/style.css" target="_blank" rel="noopener"><code>Theory/Unit1/Assignment1_notesApp/style.css</code></a> <span class="file-desc">— Responsive card grid &amp; form styling</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/Assignment1_notesApp/app.js" target="_blank" rel="noopener"><code>Theory/Unit1/Assignment1_notesApp/app.js</code></a> <span class="file-desc">— localStorage CRUD, search filter, and XSS escaping</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo1/package.json" target="_blank" rel="noopener"><code>Theory/Unit1/demo1/package.json</code></a> <span class="file-desc">— Express ^5.2.1, EJS ^6.0.1, Nodemon ^3.1.14</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo1/package-lock.json" target="_blank" rel="noopener"><code>Theory/Unit1/demo1/package-lock.json</code></a> <span class="file-desc">— Dependency lockfile</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo1/.gitignore" target="_blank" rel="noopener"><code>Theory/Unit1/demo1/.gitignore</code></a> <span class="file-desc">— Git ignore rules</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo1/server.js" target="_blank" rel="noopener"><code>Theory/Unit1/demo1/server.js</code></a> <span class="file-desc">— Express SSR server on port 3000 (/ and /students)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo1/views/home.ejs" target="_blank" rel="noopener"><code>Theory/Unit1/demo1/views/home.ejs</code></a> <span class="file-desc">— Home landing view</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo1/views/students.ejs" target="_blank" rel="noopener"><code>Theory/Unit1/demo1/views/students.ejs</code></a> <span class="file-desc">— EJS student list loop template</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo2/backend-project/app.py" target="_blank" rel="noopener"><code>Theory/Unit1/demo2/backend-project/app.py</code></a> <span class="file-desc">— Flask Student API (/, /students, /students/&lt;id&gt; with 404)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo3/main.py" target="_blank" rel="noopener"><code>Theory/Unit1/demo3/main.py</code></a> <span class="file-desc">— FastAPI + Pydantic CRUD API with ?branch= query filter</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/demo3/.gitignore" target="_blank" rel="noopener"><code>Theory/Unit1/demo3/.gitignore</code></a> <span class="file-desc">— Git ignore rules</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture06/package.json" target="_blank" rel="noopener"><code>Theory/Unit1/lecture06/package.json</code></a> <span class="file-desc">— Express ^5.2.1, cookie-parser ^1.4.7, express-session ^1.19.0</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture06/package-lock.json" target="_blank" rel="noopener"><code>Theory/Unit1/lecture06/package-lock.json</code></a> <span class="file-desc">— Dependency lockfile</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture06/cookies/app.js" target="_blank" rel="noopener"><code>Theory/Unit1/lecture06/cookies/app.js</code></a> <span class="file-desc">— Cookie endpoints (/setcookie, /getcookie, /deletecookie)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture06/session/app.js" target="_blank" rel="noopener"><code>Theory/Unit1/lecture06/session/app.js</code></a> <span class="file-desc">— Session endpoints (/login, /profile, /logout)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture07_to%20do%20list/index.html" target="_blank" rel="noopener"><code>Theory/Unit1/lecture07_to do list/index.html</code></a> <span class="file-desc">— Browser storage To-Do markup</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture07_to%20do%20list/script.js" target="_blank" rel="noopener"><code>Theory/Unit1/lecture07_to do list/script.js</code></a> <span class="file-desc">— Persists tasks in localStorage and lastTask in sessionStorage</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture07_to%20do%20list/style.css" target="_blank" rel="noopener"><code>Theory/Unit1/lecture07_to do list/style.css</code></a> <span class="file-desc">— Centered To-Do list stylesheet</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture08/main.py" target="_blank" rel="noopener"><code>Theory/Unit1/lecture08/main.py</code></a> <span class="file-desc">— FastAPI + Jinja2Templates SSR server on port 8000</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture08/templates/home.html" target="_blank" rel="noopener"><code>Theory/Unit1/lecture08/templates/home.html</code></a> <span class="file-desc">— Jinja2 greeting template</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit1/lecture08/templates/students.html" target="_blank" rel="noopener"><code>Theory/Unit1/lecture08/templates/students.html</code></a> <span class="file-desc">— Jinja2 student HTML table template</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="unit 2 theory unit2 postgresql jsonb gin validation pydantic emailstr lecture19 restfulapi sqlalchemy sqlite odm mongoose orm pipenv">
+        <div class="item-top">
+          <span class="idx">U2</span>
+          <div class="item-meta">
+            <h3 class="name">Unit 2 · Validation, PostgreSQL JSONB, ORM, ODM &amp; Student API</h3>
+            <p class="path">Theory/Unit2</p>
+            <div class="tags"><span class="tag">PostgreSQL JSONB</span><span class="tag">Pydantic v2</span><span class="tag">SQLAlchemy ORM</span><span class="tag">Mongoose ODM</span><span class="tag">FastAPI</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Theory/Theory_Unit2_Validation_PostgreSQL_JSONB_ORM_ODM_FastAPI_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Theory/Unit2">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (16)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Explores hybrid SQL/NoSQL modeling in PostgreSQL (JSONB + GIN indexes), strict Pydantic v2 validation, relational SQLAlchemy ORM schemas, MongoDB Mongoose ODM modeling, and a full multi-table FastAPI REST API.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Assignment2_PostgreSQL_JSONB: 533-line guide on JSON vs JSONB, -&gt;/-&gt;&gt; operators, @&gt;, jsonb_set, GIN indexing, and hybrid schemas.</li><li>Data model validation: Pydantic v2 StudentCreate (EmailStr, regex branch) and StudentResponse with ConfigDict(from_attributes=True).</li><li>Lecture19_restfulapi/student_api: FastAPI + SQLAlchemy with Department, Student, Course, Enrollment (composite PK) &amp; pagination.</li><li>ODM &amp; ORM: Standalone Mongoose schema/CRUD helpers (app.js) and SQLAlchemy Pipenv Python 3.14 schema setup (main.py).</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Assignment2_PostgreSQL_JSONB/Assignment2.md" target="_blank" rel="noopener"><code>Theory/Unit2/Assignment2_PostgreSQL_JSONB/Assignment2.md</code></a> <span class="file-desc">— 533-line PostgreSQL JSONB &amp; hybrid SQL/NoSQL guide</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Data%20model%20validation/validation.py" target="_blank" rel="noopener"><code>Theory/Unit2/Data model validation/validation.py</code></a> <span class="file-desc">— FastAPI + Pydantic v2 validation and from_attributes demo</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Lecture19_restfulapi/student_api/main.py" target="_blank" rel="noopener"><code>Theory/Unit2/Lecture19_restfulapi/student_api/main.py</code></a> <span class="file-desc">— FastAPI endpoints: /students, /courses, /students/{id}/enrollments</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Lecture19_restfulapi/student_api/models.py" target="_blank" rel="noopener"><code>Theory/Unit2/Lecture19_restfulapi/student_api/models.py</code></a> <span class="file-desc">— SQLAlchemy models: Department, Student, Course, Enrollment</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Lecture19_restfulapi/student_api/schemas.py" target="_blank" rel="noopener"><code>Theory/Unit2/Lecture19_restfulapi/student_api/schemas.py</code></a> <span class="file-desc">— Pydantic schemas, BranchEnum, and StudentListResponse</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Lecture19_restfulapi/student_api/database.py" target="_blank" rel="noopener"><code>Theory/Unit2/Lecture19_restfulapi/student_api/database.py</code></a> <span class="file-desc">— SQLAlchemy engine, SessionLocal, and get_db() dependency</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Lecture19_restfulapi/student_api/.env" target="_blank" rel="noopener"><code>Theory/Unit2/Lecture19_restfulapi/student_api/.env</code></a> <span class="file-desc">— Environment config placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Lecture19_restfulapi/student_api/requirements.txt" target="_blank" rel="noopener"><code>Theory/Unit2/Lecture19_restfulapi/student_api/requirements.txt</code></a> <span class="file-desc">— Python requirements placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/Lecture19_restfulapi/student_api/students.db" target="_blank" rel="noopener"><code>Theory/Unit2/Lecture19_restfulapi/student_api/students.db</code></a> <span class="file-desc">— SQLite database file</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/ODM/app.js" target="_blank" rel="noopener"><code>Theory/Unit2/ODM/app.js</code></a> <span class="file-desc">— Mongoose studentSchema &amp; async CRUD helper functions</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/ODM/package.json" target="_blank" rel="noopener"><code>Theory/Unit2/ODM/package.json</code></a> <span class="file-desc">— Mongoose ^9.10.3 dependency manifest</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/ODM/package-lock.json" target="_blank" rel="noopener"><code>Theory/Unit2/ODM/package-lock.json</code></a> <span class="file-desc">— Dependency lockfile</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/ORM/main.py" target="_blank" rel="noopener"><code>Theory/Unit2/ORM/main.py</code></a> <span class="file-desc">— SQLAlchemy declarative models &amp; composite PK Enrollment</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/ORM/Pipfile" target="_blank" rel="noopener"><code>Theory/Unit2/ORM/Pipfile</code></a> <span class="file-desc">— Pipenv config targeting Python 3.14 + SQLAlchemy</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/ORM/Pipfile.lock" target="_blank" rel="noopener"><code>Theory/Unit2/ORM/Pipfile.lock</code></a> <span class="file-desc">— Pipenv lockfile</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit2/ORM/students.db" target="_blank" rel="noopener"><code>Theory/Unit2/ORM/students.db</code></a> <span class="file-desc">— SQLite database generated by ORM models</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="unit 3 theory unit3 lecture25 express api lecture26 django student_system middleware simpleloggingmiddleware">
+        <div class="item-top">
+          <span class="idx">U3</span>
+          <div class="item-meta">
+            <h3 class="name">Unit 3 · Express API Bootstrap &amp; Django Middleware</h3>
+            <p class="path">Theory/Unit3</p>
+            <div class="tags"><span class="tag">Express 5</span><span class="tag">Django 6.1.2</span><span class="tag">Custom Middleware</span><span class="tag">SQLite</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Theory/Theory_Unit3_Express_API_and_Django_Middleware_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Theory/Unit3">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (20)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Contrasts minimal Express 5 JSON API bootstrapping (Lecture 25) with a Django 6.1.2 project implementing custom request/response timing middleware and JSON API views (Lecture 26).</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Lecture25/express-api: Minimal CommonJS Express ^5.3.0 server with express.json() middleware on port 3000.</li><li>Lecture26/student_system: Django 6.1.2 project mounting SimpleLoggingMiddleware first in MIDDLEWARE to measure ms latency via time.perf_counter().</li><li>API Views: JsonResponse routes at /, /api/students/, and /api/students/&lt;int:student_id&gt;/.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture25/express-api/app.js" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture25/express-api/app.js</code></a> <span class="file-desc">— Minimal Express 5 API server on port 3000</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture25/express-api/package.json" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture25/express-api/package.json</code></a> <span class="file-desc">— Express ^5.3.0 manifest</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture25/express-api/package-lock.json" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture25/express-api/package-lock.json</code></a> <span class="file-desc">— Dependency lockfile</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture25/express-api/.gitingnore" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture25/express-api/.gitingnore</code></a> <span class="file-desc">— Ignore rules file (existing typo filename in repo)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/manage.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/manage.py</code></a> <span class="file-desc">— Django management CLI</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/db.sqlite3" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/db.sqlite3</code></a> <span class="file-desc">— SQLite database</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/student_system/settings.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/student_system/settings.py</code></a> <span class="file-desc">— Django settings with SimpleLoggingMiddleware registered first</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/student_system/urls.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/student_system/urls.py</code></a> <span class="file-desc">— Root URL routing (admin/, &#x27;&#x27;, api/students/)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/student_system/asgi.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/student_system/asgi.py</code></a> <span class="file-desc">— ASGI entry point</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/student_system/wsgi.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/student_system/wsgi.py</code></a> <span class="file-desc">— WSGI entry point</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/student_system/__init__.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/student_system/__init__.py</code></a> <span class="file-desc">— Package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/__init__.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/__init__.py</code></a> <span class="file-desc">— Students app package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/middleware.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/middleware.py</code></a> <span class="file-desc">— SimpleLoggingMiddleware logging method, path, status, and ms timing</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/views.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/views.py</code></a> <span class="file-desc">— JsonResponse views: index, student_list, student_detail</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/urls.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/urls.py</code></a> <span class="file-desc">— App routes for student list and detail</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/apps.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/apps.py</code></a> <span class="file-desc">— StudentsConfig AppConfig</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/models.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/models.py</code></a> <span class="file-desc">— Models placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/admin.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/admin.py</code></a> <span class="file-desc">— Admin placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/tests.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/tests.py</code></a> <span class="file-desc">— Tests placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/Unit3/Lecture26/student_system/students/migrations/__init__.py" target="_blank" rel="noopener"><code>Theory/Unit3/Lecture26/student_system/students/migrations/__init__.py</code></a> <span class="file-desc">— Migrations package marker</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="unit 4 theory unit4 docker fastapi student api uvicorn python 3.12 dockerfile dockerignore health">
+        <div class="item-top">
+          <span class="idx">U4</span>
+          <div class="item-meta">
+            <h3 class="name">Unit 4 · Dockerized FastAPI Student API</h3>
+            <p class="path">Theory/unit4/docker-student-api/fastapi-app</p>
+            <div class="tags"><span class="tag">Docker</span><span class="tag">FastAPI 0.115</span><span class="tag">Uvicorn</span><span class="tag">Python 3.12</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Theory/Theory_Unit4_Docker_FastAPI_Containerization_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Theory/unit4/docker-student-api/fastapi-app">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (4)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Containerizes a FastAPI + Uvicorn microservice using a python:3.12-slim Dockerfile with dependency layer caching, .dockerignore filtering, and a /health probe endpoint.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Dockerfile: Copies requirements.txt before main.py to cache pip installs; exposes port 8000 and binds Uvicorn to 0.0.0.0.</li><li>Endpoints: GET / (app metadata), GET /health (liveness check), and GET /students (in-memory student roster).</li><li>.dockerignore: Keeps __pycache__, *.pyc, .venv, and .git out of the build context.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/unit4/docker-student-api/fastapi-app/main.py" target="_blank" rel="noopener"><code>Theory/unit4/docker-student-api/fastapi-app/main.py</code></a> <span class="file-desc">— FastAPI app exposing /, /health, and /students</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/unit4/docker-student-api/fastapi-app/Dockerfile" target="_blank" rel="noopener"><code>Theory/unit4/docker-student-api/fastapi-app/Dockerfile</code></a> <span class="file-desc">— python:3.12-slim container build definition on port 8000</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/unit4/docker-student-api/fastapi-app/requirements.txt" target="_blank" rel="noopener"><code>Theory/unit4/docker-student-api/fastapi-app/requirements.txt</code></a> <span class="file-desc">— Pinned fastapi==0.115.6 &amp; uvicorn[standard]==0.34.0</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Theory/unit4/docker-student-api/fastapi-app/.dockerignore" target="_blank" rel="noopener"><code>Theory/unit4/docker-student-api/fastapi-app/.dockerignore</code></a> <span class="file-desc">— Build context exclusions</span></li></ul>
+          </div>
+        </details>
+      </li>
+      </ul>
+      <p class="empty" id="list-theory-empty" hidden>No theory entry matches that search.</p>
+    </section>
+
+    <section id="lab" aria-labelledby="lab-heading">
+      <div class="sec-head">
+        <div>
+          <h2 id="lab-heading">Lab</h2>
+          <p>All practical experiments and Exam 01 with complete file lists, endpoints, test verification details, and reports.</p>
+        </div>
+        <div class="sec-controls">
+          <search class="search">
+            <label for="q-lab">Filter</label>
+            <input id="q-lab" type="search" placeholder="Search experiments or files" data-target="list-lab" autocomplete="off">
+          </search>
+          <button type="button" class="toggle-all-btn" data-section-list="list-lab" aria-expanded="false">Expand all</button>
+        </div>
+      </div>
+      <ul class="list" id="list-lab">
+      <li class="item" data-text="experiment 1 exp-1 html5 semantic forms canvas svg dom accessibility seo webvtt co2">
+        <div class="item-top">
+          <span class="idx">Exp 1</span>
+          <div class="item-meta">
+            <h3 class="name">Experiment 1 · HTML5 Elements &amp; Web Standards</h3>
+            <p class="path">Lab/Exp-1-HTML-5</p>
+            <div class="tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">Vanilla JS</span><span class="tag">Canvas 2D</span><span class="tag">WebVTT</span><span class="tag">CO2</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Exp01_HTML5_Elements_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Exp-1-HTML-5">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (7)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Comprehensive zero-dependency HTML5 showcase covering semantic landmarks, Schema.org microdata, native form validation, multimedia (&lt;video&gt; + WebVTT, &lt;audio&gt;, &lt;picture&gt;, &lt;svg&gt;, 2D Canvas particles), interactive DOM tree inspector, and WCAG/SEO metadata.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Course Outcome CO2: Modular version (index.html + style.css + app.js) plus standalone single-file bundle (Experiment_1.html).</li><li>Interactive JS: Theme toggle persisted in localStorage, native &lt;dialog&gt; modal, particle Canvas animation, and DOM_SPEC_DATA inspector.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-1-HTML-5/index.html" target="_blank" rel="noopener"><code>Lab/Exp-1-HTML-5/index.html</code></a> <span class="file-desc">— 827-line semantic HTML5 showcase page with Open Graph, Twitter Card &amp; JSON-LD</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-1-HTML-5/style.css" target="_blank" rel="noopener"><code>Lab/Exp-1-HTML-5/style.css</code></a> <span class="file-desc">— 1,045-line responsive CSS with dark/light custom properties &amp; DOM tree UI</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-1-HTML-5/app.js" target="_blank" rel="noopener"><code>Lab/Exp-1-HTML-5/app.js</code></a> <span class="file-desc">— 384-line JS: theme toggle, &lt;dialog&gt;, form validation, Canvas particles, DOM inspector, scroll-spy</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-1-HTML-5/captions-en.vtt" target="_blank" rel="noopener"><code>Lab/Exp-1-HTML-5/captions-en.vtt</code></a> <span class="file-desc">— WebVTT English subtitle track for &lt;video&gt;</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-1-HTML-5/Experiment_1.html" target="_blank" rel="noopener"><code>Lab/Exp-1-HTML-5/Experiment_1.html</code></a> <span class="file-desc">— 1,437-line standalone single-file HTML/CSS/JS bundle</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-1-HTML-5/LAB_EXPERIMENT_1_MANUAL.md" target="_blank" rel="noopener"><code>Lab/Exp-1-HTML-5/LAB_EXPERIMENT_1_MANUAL.md</code></a> <span class="file-desc">— 239-line official lab manual</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-1-HTML-5/Experiment_1_Lab_Manual.md" target="_blank" rel="noopener"><code>Lab/Exp-1-HTML-5/Experiment_1_Lab_Manual.md</code></a> <span class="file-desc">— 163-line companion experiment manual</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="experiment 7 8 es6 todo dom classes map filter spread event delegation">
+        <div class="item-top">
+          <span class="idx">Exp 7, 8</span>
+          <div class="item-meta">
+            <h3 class="name">Experiments 7 &amp; 8 · ES6+ JavaScript &amp; DOM To-Do App</h3>
+            <p class="path">Lab/Experiment7,8</p>
+            <div class="tags"><span class="tag">ES6 Classes</span><span class="tag">DOM</span><span class="tag">Event Delegation</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Exp07_08_ES6_ToDo_DOM_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Experiment7%2C8">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (2)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Minimal client-side To-Do list built with an ES6 Task class, immutable array operations (spread, map, filter), and single-listener DOM event delegation.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Task class generates timestamp IDs; supports Enter-key add, click-to-toggle completion (.done), and delete button filtering.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment7%2C8/index.html" target="_blank" rel="noopener"><code>Lab/Experiment7,8/index.html</code></a> <span class="file-desc">— 25-line UI markup with inline styles and task list container</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment7%2C8/app.js" target="_blank" rel="noopener"><code>Lab/Experiment7,8/app.js</code></a> <span class="file-desc">— 69-line ES6 Task class, renderTasks(), addTask(), and #taskList click delegation</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="experiment 12 node nodejs express ejs rest api crud middleware logger hrtime nodemon event loop co3 co4">
+        <div class="item-top">
+          <span class="idx">Exp 12</span>
+          <div class="item-meta">
+            <h3 class="name">Experiment 12 · Node.js, Express.js &amp; EJS Templating</h3>
+            <p class="path">Lab/Exp-12(node)</p>
+            <div class="tags"><span class="tag">Node.js v24</span><span class="tag">Express 4.21</span><span class="tag">EJS 3.1</span><span class="tag">REST API</span><span class="tag">Nodemon</span><span class="tag">30/30 Tests</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Lab_Exp12_NodeJS_Express_EJS_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Exp-12%28node%29">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (29)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Full-stack Express 4 + EJS 3 application featuring a JSON-persisted REST CRUD API (/api/products, /api/system/info), SSR catalog &amp; detail pages, interactive API Explorer, Event Loop simulator, custom hrtime logger, and 30 automated assertions (30/30 passing on Node v24.16.0).</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Middleware pipeline: cors(), hrtime requestLogger (sets X-Response-Time), json/urlencoded parsers, static files, res.locals, 404/500 handlers.</li><li>Verified via `npm test` (`node test-api.js`): 30/30 assertions passed covering SSR HTML, req.params, req.query, CRUD (201/200/400/404), and telemetry.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/server.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/server.js</code></a> <span class="file-desc">— Express entry point, EJS setup, middleware pipeline, graceful SIGTERM shutdown</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/package.json" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/package.json</code></a> <span class="file-desc">— Scripts (start, dev, test) &amp; deps (cors, ejs, express, morgan, nodemon)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/package-lock.json" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/package-lock.json</code></a> <span class="file-desc">— Locked dependency tree</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/nodemon.json" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/nodemon.json</code></a> <span class="file-desc">— Hot-reload watcher config (300ms delay, js/json/ejs/css)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/.gitignore" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/.gitignore</code></a> <span class="file-desc">— Git ignore rules</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/data/products.json" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/data/products.json</code></a> <span class="file-desc">— 8 seed hardware products across 6 categories</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/middleware/logger.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/middleware/logger.js</code></a> <span class="file-desc">— process.hrtime() latency logger &amp; X-Response-Time header injector</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/middleware/errorHandler.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/middleware/errorHandler.js</code></a> <span class="file-desc">— Content-negotiated 404 &amp; 500 JSON/EJS error handlers</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/routes/apiRoutes.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/routes/apiRoutes.js</code></a> <span class="file-desc">— REST API (/api/products CRUD, filters, /categories, /reset, /system/info)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/routes/viewRoutes.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/routes/viewRoutes.js</code></a> <span class="file-desc">— SSR page routes &amp; form POST handlers</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/test-api.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/test-api.js</code></a> <span class="file-desc">— 30-assertion automated verification suite (30/30 passing)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/README.md" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/README.md</code></a> <span class="file-desc">— Project documentation &amp; API quickstart</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/LAB_EXPERIMENT_12_MANUAL.md" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/LAB_EXPERIMENT_12_MANUAL.md</code></a> <span class="file-desc">— 405-line academic manual &amp; 12 Viva-Voce Q&amp;As</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/public/css/style.css" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/public/css/style.css</code></a> <span class="file-desc">— Glassmorphism light/dark stylesheet</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/public/js/main.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/public/js/main.js</code></a> <span class="file-desc">— Theme switcher &amp; modal controller</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/public/js/api-tester.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/public/js/api-tester.js</code></a> <span class="file-desc">— Live in-browser REST API workbench script</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/public/js/event-loop.js" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/public/js/event-loop.js</code></a> <span class="file-desc">— Interactive Node.js Event Loop &amp; Libuv simulator</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/404.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/404.ejs</code></a> <span class="file-desc">— Custom 404 error page</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/500.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/500.ejs</code></a> <span class="file-desc">— Custom 500 error page</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/pages/index.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/pages/index.ejs</code></a> <span class="file-desc">— Dashboard with live Node/V8/memory diagnostics</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/pages/products.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/pages/products.ejs</code></a> <span class="file-desc">— SSR inventory catalog with filters &amp; CRUD modals</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/pages/product-detail.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/pages/product-detail.ejs</code></a> <span class="file-desc">— Single product view demonstrating req.params.id</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/pages/api-explorer.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/pages/api-explorer.ejs</code></a> <span class="file-desc">— Interactive REST API playground view</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/pages/architecture.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/pages/architecture.ejs</code></a> <span class="file-desc">— Event Loop &amp; middleware visualizer view</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/pages/lab-manual.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/pages/lab-manual.ejs</code></a> <span class="file-desc">— Built-in interactive lab manual &amp; Viva-Voce</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/partials/header.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/partials/header.ejs</code></a> <span class="file-desc">— HTML head &amp; stylesheet partial</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/partials/navbar.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/partials/navbar.ejs</code></a> <span class="file-desc">— Top navigation bar partial</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/partials/footer.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/partials/footer.ejs</code></a> <span class="file-desc">— Footer partial with runtime badge</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Exp-12%28node%29/views/partials/alerts.ejs" target="_blank" rel="noopener"><code>Lab/Exp-12(node)/views/partials/alerts.ejs</code></a> <span class="file-desc">— Flash alert toast partial</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="experiment 12b state management cookies sessions express-session cookie-parser bcryptjs auth login register dashboard todos inspector">
+        <div class="item-top">
+          <span class="idx">Exp 12B</span>
+          <div class="item-meta">
+            <h3 class="name">Experiment 12B · State Management (Cookies &amp; Sessions)</h3>
+            <p class="path">Lab/EXP-State Management</p>
+            <div class="tags"><span class="tag">express-session</span><span class="tag">cookie-parser</span><span class="tag">bcryptjs</span><span class="tag">EJS</span><span class="tag">19 Assertions</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Lab_Exp12B_State_Management_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/EXP-State%20Management">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (23)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Demonstrates HTTP state management using cookie-parser and express-session with bcryptjs user authentication, protected dashboard routes, session-isolated To-Do lists, a live Cookie/Session Inspector, and 19 automated assertions.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Auth &amp; Security: Password hashing (bcryptjs salt 10), authMiddleware/guestMiddleware guards, httpOnly &amp; sameSite=&#x27;lax&#x27; session cookies.</li><li>Session Isolation: Per-session req.session.todos CRUD, 30-day theme cookie toggle, plus standalone Source/ cookie &amp; session examples.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/server.js" target="_blank" rel="noopener"><code>Lab/EXP-State Management/server.js</code></a> <span class="file-desc">— Express app with cookie-parser, express-session (connect.sid), and view counter</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/package.json" target="_blank" rel="noopener"><code>Lab/EXP-State Management/package.json</code></a> <span class="file-desc">— Deps: bcryptjs, cookie-parser, ejs, express, express-session, morgan, nodemon</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/package-lock.json" target="_blank" rel="noopener"><code>Lab/EXP-State Management/package-lock.json</code></a> <span class="file-desc">— Locked dependency tree</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/.gitignore" target="_blank" rel="noopener"><code>Lab/EXP-State Management/.gitignore</code></a> <span class="file-desc">— Git ignore rules</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/middleware/auth.js" target="_blank" rel="noopener"><code>Lab/EXP-State Management/middleware/auth.js</code></a> <span class="file-desc">— authMiddleware (401 JSON or 302 /login) &amp; guestMiddleware</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/routes/authRoutes.js" target="_blank" rel="noopener"><code>Lab/EXP-State Management/routes/authRoutes.js</code></a> <span class="file-desc">— Register, login, protected /dashboard, and logout handlers</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/routes/todoRoutes.js" target="_blank" rel="noopener"><code>Lab/EXP-State Management/routes/todoRoutes.js</code></a> <span class="file-desc">— Session-isolated To-Do CRUD (/todos, add, toggle, delete, clear)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/routes/cookieRoutes.js" target="_blank" rel="noopener"><code>Lab/EXP-State Management/routes/cookieRoutes.js</code></a> <span class="file-desc">— Theme cookie toggle, custom cookie manager, inspector &amp; JSON API</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/data/users.json" target="_blank" rel="noopener"><code>Lab/EXP-State Management/data/users.json</code></a> <span class="file-desc">— JSON user store with bcrypt-hashed passwords</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/Source/session-example.js" target="_blank" rel="noopener"><code>Lab/EXP-State Management/Source/session-example.js</code></a> <span class="file-desc">— Standalone express-session demo (port 3001)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/Source/cookie-example.js" target="_blank" rel="noopener"><code>Lab/EXP-State Management/Source/cookie-example.js</code></a> <span class="file-desc">— Standalone cookie-parser demo (port 3002)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/public/css/style.css" target="_blank" rel="noopener"><code>Lab/EXP-State Management/public/css/style.css</code></a> <span class="file-desc">— Light/dark theme stylesheet</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/views/index.ejs" target="_blank" rel="noopener"><code>Lab/EXP-State Management/views/index.ejs</code></a> <span class="file-desc">— State management overview page</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/views/login.ejs" target="_blank" rel="noopener"><code>Lab/EXP-State Management/views/login.ejs</code></a> <span class="file-desc">— Login form view</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/views/register.ejs" target="_blank" rel="noopener"><code>Lab/EXP-State Management/views/register.ejs</code></a> <span class="file-desc">— Registration form view</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/views/dashboard.ejs" target="_blank" rel="noopener"><code>Lab/EXP-State Management/views/dashboard.ejs</code></a> <span class="file-desc">— Protected dashboard showing active session details</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/views/todos.ejs" target="_blank" rel="noopener"><code>Lab/EXP-State Management/views/todos.ejs</code></a> <span class="file-desc">— Session-scoped To-Do list view</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/views/inspector.ejs" target="_blank" rel="noopener"><code>Lab/EXP-State Management/views/inspector.ejs</code></a> <span class="file-desc">— Live cookie &amp; session inspector UI</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/views/partials/header.ejs" target="_blank" rel="noopener"><code>Lab/EXP-State Management/views/partials/header.ejs</code></a> <span class="file-desc">— Navbar, theme switcher &amp; visit badge partial</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/views/partials/footer.ejs" target="_blank" rel="noopener"><code>Lab/EXP-State Management/views/partials/footer.ejs</code></a> <span class="file-desc">— Footer partial</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/test-state.js" target="_blank" rel="noopener"><code>Lab/EXP-State Management/test-state.js</code></a> <span class="file-desc">— 19-assertion fetch + CookieJar verification suite (port 3899)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/README.md" target="_blank" rel="noopener"><code>Lab/EXP-State Management/README.md</code></a> <span class="file-desc">— Quickstart &amp; feature overview</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/EXP-State%20Management/Exp_12_B_State_Management_Manual.md" target="_blank" rel="noopener"><code>Lab/EXP-State Management/Exp_12_B_State_Management_Manual.md</code></a> <span class="file-desc">— Official Experiment 12B manual</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="experiment 13 mongoose demo mongodb express 5 user signup login">
+        <div class="item-top">
+          <span class="idx">Exp 13</span>
+          <div class="item-meta">
+            <h3 class="name">Experiment 13 · Mongoose &amp; MongoDB User Demo</h3>
+            <p class="path">Lab/Experiment13/mongoose-demo</p>
+            <div class="tags"><span class="tag">Express 5.2</span><span class="tag">Mongoose 9.10</span><span class="tag">MongoDB</span><span class="tag">dotenv</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Lab_Exp13_Mongoose_Demo_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Experiment13/mongoose-demo">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (4)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Introductory Express 5 + Mongoose 9 application connecting to MongoDB via MONGO_URI, defining a unique User schema, and exposing HTML signup, login, and user directory routes.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>User Schema: username (unique), email (unique), password, and createdAt; handles duplicate key code 11000 on signup.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment13/mongoose-demo/server.js" target="_blank" rel="noopener"><code>Lab/Experiment13/mongoose-demo/server.js</code></a> <span class="file-desc">— 241-line Express 5 + Mongoose 9 server (/, /signup, /login, /users)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment13/mongoose-demo/package.json" target="_blank" rel="noopener"><code>Lab/Experiment13/mongoose-demo/package.json</code></a> <span class="file-desc">— Deps: dotenv ^18.0.1, express ^5.2.1, mongoose ^9.10.1</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment13/mongoose-demo/package-lock.json" target="_blank" rel="noopener"><code>Lab/Experiment13/mongoose-demo/package-lock.json</code></a> <span class="file-desc">— Locked dependency tree</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment13/mongoose-demo/.gitignore" target="_blank" rel="noopener"><code>Lab/Experiment13/mongoose-demo/.gitignore</code></a> <span class="file-desc">— Excludes .env and node_modules/</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="exp-mongo experiment 13a mongodb mongoose express test-app memory server signup login users">
+        <div class="item-top">
+          <span class="idx">Exp 13A</span>
+          <div class="item-meta">
+            <h3 class="name">Experiment 13A · MongoDB, Mongoose &amp; Express System</h3>
+            <p class="path">Lab/exp-mongo</p>
+            <div class="tags"><span class="tag">Express 4.21</span><span class="tag">Mongoose 8.9</span><span class="tag">MongoMemoryServer</span><span class="tag">21 Assertions</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Lab_Exp13A_MongoDB_Mongoose_Express_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/exp-mongo">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (9)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Production-structured Mongoose + Express user registration and login system featuring dark-mode HTML responses, semantic HTTP status codes (200/400/401/404/500), and a 21-assertion test suite backed by MongoMemoryServer fallback.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Error Handling: Translates MongoDB E11000 duplicate errors into 400 Bad Request, unknown users into 404, and invalid passwords into 401.</li><li>Testing: test-app.js runs 7 test groups (21 assertions) plus --server live in-memory demo mode.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/server.js" target="_blank" rel="noopener"><code>Lab/exp-mongo/server.js</code></a> <span class="file-desc">— 561-line Express + Mongoose server exporting { app, User, connectDB }</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/test-app.js" target="_blank" rel="noopener"><code>Lab/exp-mongo/test-app.js</code></a> <span class="file-desc">— 278-line 21-assertion test suite with MongoMemoryServer fallback</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/package.json" target="_blank" rel="noopener"><code>Lab/exp-mongo/package.json</code></a> <span class="file-desc">— Deps: dotenv, express, mongoose; Dev: mongodb-memory-server, nodemon</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/package-lock.json" target="_blank" rel="noopener"><code>Lab/exp-mongo/package-lock.json</code></a> <span class="file-desc">— Locked dependency tree</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/.env" target="_blank" rel="noopener"><code>Lab/exp-mongo/.env</code></a> <span class="file-desc">— Local environment variables (PORT, DB_URL)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/.env.example" target="_blank" rel="noopener"><code>Lab/exp-mongo/.env.example</code></a> <span class="file-desc">— Sample localhost MongoDB environment template</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/.gitignore" target="_blank" rel="noopener"><code>Lab/exp-mongo/.gitignore</code></a> <span class="file-desc">— Git ignore rules</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/README.md" target="_blank" rel="noopener"><code>Lab/exp-mongo/README.md</code></a> <span class="file-desc">— Setup &amp; usage documentation</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exp-mongo/Exp_13_A_MongoDB_Mongoose_Express_Manual.md" target="_blank" rel="noopener"><code>Lab/exp-mongo/Exp_13_A_MongoDB_Mongoose_Express_Manual.md</code></a> <span class="file-desc">— 515-line Experiment 13A lab manual</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="experiment 15 django todo app python sqlite mvt models views templates migrations">
+        <div class="item-top">
+          <span class="idx">Exp 15</span>
+          <div class="item-meta">
+            <h3 class="name">Experiment 15 · Django MVT To-Do Application</h3>
+            <p class="path">Lab/Experiment15/django_todo_app</p>
+            <div class="tags"><span class="tag">Python</span><span class="tag">Django 6.1.2</span><span class="tag">SQLite</span><span class="tag">MVT</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Lab_Exp15_Django_Todo_App_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Experiment15/django_todo_app">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (18)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Classic Django 6.1.2 Model-View-Template To-Do application backed by SQLite, implementing the Task model, Django Admin registration, CSRF-protected task creation, completion toggling, and deletion.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Task Model: title (CharField 200), completed (BooleanField), created_at (DateTimeField auto_now_add).</li><li>Views &amp; Templates: task_list, add_task, toggle_task, and delete_task mapped in todo/urls.py with task_list.html and add_task.html.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/manage.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/manage.py</code></a> <span class="file-desc">— Django management CLI</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/db.sqlite3" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/db.sqlite3</code></a> <span class="file-desc">— SQLite database</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo_project/settings.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo_project/settings.py</code></a> <span class="file-desc">— Django 6.1.2 settings (SQLite + todo app)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo_project/urls.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo_project/urls.py</code></a> <span class="file-desc">— Root URLconf (admin/ &amp; todo.urls)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo_project/asgi.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo_project/asgi.py</code></a> <span class="file-desc">— ASGI entry point</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo_project/wsgi.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo_project/wsgi.py</code></a> <span class="file-desc">— WSGI entry point</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo_project/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo_project/__init__.py</code></a> <span class="file-desc">— Package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/models.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/models.py</code></a> <span class="file-desc">— Task model definition</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/migrations/0001_initial.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/migrations/0001_initial.py</code></a> <span class="file-desc">— Initial Task table migration</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/migrations/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/migrations/__init__.py</code></a> <span class="file-desc">— Migrations package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/views.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/views.py</code></a> <span class="file-desc">— task_list, add_task, toggle_task, delete_task views</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/urls.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/urls.py</code></a> <span class="file-desc">— Todo URL patterns</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/admin.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/admin.py</code></a> <span class="file-desc">— Registers Task in Django Admin</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/apps.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/apps.py</code></a> <span class="file-desc">— TodoConfig AppConfig</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/tests.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/tests.py</code></a> <span class="file-desc">— TestCase placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/__init__.py</code></a> <span class="file-desc">— Package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/templates/todo/task_list.html" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/templates/todo/task_list.html</code></a> <span class="file-desc">— Task list SSR template</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15/django_todo_app/todo/templates/todo/add_task.html" target="_blank" rel="noopener"><code>Lab/Experiment15/django_todo_app/todo/templates/todo/add_task.html</code></a> <span class="file-desc">— CSRF-protected add task form template</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="experiment 15b django todo student_api requests jsonplaceholder tasks uv college pyproject.toml">
+        <div class="item-top">
+          <span class="idx">Exp 15B</span>
+          <div class="item-meta">
+            <h3 class="name">Experiment 15B · Enhanced Django Todo, Student API &amp; UV College</h3>
+            <p class="path">Lab/Experiment15B</p>
+            <div class="tags"><span class="tag">Django 6.1.2</span><span class="tag">Requests</span><span class="tag">Template Inheritance</span><span class="tag">uv (Python 3.14)</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Lab_Exp15B_Django_Student_API_and_UV_College_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/Experiment15B">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (60)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Expands Experiment 15 with base.html template inheritance, static CSS/JS/logo assets, @require_POST CSRF-safe mutations, a student_api proxy fetching JSONPlaceholder with 503 error handling, plus a uv-managed Python 3.14 Django project (college).</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>django todo app/: Adds @require_POST + get_object_or_404 to todo views, static CSS/JS/logo, and student_api (/api/students/external/&lt;post_id&gt;/).</li><li>uv exp/college/: Uses pyproject.toml &amp; uv.lock (Python 3.14, Django 6.1.2) with config/ and students/ app.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/manage.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/manage.py</code></a> <span class="file-desc">— Django management CLI</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/db.sqlite3" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/db.sqlite3</code></a> <span class="file-desc">— SQLite database</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo_project/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo_project/__init__.py</code></a> <span class="file-desc">— Project package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo_project/asgi.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo_project/asgi.py</code></a> <span class="file-desc">— ASGI entry point</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo_project/wsgi.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo_project/wsgi.py</code></a> <span class="file-desc">— WSGI entry point</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo_project/settings.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo_project/settings.py</code></a> <span class="file-desc">— Settings registering todo &amp; student_api</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo_project/urls.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo_project/urls.py</code></a> <span class="file-desc">— Root URLs mounting todo.urls &amp; student_api.urls</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/__init__.py</code></a> <span class="file-desc">— Todo app package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/admin.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/admin.py</code></a> <span class="file-desc">— Todo admin module</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/apps.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/apps.py</code></a> <span class="file-desc">— TodoConfig AppConfig</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/models.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/models.py</code></a> <span class="file-desc">— Task model</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/migrations/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/migrations/__init__.py</code></a> <span class="file-desc">— Todo migrations package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/migrations/0001_initial.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/migrations/0001_initial.py</code></a> <span class="file-desc">— Initial Task table migration</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/tests.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/tests.py</code></a> <span class="file-desc">— Todo tests placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/views.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/views.py</code></a> <span class="file-desc">— Hardened CRUD views with @require_POST &amp; get_object_or_404</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/urls.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/urls.py</code></a> <span class="file-desc">— Todo app routes</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/templates/todo/base.html" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/templates/todo/base.html</code></a> <span class="file-desc">— Master layout template with header/footer/blocks</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/templates/todo/header.html" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/templates/todo/header.html</code></a> <span class="file-desc">— Navbar &amp; logo partial</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/templates/todo/footer.html" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/templates/todo/footer.html</code></a> <span class="file-desc">— Footer partial</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/templates/todo/task_list.html" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/templates/todo/task_list.html</code></a> <span class="file-desc">— Task list using POST CSRF forms</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/templates/todo/add_task.html" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/templates/todo/add_task.html</code></a> <span class="file-desc">— Add task form extending base.html</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/static/todo/css/style.css" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/static/todo/css/style.css</code></a> <span class="file-desc">— 116-line responsive stylesheet</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/static/todo/js/app.js" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/static/todo/js/app.js</code></a> <span class="file-desc">— Auto-focuses #title on load</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/todo/static/todo/images/logo.png" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/todo/static/todo/images/logo.png</code></a> <span class="file-desc">— App logo asset</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/__init__.py</code></a> <span class="file-desc">— Student API package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/admin.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/admin.py</code></a> <span class="file-desc">— Student API admin placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/apps.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/apps.py</code></a> <span class="file-desc">— StudentApiConfig AppConfig</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/migrations/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/migrations/__init__.py</code></a> <span class="file-desc">— Student API migrations marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/models.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/models.py</code></a> <span class="file-desc">— Student API models placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/tests.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/tests.py</code></a> <span class="file-desc">— Student API tests placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/urls.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/urls.py</code></a> <span class="file-desc">— External proxy route /api/students/external/&lt;post_id&gt;/</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/utils.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/utils.py</code></a> <span class="file-desc">— requests.get(..., timeout=2) helper with exception mapping</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/student_api/views.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/student_api/views.py</code></a> <span class="file-desc">— Returns JsonResponse or 503 on upstream failure</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/tasks/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/tasks/__init__.py</code></a> <span class="file-desc">— Tasks app package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/tasks/admin.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/tasks/admin.py</code></a> <span class="file-desc">— Tasks admin placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/tasks/apps.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/tasks/apps.py</code></a> <span class="file-desc">— TasksConfig AppConfig</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/tasks/migrations/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/tasks/migrations/__init__.py</code></a> <span class="file-desc">— Tasks migrations marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/tasks/models.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/tasks/models.py</code></a> <span class="file-desc">— Tasks models placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/tasks/tests.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/tasks/tests.py</code></a> <span class="file-desc">— Tasks tests placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/tasks/urls.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/tasks/urls.py</code></a> <span class="file-desc">— Unmounted tasks scaffold URLs</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/django%20todo%20app/tasks/views.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/django todo app/tasks/views.py</code></a> <span class="file-desc">— Tasks views placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/README.md" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/README.md</code></a> <span class="file-desc">— College project README</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/pyproject.toml" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/pyproject.toml</code></a> <span class="file-desc">— uv package manifest (Python &gt;=3.14, django&gt;=6.1.2)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/uv.lock" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/uv.lock</code></a> <span class="file-desc">— Locked Django 6.1.2 dependency graph</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/.python-version" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/.python-version</code></a> <span class="file-desc">— Pinned Python 3.14</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/db.sqlite3" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/db.sqlite3</code></a> <span class="file-desc">— SQLite database</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/manage.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/manage.py</code></a> <span class="file-desc">— Django management CLI</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/src/college/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/src/college/__init__.py</code></a> <span class="file-desc">— Package CLI entrypoint main()</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/config/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/config/__init__.py</code></a> <span class="file-desc">— Config package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/config/asgi.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/config/asgi.py</code></a> <span class="file-desc">— ASGI entry point</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/config/wsgi.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/config/wsgi.py</code></a> <span class="file-desc">— WSGI entry point</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/config/settings.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/config/settings.py</code></a> <span class="file-desc">— Django config registering students app</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/config/urls.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/config/urls.py</code></a> <span class="file-desc">— Admin URL routing</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/students/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/students/__init__.py</code></a> <span class="file-desc">— Students package marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/students/admin.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/students/admin.py</code></a> <span class="file-desc">— Students admin placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/students/apps.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/students/apps.py</code></a> <span class="file-desc">— StudentsConfig AppConfig</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/students/migrations/__init__.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/students/migrations/__init__.py</code></a> <span class="file-desc">— Students migrations marker</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/students/models.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/students/models.py</code></a> <span class="file-desc">— Students models placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/students/tests.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/students/tests.py</code></a> <span class="file-desc">— Students tests placeholder</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/Experiment15B/uv%20exp/college/students/views.py" target="_blank" rel="noopener"><code>Lab/Experiment15B/uv exp/college/students/views.py</code></a> <span class="file-desc">— Students views placeholder</span></li></ul>
+          </div>
+        </details>
+      </li>
+      <li class="item" data-text="exam lab exam 01 notes management my notes mongodb native driver objectid ejs search category filter">
+        <div class="item-top">
+          <span class="idx">Exam</span>
+          <div class="item-meta">
+            <h3 class="name">Lab Exam 01 · Notes Management System (&#x27;My Notes&#x27;)</h3>
+            <p class="path">Lab/exam</p>
+            <div class="tags"><span class="tag">Express 4.21</span><span class="tag">EJS 3.1</span><span class="tag">Native MongoDB 6.12</span><span class="tag">12 Tests</span></div>
+          </div>
+          <div class="actions">
+            <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/Lab/Lab_Exam01_Notes_Management_System_Report.docx" download>Report (.docx)</a>
+            <a class="open" target="_blank" rel="noopener" href="https://github.com/Vanshmalik004/Backend-Development-/tree/main/Lab/exam">Open folder</a>
+          </div>
+        </div>
+        <details class="readme-panel">
+          <summary>View README &amp; all files (19)</summary>
+          <div class="readme-body">
+            <p class="readme-summary">Full-stack Notes Management System (&#x27;My Notes&#x27;) built with Express 4, EJS partials, and the native MongoDB driver (no Mongoose). Implements all compulsory CRUD requirements plus all 4 bonus features (edit, title regex search, category filtering, custom CSS UI) and 12 automated tests.</p>
+            <h4>Key Highlights</h4>
+            <ul class="readme-highlights"><li>Native MongoDB Driver: Persistent MongoClient with ObjectId validation, regex search (?search=), category counts (?category=), and MongoMemoryServer fallback.</li><li>Verification: test-notes.js runs 12 end-to-end HTTP + MongoDB assertions; test-atlas.js checks Atlas SRV connectivity.</li></ul>
+            <h4>Files in this Module</h4>
+            <ul class="file-list"><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/server.js" target="_blank" rel="noopener"><code>Lab/exam/server.js</code></a> <span class="file-desc">— Express + native MongoClient app with CRUD routes &amp; memory-server fallback</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/package.json" target="_blank" rel="noopener"><code>Lab/exam/package.json</code></a> <span class="file-desc">— Scripts (start, dev, test, test:atlas, demo:memory) &amp; deps (dotenv, ejs, express, mongodb)</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/package-lock.json" target="_blank" rel="noopener"><code>Lab/exam/package-lock.json</code></a> <span class="file-desc">— Locked dependency tree</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/.env" target="_blank" rel="noopener"><code>Lab/exam/.env</code></a> <span class="file-desc">— Atlas URI, DB_NAME, COLLECTION_NAME, PORT</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/.env.example" target="_blank" rel="noopener"><code>Lab/exam/.env.example</code></a> <span class="file-desc">— Sample environment configuration</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/.gitignore" target="_blank" rel="noopener"><code>Lab/exam/.gitignore</code></a> <span class="file-desc">— Git ignore rules</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/test-notes.js" target="_blank" rel="noopener"><code>Lab/exam/test-notes.js</code></a> <span class="file-desc">— 12 automated end-to-end HTTP + MongoDB tests</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/test-atlas.js" target="_blank" rel="noopener"><code>Lab/exam/test-atlas.js</code></a> <span class="file-desc">— MongoDB Atlas SRV ping &amp; CRUD diagnostic script</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/public/css/styles.css" target="_blank" rel="noopener"><code>Lab/exam/public/css/styles.css</code></a> <span class="file-desc">— 707-line responsive CSS with category badge colors</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/public/js/app.js" target="_blank" rel="noopener"><code>Lab/exam/public/js/app.js</code></a> <span class="file-desc">— Delete confirmation prompt &amp; 4-second alert auto-dismiss</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/views/partials/header.ejs" target="_blank" rel="noopener"><code>Lab/exam/views/partials/header.ejs</code></a> <span class="file-desc">— Navbar &amp; stylesheet header partial</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/views/partials/footer.ejs" target="_blank" rel="noopener"><code>Lab/exam/views/partials/footer.ejs</code></a> <span class="file-desc">— Footer &amp; app.js loader partial</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/views/index.ejs" target="_blank" rel="noopener"><code>Lab/exam/views/index.ejs</code></a> <span class="file-desc">— Notes grid, search bar, category filter pills &amp; empty state</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/views/new.ejs" target="_blank" rel="noopener"><code>Lab/exam/views/new.ejs</code></a> <span class="file-desc">— Create note form</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/views/edit.ejs" target="_blank" rel="noopener"><code>Lab/exam/views/edit.ejs</code></a> <span class="file-desc">— Edit note form</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/views/show.ejs" target="_blank" rel="noopener"><code>Lab/exam/views/show.ejs</code></a> <span class="file-desc">— Full note detail view</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/views/error.ejs" target="_blank" rel="noopener"><code>Lab/exam/views/error.ejs</code></a> <span class="file-desc">— Error page template</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/README.md" target="_blank" rel="noopener"><code>Lab/exam/README.md</code></a> <span class="file-desc">— Project overview &amp; run instructions</span></li><li><a href="https://github.com/Vanshmalik004/Backend-Development-/blob/main/Lab/exam/Exam_01_Notes_Management_Manual.md" target="_blank" rel="noopener"><code>Lab/exam/Exam_01_Notes_Management_Manual.md</code></a> <span class="file-desc">— UPES SOCS Exam 01 rubric &amp; manual</span></li></ul>
+          </div>
+        </details>
+      </li>
+      </ul>
+      <p class="empty" id="list-lab-empty" hidden>No experiment matches that search.</p>
+    </section>
+
+    <section id="reports" aria-labelledby="reports-heading">
+      <div class="reports-box">
+        <div>
+          <h2 id="reports-heading">Formatted Word Reports Bundle (.docx)</h2>
+          <p>Download all 14 Word reports (Master Index, 9 Lab reports, and 4 Theory unit reports) prepared for Vansh Malik (SAP ID: 590014886, Batch-4) in a single ZIP archive.</p>
+        </div>
+        <div class="actions">
+          <a class="open secondary" href="Reports_Vansh_Malik_590014886_Batch4/00_Complete_Master_Index_Report.docx" download>Master Report (.docx)</a>
+          <a class="open" href="Reports_Vansh_Malik_590014886_Batch4.zip" download>Download ZIP (523 KB)</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <span>Vansh Malik · SAP ID 590014886 · Batch-4</span>
     <a href="https://github.com/Vanshmalik004/Backend-Development-" target="_blank" rel="noopener">View the full repository on GitHub</a>
   </footer>
-</main>
 
-<script>
-document.querySelectorAll('.search input').forEach(function(input){
-  var list = document.getElementById(input.dataset.target);
-  var empty = document.getElementById(input.dataset.target + '-empty');
-  input.addEventListener('input', function(){
-    var q = input.value.trim().toLowerCase();
-    var shown = 0;
-    list.querySelectorAll('.item').forEach(function(li){
-      var hay = (li.dataset.text + ' ' + li.textContent).toLowerCase();
-      var ok = !q || hay.indexOf(q) !== -1;
-      li.hidden = !ok;
-      if (ok) shown++;
+  <script>
+    // Search filtering across both visible summaries and expandable README/file inventories
+    document.querySelectorAll('.search input').forEach(function(input) {
+      var list = document.getElementById(input.dataset.target);
+      var empty = document.getElementById(input.dataset.target + '-empty');
+      input.addEventListener('input', function() {
+        var q = input.value.trim().toLowerCase();
+        var shown = 0;
+        list.querySelectorAll('li.item').forEach(function(li) {
+          var hay = ((li.dataset.text || '') + ' ' + li.textContent).toLowerCase();
+          var ok = !q || hay.indexOf(q) !== -1;
+          li.hidden = !ok;
+          if (ok) shown++;
+        });
+        empty.hidden = shown !== 0;
+      });
     });
-    empty.hidden = shown !== 0;
-  });
-});
-</script>
 
+    // Expand / Collapse all README panels per section with synced aria-expanded
+    document.querySelectorAll('.toggle-all-btn').forEach(function(btn) {
+      var list = document.getElementById(btn.dataset.sectionList);
+      function syncBtn() {
+        var items = Array.from(list.querySelectorAll('details.readme-panel'));
+        var allOpen = items.length > 0 && items.every(function(d) { return d.open; });
+        btn.setAttribute('aria-expanded', String(allOpen));
+        btn.textContent = allOpen ? 'Collapse all' : 'Expand all';
+      }
+      btn.addEventListener('click', function() {
+        var expand = btn.getAttribute('aria-expanded') !== 'true';
+        list.querySelectorAll('details.readme-panel').forEach(function(d) { d.open = expand; });
+        syncBtn();
+      });
+      list.addEventListener('toggle', syncBtn, true);
+    });
+
+    // Light / Dark / Auto theme toggle
+    (function() {
+      var root = document.documentElement;
+      var btn = document.getElementById('themeToggle');
+      var modes = ['auto', 'dark', 'light'];
+      var saved = localStorage.getItem('notebook_theme') || 'auto';
+      function applyMode(mode) {
+        if (mode === 'auto') {
+          root.removeAttribute('data-theme');
+          btn.setAttribute('aria-pressed', 'false');
+          btn.textContent = 'Theme: Auto';
+        } else {
+          root.setAttribute('data-theme', mode);
+          btn.setAttribute('aria-pressed', String(mode === 'dark'));
+          btn.textContent = 'Theme: ' + (mode === 'dark' ? 'Dark' : 'Light');
+        }
+      }
+      applyMode(saved);
+      btn.addEventListener('click', function() {
+        var curr = localStorage.getItem('notebook_theme') || 'auto';
+        var next = modes[(modes.indexOf(curr) + 1) % modes.length];
+        localStorage.setItem('notebook_theme', next);
+        applyMode(next);
+      });
+    })();
+  </script>
+</body>
+</html>
